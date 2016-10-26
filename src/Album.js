@@ -6,9 +6,10 @@ class Album extends Component {
 	render() {
 		var album = this.props.album,
 			tracks = 0;
-			album.discs.forEach( ( disc ) => {
-				tracks += disc.tracks.length;
-			} );
+
+		album.discs.forEach( ( disc ) => {
+			tracks += disc.tracks.length;
+		} );
 
 		return (
 			<div className="Album">
@@ -19,7 +20,7 @@ class Album extends Component {
 				<div className="Album-info">
 					<header>
 						<h1>{album.name}</h1>
-						<h2>{album.artist}</h2>
+						<h2>{album.artist.name}</h2>
 						<div className="Album-info-meta">
 							{album.genre} &bull; {album.year}
 						</div>
@@ -28,7 +29,7 @@ class Album extends Component {
 						return (
 							<ol key={index}>
 							{disc.tracks.map( ( song ) => {
-								return <Song app={this.props.app} key={song.name} song={song} />;
+								return <Song app={this.props.app} key={song.id} song={song} />;
 							})}
 							</ol>
 						);
