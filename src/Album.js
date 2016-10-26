@@ -7,9 +7,7 @@ class Album extends Component {
 		var album = this.props.album,
 			tracks = 0;
 
-		album.discs.forEach( ( disc ) => {
-			tracks += disc.tracks.length;
-		} );
+		album.discs.forEach( ( disc ) => tracks += disc.tracks.length );
 
 		return (
 			<div className="Album">
@@ -28,9 +26,12 @@ class Album extends Component {
 					{album.discs.map( ( disc, index ) => {
 						return (
 							<ol key={index}>
-							{disc.tracks.map( ( song ) => {
-								return <Song app={this.props.app} key={song.id} song={song} />;
-							})}
+							{disc.tracks.map( ( song ) =>
+								<Song app={this.props.app}
+									key={song.id}
+									album={album}
+									song={song} />
+							)}
 							</ol>
 						);
 					} )}

@@ -1,0 +1,59 @@
+.Player {
+	height: 60px;
+	border: 1px solid #eee;
+	margin: 20px 0;
+}
+
+.Player::after {
+	content: " ";
+	display: table;
+	clear: both;
+}
+
+.Player-control {
+	width: 60px;
+	height: 60px;
+	font-size: 40px;
+	line-height: 60px;
+	float: left;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.Player-metadata {
+	float: left;
+	padding: 10px;
+	width: calc(100% - 100px);
+	margin-right: 30px;
+	font-family: "sf-ui-regular", sans-serif;
+	letter-spacing: 0.5px;
+	color: #000;
+}
+
+.Player-details span {
+	color: #333;
+	opacity: 0.6;
+}
+
+.Player-details {
+
+}
+
+.Player-track {
+	margin-top: 6px;
+	height: 6px;
+	background: #dedede;
+}
+
+.Player-track::after {
+	content: " ";
+	display: table;
+	clear: both;
+}
+
+.Player-progress {
+	float: left;
+	width: 0.1%;
+	height: 6px;
+	background: #ff2d55;
+}

@@ -1,20 +1,78 @@
 import React, { Component } from 'react';
 import './App.css';
 import Catalog from './Catalog';
-import Playing from './Playing';
+import Player from './Player';
 
 class App extends Component {
 	constructor( props ) {
 		super( props );
 
 		this.state = {
-			song: null
+			audio: null,
+			song: null,
+			album: null
 		};
+
 		this.selectSong = this.selectSong.bind( this );
 	}
 
-	selectSong( song ) {
-		this.setState({ song });
+	toggleControl() {
+		var audio = this.state.audio;
+		if ( ! this.state.audio ) {
+			return;
+		}
+
+		if ( audio.paused ) {
+			audio.play();
+		} else {
+			audio.pause();
+		}
+	}
+
+	selectSong( song, album ) {
+		var willPlay, willPause, audio;
+
+		if ( this.state.audio ) {
+			audio = this.state.audio;
+		} else {
+			audio = document.createElement( 'audio' );
+			audio.ontimeupdate = function ( event ) {
+				this.setState({
+					currentTime: event.timeStamp
+				});
+			}.bind( this );
+		}
+
+		if ( this.state.song !== song ) {
+			if ( audio.src && ! audio.paused ) {
+				audio.pause();
+			}
+			if ( song.src ) {
+				audio.src = '/audio/' + song.src;
+				audio.load();
+				willPlay = true;
+			} else {
+				this.audio.src = '';
+			}
+		} else {
+			if ( audio.paused ) {
+				willPlay = true;
+			} else {
+				willPause = true;
+			}
+		}
+
+		if ( willPlay ) {
+			audio.play();
+		} else if ( willPause ) {
+			audio.pause();
+		}
+
+		this.setState( {
+			song,
+			album,
+			audio
+		} );
 	}
 
 	render() {
@@ -29,9 +87,9 @@ class App extends Component {
 				Then with Relay.
 				</p>
 
+				<Player app={this} />
 				<Catalog app={this} albums={this.props.albums} />
 
-				{this.state.song && <Playing song={this.state.song} />}
 			</div>
 		);
 	}

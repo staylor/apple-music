@@ -5,6 +5,6 @@ import './index.css';
 import albums from './data/albums';
 
 ReactDOM.render(
-  <App albums={albums} />,
-  document.getElementById('root')
+	<App albums={albums} />,
+	document.getElementById('root')
 );

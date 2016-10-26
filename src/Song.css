@@ -23,21 +23,40 @@
 .Song-number {
 	float: left;
 	text-align: right;
-	width: 20px;
+	width: 30px;
 	height: 20px;
-	margin-right: 10px;
+	padding-right: 10px;
 }
 
-.Song-playing .Song-number,
-.Song:hover .Song-number {
-	width: 0;
-	height: 0;
-	border-top: 8px solid transparent;
-	border-bottom: 8px solid transparent;
-	border-left: 12px solid #000;
-	font-size: 0;
-	line-height: 0;
-	margin: 2px 10px 2px 8px;
+.Song-number span {
+	display: none;
+}
+
+.Song .dashicons-controls-pause,
+.Song .dashicons-controls-play {
+	margin: 0 4px 0 6px;
+}
+
+/* not playing, not selected */
+.Song-not-playing .Song-number .Song-number-text,
+/* not playing, hover */
+.Song-not-playing:hover .Song-number .dashicons-controls-play,
+.Song-paused .Song-number .dashicons-controls-play,
+.Song-paused:hover .Song-number .dashicons-controls-play,
+/* playing, hover */
+.Song-playing .Song-number .dashicons-controls-pause,
+.Song-playing:hover .Song-number .dashicons-controls-pause {
+	display: inline-block;
+}
+
+.Song .dashicons-controls-pause,
+.Song .dashicons-controls-play {
+	color: #000;
+}
+
+/* not playing, not selected */
+.Song-not-playing:hover .Song-number-text {
+	display: none;
 }
 
 .Song-name {
