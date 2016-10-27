@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import './css/dashicons.css';
 import './Song.css';
 
@@ -19,22 +20,17 @@ class Song extends Component {
 	render() {
 		var song = this.props.song,
 			state = this.props.app.state,
-			className = 'Song';
-
-		if ( state.song && state.song === song ) {
-			if ( state.audio.paused ) {
-				className += ' Song-paused';
-			} else {
-				className += ' Song-playing';
-			}
-		} else {
-			className += ' Song-not-playing';
-		}
+			currentSong = state.song && state.song === song,
+			className = classNames( 'Song', {
+				'Song-paused': currentSong && state.audio.paused,
+				'Song-playing': currentSong && ! state.audio.paused,
+				'Song-not-playing': ! currentSong
+			} );
 
 		return (
 			<li className={className} onClick={this.onClick}>
-				<span className="Song-number">
-					<span className="Song-number-text">{song.number}</span>
+				<span className="Song-control">
+					<span className="Song-control-text">{song.number}</span>
 					<span className="dashicons dashicons-controls-play"></span>
 					<span className="dashicons dashicons-controls-pause"></span>
 				</span>

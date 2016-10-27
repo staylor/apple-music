@@ -13,7 +13,8 @@
 
 .Album figure {
 	float: left;
-	width: 30%;
+	position: relative;
+	width: 23%;
 }
 
 .Album figcaption {
@@ -27,6 +28,22 @@
 	font-family: "sf-ui-regular", sans-serif;
 }
 
+.Album figure span {
+	position: absolute;
+	display: none;
+	font-size: 80px;
+	line-height: 80px;
+	color: #fff;
+	top: calc(50% - 54px);
+	left: calc(50% - 40px);
+	cursor: pointer;
+}
+
+.Album-paused figure .dashicons-controls-play,
+.Album-playing figure .dashicons-controls-pause {
+	display: inline-block;
+}
+
 .Album figure img {
 	max-width: 100%;
 	display: block;
@@ -34,7 +51,7 @@
 
 .Album-info {
 	float: right;
-	width: 65%;
+	width: 75%;
 }
 
 @media only screen and (max-width: 820px) {

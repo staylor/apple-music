@@ -33,7 +33,8 @@ class Player extends Component {
 
 		return (
 			<div className="Player">
-				<div className={"Player-control dashicons dashicons-controls-" + dashicon} onClick={this.onClick}></div>
+				<div className={"Player-control dashicons dashicons-controls-" + dashicon}
+					onClick={this.onClick}></div>
 				<div className="Player-metadata">
 					{details}
 					<div className="Player-track">

@@ -20,7 +20,7 @@
 	clear: both;
 }
 
-.Song-number {
+.Song-control {
 	float: left;
 	text-align: right;
 	width: 30px;
@@ -28,7 +28,7 @@
 	padding-right: 10px;
 }
 
-.Song-number span {
+.Song-control span {
 	display: none;
 }
 
@@ -38,14 +38,14 @@
 }
 
 /* not playing, not selected */
-.Song-not-playing .Song-number .Song-number-text,
+.Song-not-playing .Song-control .Song-control-text,
 /* not playing, hover */
-.Song-not-playing:hover .Song-number .dashicons-controls-play,
-.Song-paused .Song-number .dashicons-controls-play,
-.Song-paused:hover .Song-number .dashicons-controls-play,
+.Song-not-playing:hover .Song-control .dashicons-controls-play,
+.Song-paused .Song-control .dashicons-controls-play,
+.Song-paused:hover .Song-control .dashicons-controls-play,
 /* playing, hover */
-.Song-playing .Song-number .dashicons-controls-pause,
-.Song-playing:hover .Song-number .dashicons-controls-pause {
+.Song-playing .Song-control .dashicons-controls-pause,
+.Song-playing:hover .Song-control .dashicons-controls-pause {
 	display: inline-block;
 }
 
@@ -55,7 +55,7 @@
 }
 
 /* not playing, not selected */
-.Song-not-playing:hover .Song-number-text {
+.Song-not-playing:hover .Song-control-text {
 	display: none;
 }
 
