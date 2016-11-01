@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import './Catalog.css';
+import '../css/Catalog.css';
 import Album from './Album';
 
 class Catalog extends Component {
 	render() {
 		return (
 			<div className="Catalog">
-				{this.props.albums.map((album) =>
-					<Album app={this.props.app} key={album.id} album={album}/>
+				{this.props.albums.map( ( album ) =>
+					<Album key={album.id} album={album} />
 				)}
 			</div>
 		);

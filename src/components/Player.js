@@ -1,31 +1,25 @@
 import React, { Component } from 'react';
-import './Player.css';
+import Actions from '../flux/Actions';
+import Store from '../flux/Store';
+import '../css/Player.css';
 
 class Player extends Component {
-	constructor( props ) {
-		super( props );
-
-		this.onClick = this.onClick.bind( this );
-	}
-
-	onClick() {
-		this.props.app.toggleControl();
-	}
 
 	render() {
-		var state = this.props.app.state,
+		let audio = Store.getAudio(),
+			{ song, album } = this.props,
 			dashicon = 'play',
 			styles = {
 				width: '0%'
 			},
 			details;
 
-		if ( state.song && state.song.name ) {
-			styles.width = Math.floor( ( 100 / state.audio.duration ) * state.audio.currentTime ) + '%';
-			dashicon = state.audio.paused ? 'play' : 'pause';
+		if ( song && song.name ) {
+			styles.width = Math.floor( ( 100 / audio.duration ) * audio.currentTime ) + '%';
+			dashicon = audio.paused ? 'play' : 'pause';
 			details = <div className="Player-details">
-				"{state.song.name}" <span>from</span> <em>{state.album.name}</em>
-				&nbsp;<span>by</span> {state.album.artist.name}
+				"{song.name}" <span>from</span> <em>{album.name}</em>
+				&nbsp;<span>by</span> {album.artist.name}
 			</div>;
 		} else {
 			details = <div className="Player-details">Nothing is playing.</div>;
@@ -34,7 +28,7 @@ class Player extends Component {
 		return (
 			<div className="Player">
 				<div className={"Player-control dashicons dashicons-controls-" + dashicon}
-					onClick={this.onClick}></div>
+					onClick={Actions.toggleControl}></div>
 				<div className="Player-metadata">
 					{details}
 					<div className="Player-track">

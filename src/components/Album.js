@@ -1,27 +1,20 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import Song from './Song';
-import './Album.css';
+import Actions from '../flux/Actions';
+import Store from '../flux/Store';
+import '../css/Album.css';
 
 class Album extends Component {
-	constructor( props ) {
-		super( props );
-
-		this.onClick = this.onClick.bind( this );
-	}
-
-	onClick() {
-		this.props.app.toggleControl();
-	}
-
 	render() {
-		var album = this.props.album,
-			state = this.props.app.state,
-			currentAlbum = state.album === album,
+		let store = Store.getData(),
+			audio = Store.getAudio(),
+			{ album } = this.props,
+			currentAlbum = store.album.id === album.id,
 			tracks = 0,
 			className = classNames( 'Album', {
-				'Album-paused': currentAlbum && state.audio.paused,
-				'Album-playing': currentAlbum && ! state.audio.paused,
+				'Album-paused': currentAlbum && audio.paused,
+				'Album-playing': currentAlbum && ! audio.paused,
 				'Album-not-playing': ! currentAlbum
 			} );
 
@@ -30,8 +23,8 @@ class Album extends Component {
 		return (
 			<div className={className}>
 				<figure>
-					<span className="dashicons dashicons-controls-play" onClick={this.onClick}></span>
-					<span className="dashicons dashicons-controls-pause" onClick={this.onClick}></span>
+					<span className="dashicons dashicons-controls-play" onClick={Actions.toggleControl}></span>
+					<span className="dashicons dashicons-controls-pause" onClick={Actions.toggleControl}></span>
 					<img role="presentation" src={'/images/' + album.image}/>
 					<figcaption>{tracks} songs, {album.length}</figcaption>
 				</figure>
@@ -47,10 +40,7 @@ class Album extends Component {
 						return (
 							<ol key={index}>
 							{disc.tracks.map( ( song ) =>
-								<Song app={this.props.app}
-									key={song.id}
-									album={album}
-									song={song} />
+								<Song key={song.id} song={song} album={album} />
 							)}
 							</ol>
 						);

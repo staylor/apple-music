@@ -1,34 +1,24 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import './css/dashicons.css';
-import './Song.css';
+import Actions from '../flux/Actions';
+import Store from '../flux/Store';
+import '../css/dashicons.css';
+import '../css/Song.css';
 
 class Song extends Component {
-	constructor( props ) {
-		super( props );
-
-		this.onClick = this.onClick.bind( this );
-	}
-
-	onClick() {
-		this.props.app.selectSong(
-			this.props.song,
-			this.props.album
-		);
-	}
-
 	render() {
-		var song = this.props.song,
-			state = this.props.app.state,
-			currentSong = state.song && state.song === song,
+		const store = Store.getData(),
+			audio = Store.getAudio(),
+			{ song, album } = this.props,
+			currentSong = store.song.id === song.id,
 			className = classNames( 'Song', {
-				'Song-paused': currentSong && state.audio.paused,
-				'Song-playing': currentSong && ! state.audio.paused,
+				'Song-paused': currentSong && audio.paused,
+				'Song-playing': currentSong && ! audio.paused,
 				'Song-not-playing': ! currentSong
 			} );
 
 		return (
-			<li className={className} onClick={this.onClick}>
+			<li className={className} onClick={() => Actions.setSong( { song, album } ) }>
 				<span className="Song-control">
 					<span className="Song-control-text">{song.number}</span>
 					<span className="dashicons dashicons-controls-play"></span>
