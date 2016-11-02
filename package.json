@@ -54,7 +54,11 @@
     "fbemitter": "^2.1.1",
     "immutable": "^3.8.1",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-css-modules": "^3.7.10",
+    "react-dom": "^15.3.2",
+    "react-router": "^3.0.0",
+    "resolve-url": "^0.2.1",
+    "sass-loader": "^4.0.2"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -83,10 +87,13 @@
     "presets": [
       "react-app"
     ],
-	"plugins": [
-	  ["babel-root-import", {
-        "rootPathSuffix": "src"
-      }]
+    "plugins": [
+      [
+        "babel-root-import",
+        {
+          "rootPathSuffix": "src"
+        }
+      ]
     ]
   },
   "eslintConfig": {

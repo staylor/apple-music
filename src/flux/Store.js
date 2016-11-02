@@ -2,6 +2,9 @@ import { EventEmitter } from 'fbemitter';
 
 let data;
 let audio;
+let albumsById = {};
+let artistsById = {};
+let albumsByArtist = {};
 
 const emitter = new EventEmitter();
 
@@ -17,11 +20,12 @@ const Store = {
 		}
 	},
 
-	setAudio( src = null ) {
+	setAudio() {
 		audio = document.createElement( 'audio' );
-		if ( src ) {
-			audio.src = src;
+		if ( data.song ) {
+			audio.src = this.AUDIO_PATH + data.song.src;
 		}
+
 		audio.ontimeupdate = function ( event ) {
 			Store.set( 'currentTime', event.timeStamp );
 		};
@@ -32,11 +36,7 @@ const Store = {
 			return audio;
 		}
 
-		if ( data.song && data.song.src ) {
-			this.setAudio( this.AUDIO_PATH + data.song.src );
-		} else {
-			this.setAudio();
-		}
+		this.setAudio();
 
 		return audio;
 	},
@@ -63,7 +63,52 @@ const Store = {
 	},
 
 	addListener( eventType, fn ) {
-		emitter.addListener( eventType, fn );
+		return emitter.addListener( eventType, fn );
+	},
+
+	change() {
+		emitter.emit( 'change' );
+	},
+
+	albumById( albumId ) {
+		if ( albumsById[ albumId ] ) {
+			return albumsById[ albumId ];
+		}
+
+		if ( ! data.catalog ) {
+			return;
+		}
+
+		albumsById[ albumId ] = data.catalog.find( album => album.id === albumId );
+		return albumsById[ albumId ];
+	},
+
+	artistById( artistId ) {
+		if ( artistsById[ artistId ] ) {
+			return artistsById[ artistId ];
+		}
+
+		if ( ! data.catalog ) {
+			return;
+		}
+
+		let album = data.catalog.find( album => album.artist.id === artistId );
+		artistsById[ artistId ] = album.artist;
+		return artistsById[ artistId ];
+	},
+
+	albumsByArtist( artistId ) {
+		if ( albumsByArtist[ artistId ] ) {
+			return albumsByArtist[ artistId ];
+		}
+
+		if ( ! data.catalog ) {
+			return;
+		}
+
+		const albums = data.catalog.filter( album => album.artist.id === artistId );
+		albumsByArtist[ artistId ] = albums;
+		return albums;
 	}
 };
 

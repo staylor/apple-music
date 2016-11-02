@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import Store from '~/flux/Store';
-import Catalog from '~/components/Catalog';
 import Player from '~/components/Player';
-import '~/css/App.css';
+import '~/css/dashicons.css';
+import '~/scss/App.scss';
 
 class App extends Component {
 	constructor( props ) {
@@ -20,22 +21,20 @@ class App extends Component {
 	}
 
 	render() {
-		const { albums, album, song } = this.state;
+		const { album, song } = this.state;
 
 		return (
 			<div className="App">
 				<div className="App-header">
-					<h2>Apple Music</h2>
+					<h2><Link to="/">Apple Music</Link></h2>
 				</div>
 				<p className="App-intro">
 				I am going to recreate the Apple Music UI in React.
-				Then Redux.
+				Then Flux.
 				Then with Relay.
 				</p>
-
 				<Player album={album} song={song}/>
-				<Catalog albums={albums}/>
-
+				{this.props.children}
 			</div>
 		);
 	}

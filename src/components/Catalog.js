@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import Store from '~/flux/Store';
 import Album from '~/components/Album';
-import '~/css/Catalog.css';
+import '~/scss/Catalog.scss';
 
 class Catalog extends Component {
 	render() {
+		const store = Store.getData();
+
 		return (
 			<div className="Catalog">
-				{this.props.albums.map( ( album ) =>
+				{store.catalog.map( ( album ) =>
 					<Album key={album.id} album={album} />
 				)}
 			</div>

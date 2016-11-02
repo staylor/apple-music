@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
-import '~/css/Player.css';
+import AlbumLink from '~/components/Album/Link';
+import ArtistLink from '~/components/Artist/Link';
+import '~/scss/Player.scss';
 
 class Player extends Component {
 
@@ -18,8 +20,8 @@ class Player extends Component {
 			styles.width = Math.floor( ( 100 / audio.duration ) * audio.currentTime ) + '%';
 			dashicon = audio.paused ? 'play' : 'pause';
 			details = <div className="Player-details">
-				"{song.name}" <span>from</span> <em>{album.name}</em>
-				&nbsp;<span>by</span> {album.artist.name}
+				"{song.name}" <span>from</span> <AlbumLink album={album} />
+				&nbsp;<span>by</span> <ArtistLink artist={album.artist} />
 			</div>;
 		} else {
 			details = <div className="Player-details">Nothing is playing.</div>;

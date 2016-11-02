@@ -13,6 +13,8 @@ const Actions = {
 		} else {
 			audio.pause();
 		}
+
+		Store.change();
 	},
 
 	setSong( props ) {
