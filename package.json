@@ -82,6 +82,11 @@
   "babel": {
     "presets": [
       "react-app"
+    ],
+	"plugins": [
+	  ["babel-root-import", {
+        "rootPathSuffix": "src"
+      }]
     ]
   },
   "eslintConfig": {

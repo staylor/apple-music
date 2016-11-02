@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Actions from '../flux/Actions';
-import Store from '../flux/Store';
-import '../css/Player.css';
+import Actions from '~/flux/Actions';
+import Store from '~/flux/Store';
+import '~/css/Player.css';
 
 class Player extends Component {
 

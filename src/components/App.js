@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import '../css/App.css';
-import Store from '../flux/Store';
-import Catalog from './Catalog';
-import Player from './Player';
+import Store from '~/flux/Store';
+import Catalog from '~/components/Catalog';
+import Player from '~/components/Player';
+import '~/css/App.css';
 
 class App extends Component {
 	constructor( props ) {

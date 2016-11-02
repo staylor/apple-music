@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import Song from './Song';
-import Actions from '../flux/Actions';
-import Store from '../flux/Store';
-import '../css/Album.css';
+import Song from '~/components/Song';
+import Actions from '~/flux/Actions';
+import Store from '~/flux/Store';
+import '~/css/Album.css';
 
 class Album extends Component {
 	render() {
 		let store = Store.getData(),
 			audio = Store.getAudio(),
 			{ album } = this.props,
-			currentAlbum = store.album.id === album.id,
+			currentAlbum = store.album && store.album.id === album.id,
 			tracks = 0,
 			className = classNames( 'Album', {
 				'Album-paused': currentAlbum && audio.paused,

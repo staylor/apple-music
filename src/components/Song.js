@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import Actions from '../flux/Actions';
-import Store from '../flux/Store';
-import '../css/dashicons.css';
-import '../css/Song.css';
+import Actions from '~/flux/Actions';
+import Store from '~/flux/Store';
+import '~/css/dashicons.css';
+import '~/css/Song.css';
 
 class Song extends Component {
 	render() {
 		const store = Store.getData(),
 			audio = Store.getAudio(),
 			{ song, album } = this.props,
-			currentSong = store.song.id === song.id,
+			currentSong = store.song && store.song.id === song.id,
 			className = classNames( 'Song', {
 				'Song-paused': currentSong && audio.paused,
 				'Song-playing': currentSong && ! audio.paused,

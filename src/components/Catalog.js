@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../css/Catalog.css';
-import Album from './Album';
+import Album from '~/components/Album';
+import '~/css/Catalog.css';
 
 class Catalog extends Component {
 	render() {
