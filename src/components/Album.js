@@ -54,10 +54,11 @@ class Album extends Component {
 	}
 
 	render() {
-		let audio = Store.getAudio(),
-			album = this.getAlbum(),
+		const messages = Store.getMessages(),
+			audio = Store.getAudio(),
+			album = this.getAlbum();
 
-			tracks = 0,
+		let tracks = 0,
 			className = classNames( 'Album', {
 				'Album-paused': this.state.current && audio.paused,
 				'Album-playing': this.state.current && ! audio.paused,
@@ -75,8 +76,8 @@ class Album extends Component {
 					<figcaption>
 						<FormattedNumber value={tracks} />
 						&nbsp;<FormattedPlural value={tracks}
-							one="song"
-							other="songs"
+							one={messages['album.song']}
+							other={messages['album.songs']}
 						/>, {album.length}</figcaption>
 				</figure>
 				<div className="Album-info">

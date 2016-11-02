@@ -5,8 +5,8 @@ class AlbumImage extends Component {
 	render() {
 		const album = this.props.album;
 
-		return <L10NLink to={"/album/" + album.id}>
-			<img role="presentation" src={'/images/' + album.image}/>
+		return <L10NLink to={`/album/${album.id}`}>
+			<img role="presentation" src={`/images/${album.image}`}/>
 		</L10NLink>;
 	}
 }

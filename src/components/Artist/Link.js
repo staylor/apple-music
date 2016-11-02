@@ -5,7 +5,7 @@ class ArtistLink extends Component {
 	render() {
 		const artist = this.props.artist;
 
-		return <L10NLink to={"/artist/" + artist.id}>{artist.name}</L10NLink>;
+		return <L10NLink to={`/artist/${artist.id}`}>{artist.name}</L10NLink>;
 	}
 }
 

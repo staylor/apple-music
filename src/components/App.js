@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { IntlProvider, addLocaleData, FormattedMessage, FormattedNumber, FormattedPlural, } from 'react-intl';
+import {
+	IntlProvider,
+	addLocaleData,
+	FormattedMessage,
+	FormattedNumber,
+	FormattedPlural,
+} from 'react-intl';
 import Store from '~/flux/Store';
 import Player from '~/components/Player';
 import HomeLink from '~/components/HomeLink';
@@ -22,7 +28,7 @@ class App extends Component {
 	}
 
 	addLocale( locale ) {
-		const localeData = require( 'react-intl/locale-data/' + locale );
+		const localeData = require( `react-intl/locale-data/${locale}` );
 		addLocaleData( localeData );
 	}
 
@@ -54,25 +60,17 @@ class App extends Component {
 		this.addLocale( locale );
 	}
 
-	getMessages( locale ) {
-		const messages = {
-			en: {
-				'app.title': 'Apple Music',
-				'app.intro': 'I am going to recreate the Apple Music UI in React. Then Flux. Then with Relay.'
-			},
-			es: {
-				'app.title': 'Apple Música',
-				'app.intro': 'Voy a recrear la Apple Music UI en React. Luego Flux. Luego con Relay.'
-			}
-		};
-
-		return messages[ locale ] || messages.en;
-	}
-
 	render() {
 		const locale = Store.getLocale(),
-			{ album, song, catalog } = this.state,
-			messages = this.getMessages( locale );
+			messages = Store.getMessages();
+
+		let { album, song, catalog } = this.state,
+			enPath = location.pathname.replace( '/es', '' ),
+			esPath = '/' === enPath ? '/es' : `/es${enPath}`;
+
+		if ( ! enPath ) {
+			enPath = '/';
+		}
 
 		return (
 			<IntlProvider locale={locale} messages={messages}>
@@ -81,8 +79,8 @@ class App extends Component {
 						<h2>
 							<HomeLink />
 							&nbsp;{'en' === locale ?
-								<Link className="locale" to="/es">ES</Link> :
-								<Link className="locale" to='/'>EN</Link>}
+								<Link className="locale" to={esPath}>ES</Link> :
+								<Link className="locale" to={enPath}>EN</Link>}
 						</h2>
 					</div>
 					<p className="App-intro">
@@ -91,8 +89,8 @@ class App extends Component {
 					<p className="App-intro">Locale-specific:
 						&nbsp;<FormattedNumber value={catalog.length} />
 						&nbsp;<FormattedPlural value={catalog.length}
-							one="album"
-							other="albums"
+							one={messages['app.album']}
+							other={messages['app.albums']}
 						/></p>
 
 					<Player album={album} song={song}/>

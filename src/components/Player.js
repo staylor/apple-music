@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
 import AlbumLink from '~/components/Album/Link';
@@ -17,19 +18,21 @@ class Player extends Component {
 			details;
 
 		if ( song && song.name ) {
-			styles.width = Math.floor( ( 100 / audio.duration ) * audio.currentTime ) + '%';
+			styles.width = `${Math.floor( ( 100 / audio.duration ) * audio.currentTime )}%`;
 			dashicon = audio.paused ? 'play' : 'pause';
 			details = <div className="Player-details">
-				"{song.name}" <span>from</span> <AlbumLink album={album} />
-				&nbsp;<span>by</span> <ArtistLink artist={album.artist} />
+				"{song.name}" <span><FormattedMessage id="player.from" /></span>
+				&nbsp;<em><AlbumLink album={album} /></em>
+				&nbsp;<span><FormattedMessage id="player.by" /></span>
+				&nbsp;<ArtistLink artist={album.artist} />
 			</div>;
 		} else {
-			details = <div className="Player-details">Nothing is playing.</div>;
+			details = <div className="Player-details"><FormattedMessage id="player.nothing" /></div>;
 		}
 
 		return (
 			<div className="Player">
-				<div className={"Player-control dashicons dashicons-controls-" + dashicon}
+				<div className={`Player-control dashicons dashicons-controls-${dashicon}`}
 					onClick={Actions.toggleControl}></div>
 				<div className="Player-metadata">
 					{details}

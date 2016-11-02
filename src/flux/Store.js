@@ -1,5 +1,6 @@
 import { EventEmitter } from 'fbemitter';
 
+let langs = {};
 let data;
 let audio;
 let albumsById = {};
@@ -72,6 +73,18 @@ const Store = {
 
 	getLocale() {
 		return data.locale;
+	},
+
+	getMessages() {
+		const locale = this.getLocale();
+
+		if ( langs[ locale ] ) {
+			return langs[ locale ];
+		}
+
+		langs[ locale ] = require( `../langs/${locale}.js` ).default;
+
+		return langs[ locale ];
 	},
 
 	albumById( albumId ) {
