@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import classNames from 'classnames';
+import ArtistLink from '~/components/Artist/Link';
 import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
 import '~/scss/Song.scss';
@@ -38,4 +40,25 @@ class Song extends Component {
 	}
 }
 
-export default Song;
+export default Relay.createContainer( Song, {
+	fragments: {
+		song: () => Relay.QL`
+			fragment on Track {
+				id,
+				number,
+				name,
+				length
+			}
+		`,
+		// this gets passed to the setSong Action for the playlist
+		album: () => Relay.QL`
+			fragment on Album {
+				id,
+				name,
+				artist {
+					${ArtistLink.getFragment( 'artist' )}
+				}
+			}
+		`,
+	}
+} );

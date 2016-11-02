@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import AlbumLink from '~/components/Album/Link';
 import AlbumImage from '~/components/Album/Image';
 
@@ -15,4 +16,14 @@ class BrowseAlbum extends Component {
 	}
 }
 
-export default BrowseAlbum;
+export default Relay.createContainer( BrowseAlbum, {
+	fragments: {
+		album: () => Relay.QL`
+			fragment on Album {
+				id,
+				name,
+				image,
+			}
+		`,
+	}
+} );

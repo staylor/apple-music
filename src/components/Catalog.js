@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import Store from '~/flux/Store';
+import Relay from 'react-relay';
 import Album from '~/components/Album';
 import '~/scss/Catalog.scss';
 
 class Catalog extends Component {
 	render() {
-		const store = Store.getData();
-
 		return (
 			<div className="Catalog">
-				{store.catalog.map( ( album ) =>
+				{this.props.catalog.map( ( album ) =>
 					<Album key={album.id} album={album} />
 				)}
 			</div>
@@ -17,4 +15,14 @@ class Catalog extends Component {
 	 }
  }
 
- export default Catalog;
+ export default Relay.createContainer( Catalog, {
+	fragments: {
+		catalog: () => Relay.QL`
+			fragment on Collection {
+				results {
+					${Album.getFragment( 'album' )}
+				}
+			}
+		`,
+	}
+ } );

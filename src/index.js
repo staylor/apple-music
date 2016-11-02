@@ -1,6 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import Relay from 'react-relay';
+import {
+	Router,
+	Route,
+	IndexRoute,
+	browserHistory,
+	applyRouterMiddleware
+} from 'react-router';
+import useRelay from 'react-router-relay';
 import App from '~/components/App';
 import Catalog from '~/components/Catalog';
 import Album from '~/components/Album';
@@ -18,15 +26,25 @@ Store.init( {
 } );
 
 ReactDOM.render(
-	<Router history={browserHistory}>
+	<Router history={browserHistory}
+		render={applyRouterMiddleware(useRelay)}
+		environment={Relay.Store}>
 		<Route path="/" component={App}>
-			<IndexRoute component={Catalog} />
-			<Route path="/album/:albumId" component={Album} />
+			<IndexRoute component={Catalog} queries={{
+				catalog: () => Relay.QL`query { albums }`
+			}} />
+			<Route path="/album/:albumId" component={Album} queries={{
+				album: () => Relay.QL`query { album(id: $albumId) }`
+			}} />
 			<Route path="/artist/:artistId" component={Artist} />
 		</Route>
 		<Route path="/:locale" component={App}>
-			<IndexRoute component={Catalog} />
-			<Route path="/:locale/album/:albumId" component={Album} />
+			<IndexRoute component={Catalog} queries={{
+				CatalogQuery: () => Relay.QL`query CatalogQuery { albums }`
+			}} />
+			<Route path="/:locale/album/:albumId" component={Album} queries={{
+				album: () => Relay.QL`query { album(id: $albumId) }`
+			}} />
 			<Route path="/:locale/artist/:artistId" component={Artist} />
 		</Route>
 	</Router>,

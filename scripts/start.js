@@ -27,6 +27,7 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 
 // Tools like Cloud9 rely on this.
 var DEFAULT_PORT = process.env.PORT || 3000;
+var GRAPHQL_PORT = 4000;
 var compiler;
 var handleCompile;
 
@@ -221,7 +222,8 @@ function runDevServer(host, port, protocol) {
     },
     // Enable HTTPS if the HTTPS environment variable is set to 'true'
     https: protocol === "https",
-    host: host
+    host: host,
+    proxy: {'/graphql': `http://localhost:${GRAPHQL_PORT}`}
   });
 
   // Our custom middleware proxies requests to /index.html or a remote API.

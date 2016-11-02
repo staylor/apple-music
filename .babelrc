@@ -1,0 +1,22 @@
+{
+  "passPerPreset": true,
+  "plugins": [
+    "transform-runtime",
+    [
+      "babel-root-import",
+      {
+        "rootPathSuffix": "src"
+      }
+    ]
+  ],
+  "presets": [
+    {
+      "plugins": [
+        "./build/babelRelayPlugin"
+      ]
+    },
+    "react",
+    "es2015",
+    "stage-0"
+  ]
+}

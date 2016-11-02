@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import { FormattedNumber, FormattedPlural, } from 'react-intl';
 import classNames from 'classnames';
 import AlbumImage from '~/components/Album/Image';
@@ -102,4 +103,27 @@ class Album extends Component {
 	}
 }
 
-export default Album;
+export default Relay.createContainer( Album, {
+	fragments: {
+		// this gets passed to the setSong Action for the playlist
+		album: () => Relay.QL`
+			fragment on Album {
+				id,
+				name,
+				image,
+				genre,
+				year,
+				length,
+				artist {
+					id,
+					name
+				},
+				discs {
+					tracks {
+						${Song.getFragment( 'song' )}
+					}
+				}
+			}
+		`,
+	}
+} );

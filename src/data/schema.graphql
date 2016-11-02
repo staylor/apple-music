@@ -1,0 +1,41 @@
+schema {
+  query: Root
+}
+
+type Album {
+  id: String
+  name: String
+  artist: Artist
+  genre: String
+  year: Int
+  length: String
+  image: String
+  discs: [Disc]
+}
+
+type Artist {
+  id: String
+  name: String
+}
+
+type Collection {
+  results: [Album]
+}
+
+type Disc {
+  number: Int
+  tracks: [Track]
+}
+
+type Root {
+  albums: Collection
+  album(id: Int): Album
+}
+
+type Track {
+  id: Int
+  number: Int
+  name: String
+  length: String
+  src: String
+}

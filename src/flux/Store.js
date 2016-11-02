@@ -13,7 +13,8 @@ const Store = {
 	AUDIO_PATH : '/audio/',
 
 	init( records ) {
-		const storage = 'localStorage' in window ? localStorage.getItem( 'data' ) : null;
+		const storage = 'undefined' !== typeof localStorage ?
+			localStorage.getItem( 'data' ) : null;
 		if ( ! storage ) {
 			data = records;
 		} else {

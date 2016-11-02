@@ -9,9 +9,10 @@ import '~/scss/Player.scss';
 class Player extends Component {
 
 	render() {
-		let audio = Store.getAudio(),
-			{ song, album } = this.props,
-			dashicon = 'play',
+		const audio = Store.getAudio(),
+			{ song, album } = this.props;
+
+		let dashicon = 'play',
 			styles = {
 				width: '0%'
 			},
