@@ -4,7 +4,6 @@ import { IntlProvider, addLocaleData, FormattedMessage, FormattedNumber, Formatt
 import Store from '~/flux/Store';
 import Player from '~/components/Player';
 import HomeLink from '~/components/HomeLink';
-import '~/css/dashicons.css';
 import '~/scss/App.scss';
 
 class App extends Component {
