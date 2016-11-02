@@ -27,7 +27,7 @@ const Actions = {
 				audio.pause();
 			}
 			if ( props.song.src ) {
-				audio.src = '/audio/' + props.song.src;
+				audio.src = `${Store.AUDIO_PATH}${props.song.src}`;
 				audio.load();
 				willPlay = true;
 			} else {

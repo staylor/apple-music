@@ -24,7 +24,7 @@ const Store = {
 	setAudio() {
 		audio = document.createElement( 'audio' );
 		if ( data.song ) {
-			audio.src = this.AUDIO_PATH + data.song.src;
+			audio.src = `${this.AUDIO_PATH}${data.song.src}`;
 		}
 
 		audio.ontimeupdate = function ( event ) {
@@ -51,7 +51,7 @@ const Store = {
 		if ( commit && 'localStorage' in window ) {
 			localStorage.setItem( 'data', JSON.stringify( data ) );
 		}
-		emitter.emit( 'change:' + key );
+		emitter.emit( `change:${key}` );
 		emitter.emit( 'change' );
 	},
 
