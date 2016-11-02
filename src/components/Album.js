@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedNumber, FormattedPlural, } from 'react-intl';
 import classNames from 'classnames';
 import AlbumImage from '~/components/Album/Image';
 import AlbumLink from '~/components/Album/Link';
@@ -71,7 +72,12 @@ class Album extends Component {
 					<span className="dashicons dashicons-controls-play" onClick={Actions.toggleControl}></span>
 					<span className="dashicons dashicons-controls-pause" onClick={Actions.toggleControl}></span>
 					<AlbumImage album={album} />
-					<figcaption>{tracks} songs, {album.length}</figcaption>
+					<figcaption>
+						<FormattedNumber value={tracks} />
+						&nbsp;<FormattedPlural value={tracks}
+							one="song"
+							other="songs"
+						/>, {album.length}</figcaption>
 				</figure>
 				<div className="Album-info">
 					<header>
