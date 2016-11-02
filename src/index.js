@@ -10,6 +10,7 @@ import '~/scss/index.scss';
 import albums from '~/data/albums';
 
 Store.init( {
+	locale: 'en',
 	song: null,
 	album: null,
 	currentTime: null,
@@ -22,6 +23,11 @@ ReactDOM.render(
 			<IndexRoute component={Catalog} />
 			<Route path="/album/:albumId" component={Album} />
 			<Route path="/artist/:artistId" component={Artist} />
+		</Route>
+		<Route path="/:locale" component={App}>
+			<IndexRoute component={Catalog} />
+			<Route path="/:locale/album/:albumId" component={Album} />
+			<Route path="/:locale/artist/:artistId" component={Artist} />
 		</Route>
 	</Router>,
 	document.getElementById('root')

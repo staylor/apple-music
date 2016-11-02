@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import L10NLink from '~/components/L10NLink';
 
 class ArtistLink extends Component {
 	render() {
 		const artist = this.props.artist;
 
-		return <Link to={"/artist/" + artist.id}>{artist.name}</Link>;
+		return <L10NLink to={"/artist/" + artist.id}>{artist.name}</L10NLink>;
 	}
 }
 

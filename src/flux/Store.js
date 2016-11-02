@@ -70,6 +70,10 @@ const Store = {
 		emitter.emit( 'change' );
 	},
 
+	getLocale() {
+		return data.locale;
+	},
+
 	albumById( albumId ) {
 		if ( albumsById[ albumId ] ) {
 			return albumsById[ albumId ];
