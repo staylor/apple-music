@@ -20,7 +20,12 @@ const Actions = {
 	setSong( props ) {
 		let willPlay, willPause,
 			store = Store.getData(),
-			audio = Store.getAudio();
+			audio = Store.getAudio(),
+			album = Object.assign( {}, props.album );
+
+		if ( props.album.artist && props.album.artist.edges ) {
+			album.artist.edges.reverse().map( edge => album.artist = edge.node );
+		}
 
 		if ( store.track !== props.track ) {
 			if ( audio.src && ! audio.paused ) {
@@ -31,7 +36,7 @@ const Actions = {
 				audio.load();
 				willPlay = true;
 			} else {
-				this.audio.src = '';
+				audio.src = '';
 			}
 		} else {
 			if ( audio.paused ) {
@@ -47,7 +52,7 @@ const Actions = {
 			audio.pause();
 		}
 
-		store.album = props.album;
+		store.album = album;
 		store.track = props.track;
 
 		Store.setData( store );

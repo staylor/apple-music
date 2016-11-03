@@ -44,7 +44,7 @@ class Album extends Component {
 	render() {
 		const messages = Store.getMessages(),
 			audio = Store.getAudio(),
-			album = this.props.album;
+			{ album } = this.props;
 
 		let tracks = 0,
 			className = classNames( 'Album', {
@@ -93,7 +93,6 @@ class Album extends Component {
 
 export default Relay.createContainer( Album, {
 	fragments: {
-		// this gets passed to the setSong Action for the playlist
 		album: () => Relay.QL`
 			fragment on Album {
 				id,

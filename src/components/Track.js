@@ -17,8 +17,7 @@ class Track extends Component {
 
 	render() {
 		const audio = Store.getAudio(),
-			album = Store.getData().album,
-			{ track } = this.props,
+			{ track, album } = this.props,
 			current = this.isCurrent(),
 			className = classNames( 'Track', {
 				'Track-paused': current && audio.paused,
@@ -48,7 +47,8 @@ export default Relay.createContainer( Track, {
 				trackId,
 				number,
 				name,
-				length
+				length,
+				src
 			}
 		`
 	}

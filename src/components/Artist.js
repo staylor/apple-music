@@ -46,6 +46,7 @@ export default Relay.createContainer( Artist, {
 							id
 							albumId
 							name
+							image
 						}
 					}
 				},
