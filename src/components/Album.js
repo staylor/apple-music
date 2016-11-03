@@ -10,6 +10,8 @@ import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
 import '~/scss/Album.scss';
 
+let trackCounts = {};
+
 class Album extends Component {
 	constructor( props ) {
 		super( props );
@@ -53,7 +55,12 @@ class Album extends Component {
 				'Album-not-playing': ! this.state.current
 			} );
 
-		album.discs.forEach( disc => tracks += disc.tracks.length );
+		if ( trackCounts[ album.id ] ) {
+			tracks = trackCounts[ album.id ];
+		} else {
+			album.discs.forEach( disc => tracks += disc.tracks.edges.length );
+			trackCounts[ album.id ] = tracks;
+		}
 
 		return (
 			<div className={className}>
