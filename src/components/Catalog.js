@@ -5,11 +5,11 @@ import '~/scss/Catalog.scss';
 
 class Catalog extends Component {
 	render() {
+		const { results } = this.props.albums;
+
 		return (
 			<div className="Catalog">
-				{this.props.catalog.map( ( album ) =>
-					<Album key={album.id} album={album} />
-				)}
+				{results.map( album => <Album key={album.__dataID__} album={album} />)}
 			</div>
 		);
 	 }
@@ -17,7 +17,7 @@ class Catalog extends Component {
 
  export default Relay.createContainer( Catalog, {
 	fragments: {
-		catalog: () => Relay.QL`
+		albums: () => Relay.QL`
 			fragment on Collection {
 				results {
 					${Album.getFragment( 'album' )}

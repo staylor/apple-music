@@ -2,40 +2,170 @@ schema {
   query: Root
 }
 
-type Album {
-  id: String
+# An album in the catalog
+type Album implements Node {
+  # The ID of an object
+  id: ID!
+
+  # The id of the album.
+  albumId: Int
+
+  # The name of the album.
   name: String
-  artist: Artist
+
+  # The name of the artist who created the album.
+  artist(after: String, first: Int, before: String, last: Int): ArtistConnection
+
+  # The genre of the album.
   genre: String
+
+  # The year the album was released.
   year: Int
+
+  # The formatted length of the album.
   length: String
+
+  # The relative path of the cover image source.
   image: String
+
+  # Discs containing tracks. Most albums contain only one disc.
   discs: [Disc]
 }
 
-type Artist {
-  id: String
-  name: String
+# A connection to a list of items.
+type AlbumConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [AlbumEdge]
 }
 
+# An edge in a connection.
+type AlbumEdge {
+  # The item at the end of the edge
+  node: Album
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# An artist in the catalog
+type Artist implements Node {
+  # The ID of an object
+  id: ID!
+
+  # The id of the artist.
+  artistId: Int
+
+  # The name of the artist.
+  name: String
+
+  # Albums by the artist.
+  albums(after: String, first: Int, before: String, last: Int): AlbumConnection
+}
+
+# A connection to a list of items.
+type ArtistConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [ArtistEdge]
+}
+
+# An edge in a connection.
+type ArtistEdge {
+  # The item at the end of the edge
+  node: Artist
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# A list of results.
 type Collection {
+  # Currently, a list of albums.
   results: [Album]
 }
 
 type Disc {
   number: Int
-  tracks: [Track]
+
+  # A list of tracks.
+  tracks(after: String, first: Int, before: String, last: Int): TrackConnection
+}
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
 }
 
 type Root {
   albums: Collection
   album(id: Int): Album
+  artist(id: Int): Artist
+  track(id: Int): Track
+  currentAlbum: Album
+  currentTrack: Track
+
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
 }
 
-type Track {
-  id: Int
+type Track implements Node {
+  # The ID of an object
+  id: ID!
+
+  # The id of the track.
+  trackId: Int
+
+  # The play index of the track.
   number: Int
+
+  # The name of the track.
   name: String
+
+  # The formatted length of the track.
   length: String
+
+  # The relative path to the source audio for the track.
   src: String
+}
+
+# A connection to a list of items.
+type TrackConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [TrackEdge]
+}
+
+# An edge in a connection.
+type TrackEdge {
+  # The item at the end of the edge
+  node: Track
+
+  # A cursor for use in pagination
+  cursor: String!
 }

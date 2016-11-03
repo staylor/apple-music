@@ -5,7 +5,7 @@ let data;
 let audio;
 let albumsById = {};
 let artistsById = {};
-let albumsByArtist = {};
+let tracksById = {};
 
 const emitter = new EventEmitter();
 
@@ -13,19 +13,13 @@ const Store = {
 	AUDIO_PATH : '/audio/',
 
 	init( records ) {
-		const storage = 'undefined' !== typeof localStorage ?
-			localStorage.getItem( 'data' ) : null;
-		if ( ! storage ) {
-			data = records;
-		} else {
-			data = JSON.parse( storage );
-		}
+		data = records;
 	},
 
 	setAudio() {
 		audio = document.createElement( 'audio' );
-		if ( data.song ) {
-			audio.src = `${this.AUDIO_PATH}${data.song.src}`;
+		if ( data.track ) {
+			audio.src = `${this.AUDIO_PATH}${data.track.src}`;
 		}
 
 		audio.ontimeupdate = function ( event ) {
@@ -89,6 +83,7 @@ const Store = {
 	},
 
 	albumById( albumId ) {
+		albumId = parseInt( albumId, 10 );
 		if ( albumsById[ albumId ] ) {
 			return albumsById[ albumId ];
 		}
@@ -97,11 +92,13 @@ const Store = {
 			return;
 		}
 
-		albumsById[ albumId ] = data.catalog.find( album => album.id === albumId );
-		return albumsById[ albumId ];
+		const album = data.catalog.albums.find( album => album.albumId === albumId );
+		albumsById[ albumId ] = album;
+		return album;
 	},
 
 	artistById( artistId ) {
+		artistId = parseInt( artistId, 10 );
 		if ( artistsById[ artistId ] ) {
 			return artistsById[ artistId ];
 		}
@@ -110,23 +107,36 @@ const Store = {
 			return;
 		}
 
-		let album = data.catalog.find( album => album.artist.id === artistId );
-		artistsById[ artistId ] = album.artist;
-		return artistsById[ artistId ];
+		const artist = data.catalog.artists.find( artist => artist.artistId === artistId );
+		artistsById[ artistId ] = artist;
+		return artist;
 	},
 
-	albumsByArtist( artistId ) {
-		if ( albumsByArtist[ artistId ] ) {
-			return albumsByArtist[ artistId ];
+	trackById( trackId ) {
+		trackId = parseInt( trackId, 10 );
+		if ( tracksById[ trackId ] ) {
+			return tracksById[ trackId ];
 		}
 
 		if ( ! data.catalog ) {
 			return;
 		}
 
-		const albums = data.catalog.filter( album => album.artist.id === artistId );
-		albumsByArtist[ artistId ] = albums;
-		return albums;
+		const artist = data.catalog.tracks.find( track => track.trackId === trackId );
+		tracksById[ trackId ] = artist;
+		return artist;
+	},
+
+	getAlbums() {
+		return data.catalog.albums;
+	},
+
+	getArtists() {
+		return data.catalog.artists;
+	},
+
+	getTracks() {
+		return data.catalog.tracks;
 	}
 };
 

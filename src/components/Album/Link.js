@@ -3,9 +3,9 @@ import L10NLink from '~/components/L10NLink';
 
 class AlbumLink extends Component {
 	render() {
-		const { id, name } = this.props.album;
+		const { albumId, name } = this.props.album;
 
-		return <L10NLink to={`/album/${id}`}>{name}</L10NLink>;
+		return <L10NLink to={`/album/${albumId}`}>{name}</L10NLink>;
 	}
 }
 

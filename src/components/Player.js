@@ -10,7 +10,7 @@ class Player extends Component {
 
 	render() {
 		const audio = Store.getAudio(),
-			{ song, album } = this.props;
+			{ track, album } = this.props;
 
 		let dashicon = 'play',
 			styles = {
@@ -18,11 +18,11 @@ class Player extends Component {
 			},
 			details;
 
-		if ( song && song.name ) {
+		if ( track && track.name ) {
 			styles.width = `${Math.floor( ( 100 / audio.duration ) * audio.currentTime )}%`;
 			dashicon = audio.paused ? 'play' : 'pause';
 			details = <div className="Player-details">
-				"{song.name}" <span><FormattedMessage id="player.from" /></span>
+				"{track.name}" <span><FormattedMessage id="player.from" /></span>
 				&nbsp;<em><AlbumLink album={album} /></em>
 				&nbsp;<span><FormattedMessage id="player.by" /></span>
 				&nbsp;<ArtistLink artist={album.artist} />

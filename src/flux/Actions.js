@@ -22,12 +22,12 @@ const Actions = {
 			store = Store.getData(),
 			audio = Store.getAudio();
 
-		if ( store.song !== props.song ) {
+		if ( store.track !== props.track ) {
 			if ( audio.src && ! audio.paused ) {
 				audio.pause();
 			}
-			if ( props.song.src ) {
-				audio.src = `${Store.AUDIO_PATH}${props.song.src}`;
+			if ( props.track.src ) {
+				audio.src = `${Store.AUDIO_PATH}${props.track.src}`;
 				audio.load();
 				willPlay = true;
 			} else {
@@ -48,7 +48,7 @@ const Actions = {
 		}
 
 		store.album = props.album;
-		store.song = props.song;
+		store.track = props.track;
 
 		Store.setData( store );
 	}

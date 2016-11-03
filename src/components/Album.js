@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import AlbumImage from '~/components/Album/Image';
 import AlbumLink from '~/components/Album/Link';
 import ArtistLink from '~/components/Artist/Link';
-import Song from '~/components/Song';
+import Track from '~/components/Track';
 import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
 import '~/scss/Album.scss';
@@ -36,28 +36,15 @@ class Album extends Component {
 		const store = Store.getData();
 
 		if ( store.album ) {
-			album = this.getAlbum();
-			return album && album.id === store.album.id;
-		}
-	}
-
-	getAlbum() {
-		let albumId;
-
-		if ( this.props.album ) {
-			return this.props.album;
-		}
-
-		if ( this.props.params && this.props.params.albumId ) {
-			albumId = this.props.params.albumId;
-			return Store.albumById( albumId );
+			album = this.props.album;
+			return album && album.albumId === store.album.albumId;
 		}
 	}
 
 	render() {
 		const messages = Store.getMessages(),
 			audio = Store.getAudio(),
-			album = this.getAlbum();
+			album = this.props.album;
 
 		let tracks = 0,
 			className = classNames( 'Album', {
@@ -84,7 +71,8 @@ class Album extends Component {
 				<div className="Album-info">
 					<header>
 						<h1><AlbumLink album={album} /></h1>
-						<h2><ArtistLink artist={album.artist} /></h2>
+						<h2>{album.artist.edges.map( ({ node }) => <ArtistLink key={node.id} artist={node} />)}</h2>
+
 						<div className="Album-info-meta">
 							{album.genre} &bull; {album.year}
 						</div>
@@ -92,7 +80,7 @@ class Album extends Component {
 					{album.discs.map( ( disc, index ) => {
 						return (
 							<ol key={index}>
-							{disc.tracks.map( song => <Song key={song.id} song={song} album={album} /> )}
+							{disc.tracks.edges.map( ({ node }, i) => <Track key={i} track={node} album={album} />)}
 							</ol>
 						);
 					} )}
@@ -109,18 +97,28 @@ export default Relay.createContainer( Album, {
 		album: () => Relay.QL`
 			fragment on Album {
 				id,
+				albumId,
 				name,
 				image,
 				genre,
 				year,
 				length,
-				artist {
-					id,
-					name
+				artist(first: 1) {
+					edges {
+						node {
+							id,
+							artistId,
+							name
+						}
+					}
 				},
 				discs {
-					tracks {
-						${Song.getFragment( 'song' )}
+					tracks(first: 100) {
+						edges {
+							node {
+								${Track.getFragment( 'track' )}
+							}
+						}
 					}
 				}
 			}

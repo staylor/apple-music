@@ -1,4 +1,4 @@
-.Song {
+.Track {
 	color: rgba(51, 51, 51, 0.6);
 	padding: 10px 5px;
 	position: Relative;
@@ -26,7 +26,7 @@
 	}
 }
 
-.Song-control {
+.Track-control {
 	float: left;
 	text-align: right;
 	width: 30px;
@@ -39,23 +39,23 @@
 }
 
 /* not playing, not selected */
-.Song-not-playing .Song-control .Song-control-text,
+.Track-not-playing .Track-control .Track-control-text,
 /* not playing, hover */
-.Song-not-playing:hover .Song-control .dashicons-controls-play,
-.Song-paused .Song-control .dashicons-controls-play,
-.Song-paused:hover .Song-control .dashicons-controls-play,
+.Track-not-playing:hover .Track-control .dashicons-controls-play,
+.Track-paused .Track-control .dashicons-controls-play,
+.Track-paused:hover .Track-control .dashicons-controls-play,
 /* playing, hover */
-.Song-playing .Song-control .dashicons-controls-pause,
-.Song-playing:hover .Song-control .dashicons-controls-pause {
+.Track-playing .Track-control .dashicons-controls-pause,
+.Track-playing:hover .Track-control .dashicons-controls-pause {
 	display: inline-block;
 }
 
 /* not playing, not selected */
-.Song-not-playing:hover .Song-control-text {
+.Track-not-playing:hover .Track-control-text {
 	display: none;
 }
 
-.Song-name {
+.Track-name {
 	color: #000;
 	font-family: "sf-ui-regular", sans-serif;
     overflow: hidden;
@@ -65,7 +65,7 @@
 	width: calc(80% - 35px);
 }
 
-.Song-length {
+.Track-length {
 	float: right;
 	text-align: right;
 	width: 15%;

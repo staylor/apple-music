@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import Store from '~/flux/Store';
-import ArtistLink from '~/components/Artist/Link';
 import BrowseAlbum from '~/components/Album/Browse';
 import '~/scss/Artist.scss';
 
@@ -21,7 +20,7 @@ class Artist extends Component {
 
 	render() {
 		const artist = this.getArtist(),
-			albums = Store.albumsByArtist( artist.id );
+			albums = artist.albums.edges.map( edge => edge.node );
 
 		return (
 			<div className="Artist">
@@ -38,7 +37,18 @@ export default Relay.createContainer( Artist, {
 	fragments: {
 		artist: () => Relay.QL`
 			fragment on Artist {
-				${ArtistLink.getFragment( 'artist' )}
+				artistId
+				name
+				albums(first: 10) {
+					edges {
+						cursor
+						node {
+							id
+							albumId
+							name
+						}
+					}
+				},
 			}
 		`,
 	}

@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
-import Relay from 'react-relay';
 import L10NLink from '~/components/L10NLink';
 
 class AlbumImage extends Component {
 	render() {
-		const { id, image } = this.props.album;
+		const { albumId, image } = this.props.album;
 
-		return <L10NLink to={`/album/${id}`}>
+		return <L10NLink to={`/album/${albumId}`}>
 			<img role="presentation" src={`/images/${image}`}/>
 		</L10NLink>;
 	}
 }
 
-export default Relay.createContainer( AlbumImage, {
-	fragments: {
-		album: () => Relay.QL`
-			fragment on Album {
-				id,
-				image,
-			}
-		`,
-	}
-} );
+export default AlbumImage;

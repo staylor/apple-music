@@ -3,6 +3,8 @@ export default {
 	"app.intro": "I am going to recreate the Apple Music UI in React. Then Flux. Then with Relay.",
 	"app.album": "album",
 	"app.albums": "albums",
+	"app.artist": "artist",
+	"app.artists": "artists",
 	"player.by": "by",
 	"player.from": "from",
 	"player.nothing": "Nothing is playing.",

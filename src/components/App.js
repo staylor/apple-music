@@ -64,7 +64,7 @@ class App extends Component {
 		const locale = Store.getLocale(),
 			messages = Store.getMessages();
 
-		let { album, song, catalog } = this.state,
+		let { album, track, catalog } = this.state,
 			enPath = location.pathname.replace( '/es', '' ),
 			esPath = '/' === enPath ? '/es' : `/es${enPath}`;
 
@@ -86,14 +86,22 @@ class App extends Component {
 					<p className="App-intro">
 						<FormattedMessage id="app.intro" />
 					</p>
-					<p className="App-intro">Locale-specific:
-						&nbsp;<FormattedNumber value={catalog.length} />
-						&nbsp;<FormattedPlural value={catalog.length}
+					<p className="App-intro">
+						<strong><FormattedMessage id="app.albums" /></strong>:
+						&nbsp;<FormattedNumber value={1000000} />
+						&nbsp;<FormattedPlural value={catalog.albums.length}
 							one={messages['app.album']}
 							other={messages['app.albums']}
 						/></p>
+					<p className="App-intro">
+						<strong><FormattedMessage id="app.artists" /></strong>:
+						&nbsp;<FormattedNumber value={catalog.artists.length} />
+						&nbsp;<FormattedPlural value={catalog.artists.length}
+							one={messages['app.artist']}
+							other={messages['app.artists']}
+						/></p>
 
-					<Player album={album} song={song}/>
+					<Player album={album} track={track}/>
 					{this.props.children}
 				</div>
 			</IntlProvider>

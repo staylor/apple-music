@@ -27,7 +27,7 @@ import { introspectionQuery, printSchema } from 'graphql/utilities';
     );
   } else {
     fs.writeFileSync(
-      path.join(__dirname, '../data/schema.json'),
+      path.join(__dirname, '../src/data/schema.json'),
       JSON.stringify(result, null, 2)
     );
   }
