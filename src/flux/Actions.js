@@ -21,12 +21,7 @@ const Actions = {
 	setSong( props ) {
 		let willPlay, willPause,
 			store = Store.getData(),
-			audio = Store.getAudio(),
-			album = Object.assign( {}, props.album );
-
-		if ( props.album.artist && props.album.artist.edges ) {
-			album.artist.edges.reverse().map( edge => album.artist = edge.node );
-		}
+			audio = Store.getAudio();
 
 		if ( store.track !== props.track ) {
 			if ( audio.src && ! audio.paused ) {
@@ -53,9 +48,9 @@ const Actions = {
 			audio.pause();
 		}
 
-		cookie.save( 'album', album.albumId, { path: '/' } );
+		cookie.save( 'album', props.album.albumId, { path: '/' } );
 		cookie.save( 'track', props.track.trackId, { path: '/' } );
-		store.album = album.albumId;
+		store.album = props.album.albumId;
 		store.track = props.track.trackId;
 
 		Store.setData( store );

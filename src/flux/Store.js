@@ -1,8 +1,15 @@
 import cookie from 'react-cookie';
 import { EventEmitter } from 'fbemitter';
+import catalog from '~/data/catalog';
 
 let langs = {};
-let data;
+let data = {
+	locale: 'en',
+	track: cookie.load( 'track' ),
+	album: cookie.load( 'album' ),
+	currentTime: null,
+	catalog: catalog
+};
 let audio;
 let albumsById = {};
 let artistsById = {};
@@ -12,10 +19,6 @@ const emitter = new EventEmitter();
 
 const Store = {
 	AUDIO_PATH : '/audio/',
-
-	init( records ) {
-		data = records;
-	},
 
 	setAudio() {
 		audio = document.createElement( 'audio' );

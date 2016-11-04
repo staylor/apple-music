@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import cookie from 'react-cookie';
-import Relay from 'react-relay';
+import { Store } from 'react-relay';
 import {
 	Router,
 	Route,
@@ -14,48 +13,21 @@ import App from '~/components/App';
 import Catalog from '~/components/Catalog';
 import Album from '~/components/Album';
 import Artist from '~/components/Artist';
-import Store from '~/flux/Store';
+import AppQuery from '~/queries/AppQuery';
+import CatalogQuery from '~/queries/CatalogQuery';
+import AlbumQuery from '~/queries/AlbumQuery';
+import ArtistQuery from '~/queries/ArtistQuery';
 import '~/scss/index.scss';
-import catalog from '~/data/catalog';
-
-Store.init( {
-	locale: 'en',
-	track: cookie.load( 'track' ),
-	album: cookie.load( 'album' ),
-	currentTime: null,
-	catalog: catalog,
-} );
-
-const AppQueries = {
-	currentAlbum: () => Relay.QL`query { currentAlbum }`,
-	currentTrack: () => Relay.QL`query { currentTrack }`,
-};
-
-const CatalogQueries = {
-	albums: () => Relay.QL`query { albums }`
-};
-
-const AlbumQueries = {
-	album: () => Relay.QL`query { album(id: $albumId) }`
-};
-
-const ArtistQueries = {
-	artist: () => Relay.QL`query { artist(id: $artistId) }`
-};
 
 ReactDOM.render(
 	<Router history={browserHistory}
 		render={applyRouterMiddleware(useRelay)}
-		environment={Relay.Store}>
-		<Route path="/" component={App} queries={AppQueries}>
-			<IndexRoute component={Catalog} queries={CatalogQueries} />
-			<Route path="/album/:albumId" component={Album} queries={AlbumQueries} />
-			<Route path="/artist/:artistId" component={Artist} queries={ArtistQueries} />
-		</Route>
-		<Route path="/:locale" component={App} queries={AppQueries}>
-			<IndexRoute component={Catalog} queries={CatalogQueries} />
-			<Route path="/:locale/album/:albumId" component={Album} queries={AlbumQueries} />
-			<Route path="/:locale/artist/:artistId" component={Artist} queries={ArtistQueries} />
+		environment={Store}>
+		<Route path="/" component={App} queries={AppQuery.queries} prepareParams={AppQuery.prepareParams}>
+			<IndexRoute component={Catalog} queries={CatalogQuery.queries} />
+			<Route path=":locale" component={Catalog} queries={CatalogQuery.queries} />
+			<Route path="(:locale/)album/:albumId" component={Album} queries={AlbumQuery.queries} />
+			<Route path="(:locale/)artist/:artistId" component={Artist} queries={ArtistQuery.queries} />
 		</Route>
 	</Router>,
 	document.getElementById('root')
