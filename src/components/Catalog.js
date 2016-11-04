@@ -8,7 +8,7 @@ class Catalog extends Component {
 		const { results } = this.props.albums;
 
 		return (
-			<div className={styles.Catalog}>
+			<div className={styles.wrap}>
 				{results.map( album => <Album key={album.__dataID__} album={album} />)}
 			</div>
 		);

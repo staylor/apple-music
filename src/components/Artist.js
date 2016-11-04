@@ -9,9 +9,9 @@ class Artist extends Component {
 			albums = artist.albums.edges.map( edge => edge.node );
 
 		return (
-			<div className={styles.Artist}>
+			<div className={styles.wrap}>
 				<h1>{artist.name}</h1>
-				<ul className={styles.ArtistAlbums}>
+				<ul className={styles.albums}>
 				{albums.map( album => <BrowseAlbum key={album.id} album={album} /> )}
 				</ul>
 			</div>

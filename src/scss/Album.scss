@@ -1,58 +1,58 @@
 @import "mixins";
 
-.Album {
+.album {
 	padding: 20px;
 	border: 1px solid #eee;
 	overflow: hidden;
 	margin: 20px 0;
 
 	@include clearfix;
+}
 
-	figure {
-		float: left;
-		position: relative;
-		width: 23%;
+.artwork {
+	float: left;
+	position: relative;
+	width: 23%;
 
-		.dashicons-controls-play,
-		.dashicons-controls-pause {
-			position: absolute;
-			display: none;
-			font-size: 80px;
-			line-height: 80px;
-			color: #fff;
-			top: calc(50% - 54px);
-			left: calc(50% - 40px);
-			cursor: pointer;
-		}
-
-		img {
-			max-width: 100%;
-			display: block;
-		}
+	.dashicons-controls-play,
+	.dashicons-controls-pause {
+		position: absolute;
+		display: none;
+		font-size: 80px;
+		line-height: 80px;
+		color: #fff;
+		top: calc(50% - 54px);
+		left: calc(50% - 40px);
+		cursor: pointer;
 	}
 
-	figcaption {
-		margin: 10px 0 0;
+	img {
+		max-width: 100%;
 		display: block;
-		font-size: 16px;
-		line-height: 1.5;
-		letter-spacing: -.3px;
-		opacity: 0.5;
-		color: #333;
-		font-family: "sf-ui-regular", sans-serif;
 	}
 }
 
-.AlbumNotPlaying {
+.details {
+	margin: 10px 0 0;
+	display: block;
+	font-size: 16px;
+	line-height: 1.5;
+	letter-spacing: -.3px;
+	opacity: 0.5;
+	color: #333;
+	font-family: "sf-ui-regular", sans-serif;
+}
+
+.notPlaying {
 	overflow: hidden;
 }
 
-.AlbumPaused figure .dashicons-controls-play,
-.AlbumPlaying figure .dashicons-controls-pause {
+.paused .artwork .dashicons-controls-play,
+.playing .artwork .dashicons-controls-pause {
 	display: inline-block;
 }
 
-.AlbumInfo {
+.info {
 	float: right;
 	width: 75%;
 
@@ -88,18 +88,18 @@
 }
 
 @media only screen and (max-width: 820px) {
-	.Album figure {
+	.album figure {
 		float: none;
 		width: 100%;
 	}
 
-	.AlbumInfo {
+	.info {
 		float: none;
 		width: 100%;
 	}
 }
 
-.AlbumInfoMeta {
+.meta {
 	font-size: 16px;
 	line-height: 1.5;
 	letter-spacing: -.3px;

@@ -19,10 +19,10 @@ class Track extends Component {
 		const audio = Store.getAudio(),
 			{ track, album } = this.props,
 			current = this.isCurrent(),
-			className = classNames( styles.Track, {
-				[styles.TrackPaused]: current && audio.paused,
-				[styles.TrackPlaying]: current && ! audio.paused,
-				[styles.TrackNotPlaying]: ! current
+			className = classNames( styles.item, {
+				[styles.paused]: current && audio.paused,
+				[styles.playing]: current && ! audio.paused,
+				[styles.notPlaying]: ! current
 			} );
 
 		return (
@@ -31,13 +31,13 @@ class Track extends Component {
 				Actions.toggleControl() :
 				Actions.setSong( { track, album } )
 			}}>
-				<span className={styles.TrackControl}>
-					<span className={styles.TrackControlText}>{track.number}</span>
+				<span className={styles.control}>
+					<span className={styles.text}>{track.number}</span>
 					<span className={`dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`}></span>
 					<span className={`dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`}></span>
 				</span>
-				<span className={styles.TrackName}>{track.name}</span>
-				<span className={styles.TrackLength}>{track.length}</span>
+				<span className={styles.name}>{track.name}</span>
+				<span className={styles.length}>{track.length}</span>
 			</li>
 		);
 	}

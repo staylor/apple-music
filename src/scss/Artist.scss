@@ -1,10 +1,10 @@
 @import "mixins";
 
-.Artist {
+.wrap {
 	overflow: hidden;
 }
 
-.ArtistAlbums {
+.albums {
 	@include clearfix;
 
 	list-style: none;

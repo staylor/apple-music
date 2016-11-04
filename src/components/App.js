@@ -64,11 +64,10 @@ class App extends Component {
 	render() {
 		const locale = Store.getLocale(),
 			messages = Store.getMessages(),
+			{ currentAlbum, currentTrack } = this.props,
 			{ catalog } = this.state;
 
-		let currentAlbum = this.props.currentAlbum || Store.getCurrentAlbum(),
-			currentTrack = this.props.currenTrack || Store.getCurrentTrack(),
-			enPath = location.pathname.replace( '/es', '' ),
+		let enPath = location.pathname.replace( '/es', '' ),
 			esPath = '/' === enPath ? '/es' : `/es${enPath}`;
 
 		if ( ! enPath ) {
@@ -77,8 +76,8 @@ class App extends Component {
 
 		return (
 			<IntlProvider locale={locale} messages={messages}>
-				<div className={styles.App}>
-					<div className={styles.AppHeader}>
+				<div className={styles.wrap}>
+					<div className={styles.header}>
 						<h2>
 							<HomeLink />
 							&nbsp;{'en' === locale ?
@@ -86,17 +85,17 @@ class App extends Component {
 								<Link className={styles.locale} to={enPath}>EN</Link>}
 						</h2>
 					</div>
-					<p className={styles.AppIntro}>
+					<p className={styles.intro}>
 						<FormattedMessage id="app.intro" />
 					</p>
-					<p className={styles.AppIntro}>
+					<p className={styles.intro}>
 						<strong><FormattedMessage id="app.albums" /></strong>:
 						&nbsp;<FormattedNumber value={1000000} />
 						&nbsp;<FormattedPlural value={catalog.albums.length}
 							one={messages['app.album']}
 							other={messages['app.albums']}
 						/></p>
-					<p className={styles.AppIntro}>
+					<p className={styles.intro}>
 						<strong><FormattedMessage id="app.artists" /></strong>:
 						&nbsp;<FormattedNumber value={catalog.artists.length} />
 						&nbsp;<FormattedPlural value={catalog.artists.length}

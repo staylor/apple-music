@@ -51,10 +51,10 @@ class Album extends Component {
 			pauseClass = `dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`;;
 
 		let tracks = 0,
-			className = classNames( styles.Album, {
-				[styles.AlbumPaused]: this.state.current && audio.paused,
-				[styles.AlbumPlaying]: this.state.current && ! audio.paused,
-				[styles.AlbumNotPlaying]: ! this.state.current
+			className = classNames( styles.album, {
+				[styles.paused]: this.state.current && audio.paused,
+				[styles.playing]: this.state.current && ! audio.paused,
+				[styles.notPlaying]: ! this.state.current
 			} );
 
 		if ( trackCounts[ album.id ] ) {
@@ -66,23 +66,23 @@ class Album extends Component {
 
 		return (
 			<div className={className}>
-				<figure>
+				<figure className={styles.artwork}>
 					<span className={playClass} onClick={Actions.toggleControl}></span>
 					<span className={pauseClass} onClick={Actions.toggleControl}></span>
 					<AlbumImage album={album} />
-					<figcaption>
+					<figcaption className={styles.details}>
 						<FormattedNumber value={tracks} />
 						&nbsp;<FormattedPlural value={tracks}
 							one={messages['album.song']}
 							other={messages['album.songs']}
 						/>, {album.length}</figcaption>
 				</figure>
-				<div className={styles.AlbumInfo}>
+				<div className={styles.info}>
 					<header>
 						<h1><AlbumLink album={album} /></h1>
 						<h2>{album.artist.edges.map( ({ node }) => <ArtistLink key={node.id} artist={node} />)}</h2>
 
-						<div className={styles.AlbumInfoMeta}>
+						<div className={styles.meta}>
 							{album.genre} &bull; {album.year}
 						</div>
 					</header>

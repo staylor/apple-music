@@ -1,4 +1,6 @@
-.Track {
+@import "mixins";
+
+.item {
 	color: rgba(51, 51, 51, 0.6);
 	padding: 10px 5px;
 	position: Relative;
@@ -13,11 +15,7 @@
 		border-bottom: 0;
 	}
 
-	&::after {
-		content: " ";
-		display: table;
-		clear: both;
-	}
+	@include clearfix;
 
 	.dashicons-controls-pause,
 	.dashicons-controls-play {
@@ -26,7 +24,7 @@
 	}
 }
 
-.TrackControl {
+.control {
 	float: left;
 	text-align: right;
 	width: 30px;
@@ -38,28 +36,28 @@
 	}
 }
 
-.TrackNotPlaying {
+.notPlaying {
 	cursor: pointer;
 }
 
 /* not playing, not selected */
-.TrackNotPlaying .TrackControl .TrackControlText,
+.notPlaying .control .text,
 /* not playing, hover */
-.TrackNotPlaying:hover .TrackControl .dashicons-controls-play,
-.TrackPaused .TrackControl .dashicons-controls-play,
-.TrackPaused:hover .TrackControl .dashicons-controls-play,
+.notPlaying:hover .control .dashicons-controls-play,
+.paused .control .dashicons-controls-play,
+.paused:hover .control .dashicons-controls-play,
 /* playing, hover */
-.TrackPlaying .TrackControl .dashicons-controls-pause,
-.TrackPlaying:hover .TrackControl .dashicons-controls-pause {
+.playing .control .dashicons-controls-pause,
+.playing:hover .control .dashicons-controls-pause {
 	display: inline-block;
 }
 
 /* not playing, not selected */
-.TrackNotPlaying:hover .TrackControlText {
+.notPlaying:hover .text {
 	display: none;
 }
 
-.TrackName {
+.name {
 	color: #000;
 	font-family: "sf-ui-regular", sans-serif;
     overflow: hidden;
@@ -69,7 +67,7 @@
 	width: calc(80% - 35px);
 }
 
-.TrackLength {
+.length {
 	float: right;
 	text-align: right;
 	width: 15%;
