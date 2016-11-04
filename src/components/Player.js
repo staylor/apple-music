@@ -4,7 +4,7 @@ import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
 import AlbumLink from '~/components/Album/Link';
 import ArtistLink from '~/components/Artist/Link';
-import '~/scss/Player.scss';
+import styles from '~/scss/Player.scss';
 
 class Player extends Component {
 
@@ -13,32 +13,32 @@ class Player extends Component {
 			{ track, album } = this.props;
 
 		let dashicon = 'play',
-			styles = {
+			cssStyles = {
 				width: '0%'
 			},
 			details;
 
 		if ( track && track.name ) {
-			styles.width = `${Math.floor( ( 100 / audio.duration ) * audio.currentTime )}%`;
+			cssStyles.width = `${Math.floor( ( 100 / audio.duration ) * audio.currentTime )}%`;
 			dashicon = audio.paused ? 'play' : 'pause';
-			details = <div className="Player-details">
+			details = <div className={styles.PlayerDetails}>
 				"{track.name}" <span><FormattedMessage id="player.from" /></span>
 				&nbsp;<em><AlbumLink album={album} /></em>
 				&nbsp;<span><FormattedMessage id="player.by" /></span>
 				&nbsp;<ArtistLink artist={album.artist} />
 			</div>;
 		} else {
-			details = <div className="Player-details"><FormattedMessage id="player.nothing" /></div>;
+			details = <div className={styles.PlayerDetails}><FormattedMessage id="player.nothing" /></div>;
 		}
 
 		return (
-			<div className="Player">
-				<div className={`Player-control dashicons dashicons-controls-${dashicon}`}
+			<div className={styles.Player}>
+				<div className={`${styles.PlayerControl} dashicons dashicons-controls-${dashicon}`}
 					onClick={Actions.toggleControl}></div>
-				<div className="Player-metadata">
+				<div className={styles.PlayerMetadata}>
 					{details}
-					<div className="Player-track">
-						<div className="Player-progress" style={styles}></div>
+					<div className={styles.PlayerTrack}>
+						<div className={styles.PlayerProgress} style={cssStyles}></div>
 					</div>
 				</div>
 			 </div>

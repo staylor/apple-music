@@ -8,7 +8,7 @@ import ArtistLink from '~/components/Artist/Link';
 import Track from '~/components/Track';
 import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
-import '~/scss/Album.scss';
+import styles from '~/scss/Album.scss';
 
 let trackCounts = {};
 
@@ -46,13 +46,15 @@ class Album extends Component {
 	render() {
 		const messages = Store.getMessages(),
 			audio = Store.getAudio(),
-			{ album } = this.props;
+			{ album } = this.props,
+			playClass = `dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`,
+			pauseClass = `dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`;;
 
 		let tracks = 0,
-			className = classNames( 'Album', {
-				'Album-paused': this.state.current && audio.paused,
-				'Album-playing': this.state.current && ! audio.paused,
-				'Album-not-playing': ! this.state.current
+			className = classNames( styles.Album, {
+				[styles.AlbumPaused]: this.state.current && audio.paused,
+				[styles.AlbumPlaying]: this.state.current && ! audio.paused,
+				[styles.AlbumNotPlaying]: ! this.state.current
 			} );
 
 		if ( trackCounts[ album.id ] ) {
@@ -65,8 +67,8 @@ class Album extends Component {
 		return (
 			<div className={className}>
 				<figure>
-					<span className="dashicons dashicons-controls-play" onClick={Actions.toggleControl}></span>
-					<span className="dashicons dashicons-controls-pause" onClick={Actions.toggleControl}></span>
+					<span className={playClass} onClick={Actions.toggleControl}></span>
+					<span className={pauseClass} onClick={Actions.toggleControl}></span>
 					<AlbumImage album={album} />
 					<figcaption>
 						<FormattedNumber value={tracks} />
@@ -75,12 +77,12 @@ class Album extends Component {
 							other={messages['album.songs']}
 						/>, {album.length}</figcaption>
 				</figure>
-				<div className="Album-info">
+				<div className={styles.AlbumInfo}>
 					<header>
 						<h1><AlbumLink album={album} /></h1>
 						<h2>{album.artist.edges.map( ({ node }) => <ArtistLink key={node.id} artist={node} />)}</h2>
 
-						<div className="Album-info-meta">
+						<div className={styles.AlbumInfoMeta}>
 							{album.genre} &bull; {album.year}
 						</div>
 					</header>

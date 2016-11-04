@@ -10,7 +10,7 @@
 	}
 }
 
-.Player-control {
+.PlayerControl {
 	width: 60px;
 	height: 60px;
 	float: left;
@@ -23,7 +23,7 @@
 	}
 }
 
-.Player-metadata {
+.PlayerMetadata {
 	float: left;
 	padding: 10px;
 	width: calc(100% - 100px);
@@ -39,14 +39,14 @@
 
 }
 
-.Player-details {
+.PlayerDetails {
 	span {
 		color: #333;
 		opacity: 0.6;
 	}
 }
 
-.Player-track {
+.PlayerTrack {
 	margin-top: 6px;
 	height: 6px;
 	background: #dedede;
@@ -58,7 +58,7 @@
 	}
 }
 
-.Player-progress {
+.PlayerProgress {
 	float: left;
 	width: 0.1%;
 	height: 6px;

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
 import Album from '~/components/Album';
-import '~/scss/Catalog.scss';
+import styles from '~/scss/Catalog.scss';
 
 class Catalog extends Component {
 	render() {
 		const { results } = this.props.albums;
 
 		return (
-			<div className="Catalog">
+			<div className={styles.Catalog}>
 				{results.map( album => <Album key={album.__dataID__} album={album} />)}
 			</div>
 		);

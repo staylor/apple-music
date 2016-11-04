@@ -26,7 +26,7 @@
 	}
 }
 
-.Track-control {
+.TrackControl {
 	float: left;
 	text-align: right;
 	width: 30px;
@@ -38,24 +38,28 @@
 	}
 }
 
+.TrackNotPlaying {
+	cursor: pointer;
+}
+
 /* not playing, not selected */
-.Track-not-playing .Track-control .Track-control-text,
+.TrackNotPlaying .TrackControl .TrackControlText,
 /* not playing, hover */
-.Track-not-playing:hover .Track-control .dashicons-controls-play,
-.Track-paused .Track-control .dashicons-controls-play,
-.Track-paused:hover .Track-control .dashicons-controls-play,
+.TrackNotPlaying:hover .TrackControl .dashicons-controls-play,
+.TrackPaused .TrackControl .dashicons-controls-play,
+.TrackPaused:hover .TrackControl .dashicons-controls-play,
 /* playing, hover */
-.Track-playing .Track-control .dashicons-controls-pause,
-.Track-playing:hover .Track-control .dashicons-controls-pause {
+.TrackPlaying .TrackControl .dashicons-controls-pause,
+.TrackPlaying:hover .TrackControl .dashicons-controls-pause {
 	display: inline-block;
 }
 
 /* not playing, not selected */
-.Track-not-playing:hover .Track-control-text {
+.TrackNotPlaying:hover .TrackControlText {
 	display: none;
 }
 
-.Track-name {
+.TrackName {
 	color: #000;
 	font-family: "sf-ui-regular", sans-serif;
     overflow: hidden;
@@ -65,7 +69,7 @@
 	width: calc(80% - 35px);
 }
 
-.Track-length {
+.TrackLength {
 	float: right;
 	text-align: right;
 	width: 15%;

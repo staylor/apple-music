@@ -1,31 +1,17 @@
 import React, { Component } from 'react';
 import Relay from 'react-relay';
-import Store from '~/flux/Store';
 import BrowseAlbum from '~/components/Album/Browse';
-import '~/scss/Artist.scss';
+import styles from '~/scss/Artist.scss';
 
 class Artist extends Component {
-	getArtist() {
-		let artistId;
-
-		if ( this.props.artist ) {
-			return this.props.artist;
-		}
-
-		if ( this.props.params && this.props.params.artistId ) {
-			artistId = this.props.params.artistId;
-			return Store.artistById( artistId );
-		}
-	}
-
 	render() {
-		const artist = this.getArtist(),
+		const artist = this.props.artist,
 			albums = artist.albums.edges.map( edge => edge.node );
 
 		return (
-			<div className="Artist">
+			<div className={styles.Artist}>
 				<h1>{artist.name}</h1>
-				<ul className="Artist-albums">
+				<ul className={styles.ArtistAlbums}>
 				{albums.map( album => <BrowseAlbum key={album.id} album={album} /> )}
 				</ul>
 			</div>

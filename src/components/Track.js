@@ -3,7 +3,7 @@ import Relay from 'react-relay';
 import classNames from 'classnames';
 import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
-import '~/scss/Track.scss';
+import styles from '~/scss/Track.scss';
 
 class Track extends Component {
 	isCurrent() {
@@ -19,21 +19,21 @@ class Track extends Component {
 		const audio = Store.getAudio(),
 			{ track, album } = this.props,
 			current = this.isCurrent(),
-			className = classNames( 'Track', {
-				'Track-paused': current && audio.paused,
-				'Track-playing': current && ! audio.paused,
-				'Track-not-playing': ! current
+			className = classNames( styles.Track, {
+				[styles.TrackPaused]: current && audio.paused,
+				[styles.TrackPlaying]: current && ! audio.paused,
+				[styles.TrackNotPlaying]: ! current
 			} );
 
 		return (
 			<li className={className} onClick={() => Actions.setSong( { track, album } ) }>
-				<span className="Track-control">
-					<span className="Track-control-text">{track.number}</span>
-					<span className="dashicons dashicons-controls-play"></span>
-					<span className="dashicons dashicons-controls-pause"></span>
+				<span className={styles.TrackControl}>
+					<span className={styles.TrackControlText}>{track.number}</span>
+					<span className={`dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`}></span>
+					<span className={`dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`}></span>
 				</span>
-				<span className="Track-name">{track.name}</span>
-				<span className="Track-length">{track.length}</span>
+				<span className={styles.TrackName}>{track.name}</span>
+				<span className={styles.TrackLength}>{track.length}</span>
 			</li>
 		);
 	}

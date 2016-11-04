@@ -1,26 +1,28 @@
 @import "mixins";
 
 .Artist {
-	ul {
-		@include clearfix;
+	overflow: hidden;
+}
 
-		list-style: none;
-		margin: 20px 0;
+.ArtistAlbums {
+	@include clearfix;
 
-		li {
-			float: left;
-			width: calc(33% - 20px);
-			margin-right: 20px;
-			text-align: center;
-		}
+	list-style: none;
+	margin: 20px 0;
 
-		img {
-			width: 100%;
-		}
+	li {
+		float: left;
+		width: calc(33% - 20px);
+		margin-right: 20px;
+		text-align: center;
+	}
 
-		a {
-			text-decoration: none;
-			color: #000;
-		}
+	img {
+		width: 100%;
+	}
+
+	a {
+		text-decoration: none;
+		color: #000;
 	}
 }

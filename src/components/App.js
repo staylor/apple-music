@@ -10,7 +10,7 @@ import {
 import Store from '~/flux/Store';
 import Player from '~/components/Player';
 import HomeLink from '~/components/HomeLink';
-import '~/scss/App.scss';
+import styles from '~/scss/App.scss';
 
 class App extends Component {
 	constructor( props ) {
@@ -74,26 +74,26 @@ class App extends Component {
 
 		return (
 			<IntlProvider locale={locale} messages={messages}>
-				<div className="App">
-					<div className="App-header">
+				<div className={styles.App}>
+					<div className={styles.AppHeader}>
 						<h2>
 							<HomeLink />
 							&nbsp;{'en' === locale ?
-								<Link className="locale" to={esPath}>ES</Link> :
-								<Link className="locale" to={enPath}>EN</Link>}
+								<Link className={styles.locale} to={esPath}>ES</Link> :
+								<Link className={styles.locale} to={enPath}>EN</Link>}
 						</h2>
 					</div>
-					<p className="App-intro">
+					<p className={styles.AppIntro}>
 						<FormattedMessage id="app.intro" />
 					</p>
-					<p className="App-intro">
+					<p className={styles.AppIntro}>
 						<strong><FormattedMessage id="app.albums" /></strong>:
 						&nbsp;<FormattedNumber value={1000000} />
 						&nbsp;<FormattedPlural value={catalog.albums.length}
 							one={messages['app.album']}
 							other={messages['app.albums']}
 						/></p>
-					<p className="App-intro">
+					<p className={styles.AppIntro}>
 						<strong><FormattedMessage id="app.artists" /></strong>:
 						&nbsp;<FormattedNumber value={catalog.artists.length} />
 						&nbsp;<FormattedPlural value={catalog.artists.length}

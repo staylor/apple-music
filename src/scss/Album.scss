@@ -13,7 +13,8 @@
 		position: relative;
 		width: 23%;
 
-		.dashicons {
+		.dashicons-controls-play,
+		.dashicons-controls-pause {
 			position: absolute;
 			display: none;
 			font-size: 80px;
@@ -42,12 +43,16 @@
 	}
 }
 
-.Album-paused figure .dashicons-controls-play,
-.Album-playing figure .dashicons-controls-pause {
+.AlbumNotPlaying {
+	overflow: hidden;
+}
+
+.AlbumPaused figure .dashicons-controls-play,
+.AlbumPlaying figure .dashicons-controls-pause {
 	display: inline-block;
 }
 
-.Album-info {
+.AlbumInfo {
 	float: right;
 	width: 75%;
 
@@ -88,13 +93,13 @@
 		width: 100%;
 	}
 
-	.Album-info {
+	.AlbumInfo {
 		float: none;
 		width: 100%;
 	}
 }
 
-.Album-info-meta {
+.AlbumInfoMeta {
 	font-size: 16px;
 	line-height: 1.5;
 	letter-spacing: -.3px;

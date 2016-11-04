@@ -111,7 +111,11 @@ module.exports = {
       },
 	  {
         test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
+        loaders: [
+			'style',
+			'css?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:5]',
+			'sass'
+		]
       },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
