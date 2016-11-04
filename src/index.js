@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import cookie from 'react-cookie';
 import Relay from 'react-relay';
 import {
 	Router,
@@ -19,11 +20,16 @@ import catalog from '~/data/catalog';
 
 Store.init( {
 	locale: 'en',
-	track: null,
-	album: null,
+	track: cookie.load( 'track' ),
+	album: cookie.load( 'album' ),
 	currentTime: null,
 	catalog: catalog,
 } );
+
+const AppQueries = {
+	currentAlbum: () => Relay.QL`query { currentAlbum }`,
+	currentTrack: () => Relay.QL`query { currentTrack }`,
+};
 
 const CatalogQueries = {
 	albums: () => Relay.QL`query { albums }`
@@ -41,12 +47,12 @@ ReactDOM.render(
 	<Router history={browserHistory}
 		render={applyRouterMiddleware(useRelay)}
 		environment={Relay.Store}>
-		<Route path="/" component={App}>
+		<Route path="/" component={App} queries={AppQueries}>
 			<IndexRoute component={Catalog} queries={CatalogQueries} />
 			<Route path="/album/:albumId" component={Album} queries={AlbumQueries} />
 			<Route path="/artist/:artistId" component={Artist} queries={ArtistQueries} />
 		</Route>
-		<Route path="/:locale" component={App}>
+		<Route path="/:locale" component={App} queries={AppQueries}>
 			<IndexRoute component={Catalog} queries={CatalogQueries} />
 			<Route path="/:locale/album/:albumId" component={Album} queries={AlbumQueries} />
 			<Route path="/:locale/artist/:artistId" component={Artist} queries={ArtistQueries} />

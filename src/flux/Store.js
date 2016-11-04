@@ -1,3 +1,4 @@
+import cookie from 'react-cookie';
 import { EventEmitter } from 'fbemitter';
 
 let langs = {};
@@ -19,7 +20,8 @@ const Store = {
 	setAudio() {
 		audio = document.createElement( 'audio' );
 		if ( data.track ) {
-			audio.src = `${this.AUDIO_PATH}${data.track.src}`;
+			const track = this.trackById( data.track );
+			audio.src = `${this.AUDIO_PATH}${track.src}`;
 		}
 
 		audio.ontimeupdate = function ( event ) {
@@ -125,6 +127,20 @@ const Store = {
 		const artist = data.catalog.tracks.find( track => track.trackId === trackId );
 		tracksById[ trackId ] = artist;
 		return artist;
+	},
+
+	getCurrentAlbum() {
+		const albumId = cookie.load( 'album' );
+		if ( albumId ) {
+			return this.albumById( albumId );
+		}
+	},
+
+	getCurrentTrack() {
+		const trackId = cookie.load( 'track' );
+		if ( trackId ) {
+			return this.trackById( trackId );
+		}
 	},
 
 	getAlbums() {

@@ -1,3 +1,4 @@
+import cookie from 'react-cookie';
 import Store from './Store';
 
 const Actions = {
@@ -52,8 +53,10 @@ const Actions = {
 			audio.pause();
 		}
 
-		store.album = album;
-		store.track = props.track;
+		cookie.save( 'album', album.albumId, { path: '/' } );
+		cookie.save( 'track', props.track.trackId, { path: '/' } );
+		store.album = album.albumId;
+		store.track = props.track.trackId;
 
 		Store.setData( store );
 	}

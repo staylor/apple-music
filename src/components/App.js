@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Relay from 'react-relay';
 import { Link } from 'react-router';
 import {
 	IntlProvider,
@@ -62,9 +63,11 @@ class App extends Component {
 
 	render() {
 		const locale = Store.getLocale(),
-			messages = Store.getMessages();
+			messages = Store.getMessages(),
+			{ catalog } = this.state;
 
-		let { album, track, catalog } = this.state,
+		let currentAlbum = this.props.currentAlbum || Store.getCurrentAlbum(),
+			currentTrack = this.props.currenTrack || Store.getCurrentTrack(),
 			enPath = location.pathname.replace( '/es', '' ),
 			esPath = '/' === enPath ? '/es' : `/es${enPath}`;
 
@@ -101,7 +104,7 @@ class App extends Component {
 							other={messages['app.artists']}
 						/></p>
 
-					<Player album={album} track={track}/>
+					<Player album={currentAlbum} track={currentTrack}/>
 					{this.props.children}
 				</div>
 			</IntlProvider>
@@ -109,4 +112,34 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default Relay.createContainer( App, {
+	fragments: {
+		currentAlbum: () => Relay.QL`
+			fragment on Album {
+				id,
+				albumId,
+				name,
+				artist(first: 1) {
+					edges {
+						node {
+							id,
+							artistId,
+							name
+						}
+					}
+				}
+			}
+		`,
+
+		currentTrack: () => Relay.QL`
+			fragment on Track {
+				id,
+				trackId,
+				number,
+				name,
+				length,
+				src
+			}
+		`,
+	}
+} );

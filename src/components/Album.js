@@ -39,7 +39,7 @@ class Album extends Component {
 
 		if ( store.album ) {
 			album = this.props.album;
-			return album && album.albumId === store.album.albumId;
+			return album && album.albumId === parseInt( store.album, 10 );
 		}
 	}
 

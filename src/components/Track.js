@@ -12,7 +12,7 @@ class Track extends Component {
 			return;
 		}
 
-		return store.track.trackId === this.props.track.trackId;
+		return parseInt( store.track, 10 ) === this.props.track.trackId;
 	}
 
 	render() {
@@ -26,7 +26,11 @@ class Track extends Component {
 			} );
 
 		return (
-			<li className={className} onClick={() => Actions.setSong( { track, album } ) }>
+			<li className={className} onClick={() => {
+				this.isCurrent() ?
+				Actions.toggleControl() :
+				Actions.setSong( { track, album } )
+			}}>
 				<span className={styles.TrackControl}>
 					<span className={styles.TrackControlText}>{track.number}</span>
 					<span className={`dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`}></span>

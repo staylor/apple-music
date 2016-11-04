@@ -229,11 +229,11 @@ const Root = new GraphQLObjectType({
 		},
 		currentAlbum: {
 			type: AlbumType,
-			resolve: () => store.album
+			resolve: () => Store.getCurrentAlbum()
 		},
 		currentTrack: {
 			type: TrackType,
-			resolve: () => store.track
+			resolve: () => Store.getCurrentTrack()
 		},
 		node: nodeField
 	} )
