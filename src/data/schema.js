@@ -1,3 +1,4 @@
+import Spotify from '~/providers/Spotify';
 import {
 	GraphQLBoolean,
 	GraphQLID,
@@ -8,7 +9,6 @@ import {
 	GraphQLSchema,
 	GraphQLString,
 } from 'graphql';
-
 import {
 	globalIdField,
 	fromGlobalId,
@@ -18,35 +18,21 @@ import {
 	connectionFromArray,
 } from 'graphql-relay';
 
-import Store from '~/flux/Store';
-import catalog from '~/data/catalog';
-
-Store.init( {
-	locale: 'en',
-	track: null,
-	album: null,
-	currentTime: null,
-	catalog: catalog
-} );
-let store = Store.getData();
+const api = new Spotify();
 
 const { nodeInterface, nodeField } = nodeDefinitions(
 	globalId => {
 		const { type, id } = fromGlobalId( globalId );
-		if ( type === 'Album' ) {
-			return Store.albumById( id );
-		} else if ( type === 'Artist' ) {
-			return Store.artistById( id );
+		if ( type === 'Artist' ) {
+			return api.getArtist( id );
 		} else if ( type === 'Track' ) {
-			return Store.trackById( id );
+			return api.getTrack( id );
 		}
 		return null;
 	},
 
 	obj => {
-		if ( obj instanceof Album ) {
-			return AlbumType;
-		} else if ( obj instanceof Artist ) {
+		if ( obj instanceof Artist ) {
 			return ArtistType;
 		} else if ( obj instanceof Track ) {
 			return TrackType;
@@ -83,115 +69,124 @@ const TrackType = new GraphQLObjectType({
 	interfaces: [ nodeInterface ]
 });
 
-const DiscType = new GraphQLObjectType({
-	name: 'Disc',
-	fields: () => ( {
-		number: { type: GraphQLInt },
-		tracks: {
-			type: TrackConnection,
-			description: 'A list of tracks.',
-			args: connectionArgs,
-			resolve: ( disc, args ) => connectionFromArray(
-				disc.tracks.map( id => Store.trackById( id ) ),
-				args
-			)
-		}
-	} )
-});
-
 const ArtistType = new GraphQLObjectType({
 	name: 'Artist',
 	description: 'An artist in the catalog',
 	fields: () => ( {
 		id: globalIdField( 'Artist' ),
-		artistId: {
+		artist_id: {
 			type: GraphQLInt,
 			description: 'The id of the artist.'
+		},
+		href: {
+			type: GraphQLString,
+			description: 'The Spotify web URL for the artist.'
 		},
 		name: {
 			type: GraphQLString,
 			description: 'The name of the artist.'
 		},
-		albums: {
-			type: AlbumConnection,
-			description: 'Albums by the artist.',
-			args: connectionArgs,
-			resolve: ( artist, args ) => connectionFromArray(
-				artist.albums.map( id => Store.albumById( id ) ),
-				args
-			)
+		type: {
+			type: GraphQLString,
+			description: 'The type of object.'
+		},
+		uri: {
+			type: GraphQLString,
+			description: 'The Spotiy URI for the artist.'
+		},
+		external_urls: {
+			type: new GraphQLList( URLMapType ),
+			description: 'External URLs for the artist.'
 		}
 	} ),
 	interfaces: [ nodeInterface ]
 });
 
-const AlbumType = new GraphQLObjectType({
+const ImageType = new GraphQLObjectType({
+	name: 'Image',
+	description: 'An image.',
+	fields: () => ( {
+		height: {
+			type: GraphQLInt,
+			description: 'The height of the image.'
+		},
+		width: {
+			type: GraphQLInt,
+			description: 'The width of the image.'
+		},
+		url: {
+			type: GraphQLString,
+			description: 'The url of the image.'
+		},
+	} )
+});
+
+const URLMapType = new GraphQLObjectType({
+	name: 'URLMap',
+	description: 'A  map of external URL.',
+	fields: () => ( {
+		spotify: {
+			type: GraphQLString,
+			description: 'The spotify URL for the object.'
+		},
+	} )
+});
+
+const BrowseAlbumType = new GraphQLObjectType({
 	name: 'Album',
 	description: 'An album in the catalog',
 	fields: () => ( {
 		id: globalIdField( 'Album' ),
-		albumId: {
-			type: GraphQLInt,
+		album_id: {
+			type: GraphQLString,
 			description: 'The id of the album.'
+		},
+		album_type: {
+			type: GraphQLString,
+			description: 'Type of album.'
+		},
+		artists: {
+			type: new GraphQLList( ArtistType ),
+			description: 'Artists featured on the album.'
+		},
+		available_markets: {
+			type: new GraphQLList( GraphQLString ),
+			description: 'Available markets.'
+		},
+		external_urls: {
+			type: URLMapType,
+			description: 'URLs for the album.'
+		},
+		href: {
+			type: GraphQLString,
+			description: 'The Spotify web URL for the album.'
+		},
+		images: {
+			type: new GraphQLList( ImageType ),
+			description: 'Artists featured on the album.'
 		},
 		name: {
 			type: GraphQLString,
 			description: 'The name of the album.'
 		},
-		artist: {
-			type: ArtistConnection,
-			description: 'The name of the artist who created the album.',
-			args: connectionArgs,
-			resolve: ( album, args ) => connectionFromArray(
-				[Store.artistById( album.artist )],
-				args
-			)
-		},
-		genre: {
+		type: {
 			type: GraphQLString,
-			description: 'The genre of the album.'
+			description: 'Type of album.'
 		},
-		year: {
-			type: GraphQLInt,
-			description: 'The year the album was released.'
-		},
-		length: {
+		uri: {
 			type: GraphQLString,
-			description: 'The formatted length of the album.'
+			description: 'The Spotify URI for the album.'
 		},
-		image: {
-			type: GraphQLString,
-			description: 'The relative path of the cover image source.'
-		},
-		discs: {
-			type: new GraphQLList( DiscType ),
-			description: 'Discs containing tracks. Most albums contain only one disc.'
-		}
 	} ),
 	interfaces: [ nodeInterface ]
 });
-
-const {
-	edgeType: ArtistEdge,
-	connectionType: ArtistConnection
-} = connectionDefinitions({ nodeType: ArtistType });
-
-const {
-	edgeType: AlbumEdge,
-	connectionType: AlbumConnection
-} = connectionDefinitions({ nodeType: AlbumType });
-
-const {
-	edgeType: TrackEdge,
-	connectionType: TrackConnection
-} = connectionDefinitions({ nodeType: TrackType });
 
 const CollectionType = new GraphQLObjectType({
 	name: 'Collection',
 	description: 'A list of results.',
 	fields: {
 		results: {
-			type: new GraphQLList( AlbumType ),
+			type: new GraphQLList( BrowseAlbumType ),
 			description: 'Currently, a list of albums.'
 		}
 	}
@@ -202,38 +197,21 @@ const Root = new GraphQLObjectType({
 	fields: () => ( {
 		albums: {
 			type: CollectionType,
-			resolve: () => ({
-				results: store.catalog.albums
-			})
-		},
-		album: {
-			type: AlbumType,
-			args: {
-				id: { type: GraphQLInt }
-			},
-			resolve: ( _, args ) => Store.albumById( args.id )
+			resolve: () => api.getAlbums()
 		},
 		artist: {
 			type: ArtistType,
 			args: {
 				id: { type: GraphQLInt }
 			},
-			resolve: ( _, args ) => Store.artistById( args.id )
+			resolve: ( _, args ) => api.getArtist( args.id )
 		},
 		track: {
 			type: TrackType,
 			args: {
 				id: { type: GraphQLInt }
 			},
-			resolve: ( _, args ) => Store.trackById( args.id )
-		},
-		currentAlbum: {
-			type: AlbumType,
-			resolve: () => Store.getCurrentAlbum()
-		},
-		currentTrack: {
-			type: TrackType,
-			resolve: () => Store.getCurrentTrack()
+			resolve: ( _, args ) => api.getTrack( args.id )
 		},
 		node: nodeField
 	} )

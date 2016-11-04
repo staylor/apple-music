@@ -9,11 +9,10 @@ import {
 	applyRouterMiddleware
 } from 'react-router';
 import useRelay from 'react-router-relay';
-import App from '~/components/App';
-import Catalog from '~/components/Catalog';
+import SpotifyApp from '~/components/SpotifyApp';
+import SpotifyCatalog from '~/components/SpotifyCatalog';
 import Album from '~/components/Album';
 import Artist from '~/components/Artist';
-import AppQuery from '~/queries/AppQuery';
 import CatalogQuery from '~/queries/CatalogQuery';
 import AlbumQuery from '~/queries/AlbumQuery';
 import ArtistQuery from '~/queries/ArtistQuery';
@@ -23,9 +22,9 @@ ReactDOM.render(
 	<Router history={browserHistory}
 		render={applyRouterMiddleware(useRelay)}
 		environment={Store}>
-		<Route path="/" component={App} queries={AppQuery.queries} prepareParams={AppQuery.prepareParams}>
-			<IndexRoute component={Catalog} queries={CatalogQuery.queries} />
-			<Route path=":locale" component={Catalog} queries={CatalogQuery.queries} />
+		<Route path="/" component={SpotifyApp}>
+			<IndexRoute component={SpotifyCatalog} queries={CatalogQuery.queries} />
+			<Route path=":locale" component={SpotifyCatalog} queries={CatalogQuery.queries} />
 			<Route path="(:locale/)album/:albumId" component={Album} queries={AlbumQuery.queries} />
 			<Route path="(:locale/)artist/:artistId" component={Artist} queries={ArtistQuery.queries} />
 		</Route>

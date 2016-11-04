@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-import Relay from 'react-relay';
 import { Link } from 'react-router';
 import {
 	IntlProvider,
 	addLocaleData,
 	FormattedMessage,
-	FormattedNumber,
-	FormattedPlural,
 } from 'react-intl';
 import Store from '~/flux/Store';
-import Player from '~/components/Player';
 import HomeLink from '~/components/HomeLink';
 import styles from '~/scss/App.scss';
 
-class App extends Component {
+class SpotifyApp extends Component {
 	constructor( props ) {
 		super( props );
 
@@ -64,9 +60,7 @@ class App extends Component {
 
 	render() {
 		const locale = Store.getLocale(),
-			messages = Store.getMessages(),
-			{ currentAlbum, currentTrack } = this.props,
-			{ catalog } = this.state;
+			messages = Store.getMessages();
 
 		let enPath = location.pathname.replace( '/es', '' ),
 			esPath = '/' === enPath ? '/es' : `/es${enPath}`;
@@ -87,24 +81,8 @@ class App extends Component {
 						</h2>
 					</div>
 					<p className={styles.intro}>
-						<FormattedMessage id="app.intro" />
+						<FormattedMessage id="app.spotify_intro" />
 					</p>
-					<p className={styles.intro}>
-						<strong><FormattedMessage id="app.albums" /></strong>:
-						&nbsp;<FormattedNumber value={1000000} />
-						&nbsp;<FormattedPlural value={catalog.albums.length}
-							one={messages['app.album']}
-							other={messages['app.albums']}
-						/></p>
-					<p className={styles.intro}>
-						<strong><FormattedMessage id="app.artists" /></strong>:
-						&nbsp;<FormattedNumber value={catalog.artists.length} />
-						&nbsp;<FormattedPlural value={catalog.artists.length}
-							one={messages['app.artist']}
-							other={messages['app.artists']}
-						/></p>
-
-					<Player album={currentAlbum} track={currentTrack}/>
 					{this.props.children}
 				</div>
 			</IntlProvider>
@@ -112,34 +90,4 @@ class App extends Component {
 	}
 }
 
-export default Relay.createContainer( App, {
-	fragments: {
-		currentAlbum: () => Relay.QL`
-			fragment on Album {
-				id,
-				albumId,
-				name,
-				artist(first: 1) {
-					edges {
-						node {
-							id,
-							artistId,
-							name
-						}
-					}
-				}
-			}
-		`,
-
-		currentTrack: () => Relay.QL`
-			fragment on Track {
-				id,
-				trackId,
-				number,
-				name,
-				length,
-				src
-			}
-		`,
-	}
-} );
+export default SpotifyApp;
