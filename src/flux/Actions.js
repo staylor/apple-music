@@ -51,7 +51,9 @@ const Actions = {
 		cookie.save( 'album', props.album.albumId, { path: '/' } );
 		cookie.save( 'track', props.track.trackId, { path: '/' } );
 		store.album = props.album.albumId;
+		store.currentAlbum = props.album;
 		store.track = props.track.trackId;
+		store.currentTrack = props.track;
 
 		Store.setData( store );
 	}

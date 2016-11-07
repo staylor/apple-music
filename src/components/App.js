@@ -18,6 +18,8 @@ class App extends Component {
 		super( props );
 
 		this.state = {
+			currentAlbum: props.currentAlbum,
+			currentTrack: props.currentTrack,
 			...Store.getData()
 		};
 
@@ -64,8 +66,7 @@ class App extends Component {
 	render() {
 		const locale = Store.getLocale(),
 			messages = Store.getMessages(),
-			{ currentAlbum, currentTrack } = this.props,
-			{ catalog } = this.state;
+			{ currentAlbum, currentTrack, catalog } = this.state;
 
 		let enPath = location.pathname.replace( '/es', '' ),
 			esPath = '/' === enPath ? '/es' : `/es${enPath}`;

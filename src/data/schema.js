@@ -21,13 +21,6 @@ import {
 import Store from '~/flux/Store';
 import catalog from '~/data/catalog';
 
-Store.init( {
-	locale: 'en',
-	track: null,
-	album: null,
-	currentTime: null,
-	catalog: catalog
-} );
 let store = Store.getData();
 
 const { nodeInterface, nodeField } = nodeDefinitions(

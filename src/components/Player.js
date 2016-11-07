@@ -10,7 +10,7 @@ class Player extends Component {
 
 	render() {
 		const audio = Store.getAudio(),
-			{ track, album } = this.props;
+			{ album, track } = this.props;
 
 		let artist = null,
 			dashicon = 'play',
