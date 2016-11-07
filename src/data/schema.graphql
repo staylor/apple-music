@@ -19,8 +19,17 @@ type Album implements Node {
   # Available markets.
   available_markets: [String]
 
+  # A list of copyrights.
+  copyrights: [Copyright]
+
+  # URLs for the album.
+  external_ids: IDMap
+
   # URLs for the album.
   external_urls: URLMap
+
+  # Genres for the album.
+  genres: [String]
 
   # The Spotify web URL for the album.
   href: String
@@ -30,6 +39,21 @@ type Album implements Node {
 
   # The name of the album.
   name: String
+
+  # The label of the album.
+  label: String
+
+  # The popularity of the album.
+  popularity: Int
+
+  # The release date for the album.
+  release_date: String
+
+  # The release date for the album.
+  release_date_precision: String
+
+  # Album tracks.
+  tracks: TrackCollection
 
   # Type of album.
   type: String
@@ -62,10 +86,61 @@ type Artist implements Node {
   external_urls: [URLMap]
 }
 
+# An album in the catalog
+type BrowseAlbum {
+  # The id of the album.
+  id: String
+
+  # The id of the album.
+  album_id: String
+
+  # Type of album.
+  album_type: String
+
+  # Artists featured on the album.
+  artists: [Artist]
+
+  # Available markets.
+  available_markets: [String]
+
+  # URLs for the album.
+  external_urls: URLMap
+
+  # The Spotify web URL for the album.
+  href: String
+
+  # Artists featured on the album.
+  images: [Image]
+
+  # The name of the album.
+  name: String
+
+  # Type of album.
+  type: String
+
+  # The Spotify URI for the album.
+  uri: String
+}
+
 # A list of results.
 type Collection {
   # Currently, a list of albums.
-  results: [Album]
+  results: [BrowseAlbum]
+}
+
+# A  list of copyrights.
+type Copyright {
+  # The text for the copyright.
+  text: String
+
+  # The type of copyright.
+  type: String
+}
+
+# A  map of external IDs.
+type IDMap {
+  # The UPC ID for the object.
+  upc: String
 }
 
 # An image.
@@ -88,8 +163,9 @@ interface Node {
 
 type Root {
   albums: Collection
-  artist(id: Int): Artist
-  track(id: Int): Track
+  album(id: String): Album
+  artist(id: String): Artist
+  track(id: String): Track
 
   # Fetches an object given its ID
   node(
@@ -102,20 +178,49 @@ type Track implements Node {
   # The ID of an object
   id: ID!
 
-  # The id of the track.
-  trackId: Int
+  # Artists featured on the track.
+  artists: [Artist]
 
-  # The play index of the track.
-  number: Int
+  # Available markets.
+  available_markets: [String]
+
+  # Disc number.
+  disc_number: Int
+
+  # Duration in milliseconds.
+  duration_ms: Int
+
+  # Explicit flag.
+  explicit: Boolean
+
+  # URLs for the track.
+  external_urls: URLMap
+
+  # The Spotify web URL for the track.
+  href: String
 
   # The name of the track.
   name: String
 
-  # The formatted length of the track.
-  length: String
+  # The Spotify web URL for the track.
+  preview_url: String
 
-  # The relative path to the source audio for the track.
-  src: String
+  # The Spotify web URL for the track.
+  track_number: Int
+
+  # The type of object.
+  type: String
+
+  # The Spotiy URI for the track.
+  uri: String
+
+  # The id of the track.
+  track_id: String
+}
+
+type TrackCollection {
+  # List of tracks.
+  items: [Track]
 }
 
 # A  map of external URL.

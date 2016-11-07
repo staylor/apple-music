@@ -5,12 +5,9 @@ import classNames from 'classnames';
 import AlbumImage from '~/components/Album/Image';
 import AlbumLink from '~/components/Album/Link';
 import ArtistLink from '~/components/Artist/Link';
-import Track from '~/components/Track';
 import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
 import styles from '~/scss/Album.scss';
-
-let trackCounts = {};
 
 class Album extends Component {
 	constructor( props ) {
@@ -50,19 +47,11 @@ class Album extends Component {
 			playClass = `dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`,
 			pauseClass = `dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`;;
 
-		let tracks = 0,
-			className = classNames( styles.album, {
+		let className = classNames( styles.album, {
 				[styles.paused]: this.state.current && audio.paused,
 				[styles.playing]: this.state.current && ! audio.paused,
 				[styles.notPlaying]: ! this.state.current
 			} );
-
-		if ( trackCounts[ album.id ] ) {
-			tracks = trackCounts[ album.id ];
-		} else {
-			album.discs.forEach( disc => tracks += disc.tracks.edges.length );
-			trackCounts[ album.id ] = tracks;
-		}
 
 		return (
 			<div className={className}>
@@ -71,28 +60,21 @@ class Album extends Component {
 					<span className={pauseClass} onClick={Actions.toggleControl}></span>
 					<AlbumImage album={album} />
 					<figcaption className={styles.details}>
-						<FormattedNumber value={tracks} />
-						&nbsp;<FormattedPlural value={tracks}
+						<FormattedNumber value={album.tracks.items.length} />
+						&nbsp;<FormattedPlural value={album.tracks.items.length}
 							one={messages['album.song']}
 							other={messages['album.songs']}
-						/>, {album.length}</figcaption>
+						/></figcaption>
 				</figure>
 				<div className={styles.info}>
 					<header>
 						<h1><AlbumLink album={album} /></h1>
-						<h2>{album.artist.edges.map( ({ node }) => <ArtistLink key={node.id} artist={node} />)}</h2>
+						<h2>{album.artists.map( artist => <ArtistLink key={artist.id} artist={artist} />)}</h2>
 
 						<div className={styles.meta}>
-							{album.genre} &bull; {album.year}
+							&bull; {album.release_data}
 						</div>
 					</header>
-					{album.discs.map( ( disc, index ) => {
-						return (
-							<ol key={index}>
-							{disc.tracks.edges.map( ({ node }, i) => <Track key={i} track={node} album={album} />)}
-							</ol>
-						);
-					} )}
 
 				</div>
 			</div>
@@ -104,14 +86,42 @@ export default Relay.createContainer( Album, {
 	fragments: {
 		album: () => Relay.QL`
 			fragment on Album {
+				id
 				name
+				album_id
 				images {
-					url
-					width
-					height
+				  url
+				  width
+				  height
 				}
 				artists {
+				  id
+				  name
+				  href
+				  external_urls {
+					spotify
+				  }
+				}
+				genres
+				copyrights {
+				  text
+				  type
+				}
+				label
+				popularity
+				release_date
+				tracks {
+				  items {
+					id
 					name
+					track_number
+					duration_ms
+					preview_url
+					artists {
+					  id
+					  name
+					}
+				  }
 				}
 			}
 		`,

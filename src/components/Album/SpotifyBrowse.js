@@ -22,7 +22,7 @@ class SpotifyBrowse extends Component {
 export default Relay.createContainer( SpotifyBrowse, {
 	fragments: {
 		album: () => Relay.QL`
-			fragment on Album {
+			fragment on BrowseAlbum {
 				id
 				name
 				album_id

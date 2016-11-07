@@ -1,11 +1,11 @@
 import fetch from 'node-fetch';
-import FormData from 'form-data';
 import NodeCache from 'node-cache';
 
 const clientId = 'b791653f8886473db15526cc8ea24588';
 const clientSecret = 'fddc22b8fd85445db6477b5fe502ab90';
 const tokenUrl = 'https://accounts.spotify.com/api/token';
 const newReleasesUrl = 'https://api.spotify.com/v1/browse/new-releases';
+const albumUrl = 'https://api.spotify.com/v1/albums/';
 
 const tokenKey = 'spotify:token';
 let cache;
@@ -17,8 +17,8 @@ class Spotify {
 	}
 
 	getToken() {
-		return new Promise( function ( resolve, reject ) {
-			cache.get( tokenKey, function ( err, value ) {
+		return new Promise( ( resolve, reject ) => {
+			cache.get( tokenKey, ( err, value ) => {
 				if ( err ) {
 					console.warn( 'CACHE ERROR: ' + tokenKey );
 					reject( err );
@@ -31,22 +31,19 @@ class Spotify {
 					return value;
 				}
 
-				const base64creds = ( new Buffer( clientId + ':' + clientSecret ).toString( 'base64' ) );
-				const params = {
+				const auth = new Buffer( `${clientId}:${clientSecret}` ).toString( 'base64' );
+
+				fetch( tokenUrl, {
 					method: 'POST',
 					body: 'grant_type=client_credentials',
 					headers: {
-						'Authorization': `Basic ${base64creds}`
+						'Content-Type':'application/x-www-form-urlencoded',
+						'Authorization': `Basic ${auth}`
 					}
-				};
-
-				console.log( 'URL', tokenUrl, 'PARAMS', params );
-
-				fetch( tokenUrl, params )
+				} )
+					.catch( err => reject( err ) )
 					.then( response => response.json() )
 					.then( json => {
-						console.log( 'JSON', json );
-
 						cache.set(
 							tokenKey,
 							json.access_token,
@@ -55,11 +52,6 @@ class Spotify {
 
 						resolve( json.access_token );
 						return json.access_token;
-					} )
-					.catch( err => {
-						console.log( 'ERROR', err );
-						reject( err );
-						return err;
 					} );
 			} );
 		} );
@@ -67,8 +59,6 @@ class Spotify {
 
 	fetch( url, args ) {
 		return this.getToken().then( token => {
-			console.log( 'TOKEN', token );
-
 			let headers = {
 				'Accept': 'application/json',
 				'Authorization': `Bearer ${token}`
@@ -82,12 +72,11 @@ class Spotify {
 				headers,
 				...args
 			} );
-			console.log( url, args );
+
 			return fetch.call( this, url, args )
 				.then( response => response.json() )
 				.catch( err => {
 					console.log( 'ERROR', err );
-					reject( err );
 				} );
 		} );
 	}
@@ -106,7 +95,11 @@ class Spotify {
 	}
 
 	getAlbum( id ) {
+		return this.fetch( `${albumUrl}${id}` ).then( json => {
+			json.album_id = json.id;
 
+			return json;
+		} );
 	}
 
 	getArtist( id ) {
