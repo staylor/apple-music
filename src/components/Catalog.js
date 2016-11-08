@@ -9,7 +9,7 @@ class Catalog extends Component {
 
 		return (
 			<div className={styles.wrap}>
-				{results.map( album => <Album key={album.__dataID__} album={album} />)}
+				{results.map( album => <Album key={album.id} album={album} />)}
 			</div>
 		);
 	 }
@@ -20,6 +20,7 @@ class Catalog extends Component {
 		albums: () => Relay.QL`
 			fragment on Collection {
 				results {
+					id
 					${Album.getFragment( 'album' )}
 				}
 			}

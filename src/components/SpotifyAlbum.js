@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { FormattedNumber, FormattedPlural, } from 'react-intl';
 import classNames from 'classnames';
-import AlbumImage from '~/components/Album/Image';
-import AlbumLink from '~/components/Album/Link';
+import AlbumImage from '~/components/Album/SpotifyImage';
+import AlbumLink from '~/components/Album/SpotifyLink';
 import ArtistLink from '~/components/Artist/Link';
+import SpotifyTrack from '~/components/SpotifyTrack';
 import Actions from '~/flux/Actions';
 import Store from '~/flux/Store';
 import styles from '~/scss/Album.scss';
@@ -36,7 +37,7 @@ class Album extends Component {
 
 		if ( store.album ) {
 			album = this.props.album;
-			return album && album.albumId === parseInt( store.album, 10 );
+			return album && album.album_id === parseInt( store.album, 10 );
 		}
 	}
 
@@ -72,10 +73,12 @@ class Album extends Component {
 						<h2>{album.artists.map( artist => <ArtistLink key={artist.id} artist={artist} />)}</h2>
 
 						<div className={styles.meta}>
-							&bull; {album.release_data}
+							&bull; {album.release_date}
 						</div>
 					</header>
-
+					<ol key={69}>
+					{album.tracks.items.map( ( track, i ) => <SpotifyTrack key={i} track={track} album={album} />)}
+					</ol>
 				</div>
 			</div>
 		);
@@ -98,9 +101,6 @@ export default Relay.createContainer( Album, {
 				  id
 				  name
 				  href
-				  external_urls {
-					spotify
-				  }
 				}
 				genres
 				copyrights {
@@ -112,15 +112,7 @@ export default Relay.createContainer( Album, {
 				release_date
 				tracks {
 				  items {
-					id
-					name
-					track_number
-					duration_ms
-					preview_url
-					artists {
-					  id
-					  name
-					}
+					${SpotifyTrack.getFragment( 'track' )}
 				  }
 				}
 			}

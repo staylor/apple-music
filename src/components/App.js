@@ -117,7 +117,7 @@ export default Relay.createContainer( App, {
 		currentAlbum: () => Relay.QL`
 			fragment on Album {
 				id,
-				albumId,
+				album_id,
 				name,
 				artist(first: 1) {
 					edges {
@@ -134,7 +134,7 @@ export default Relay.createContainer( App, {
 		currentTrack: () => Relay.QL`
 			fragment on Track {
 				id,
-				trackId,
+				track_id,
 				number,
 				name,
 				length,

@@ -11,7 +11,7 @@ import {
 import useRelay from 'react-router-relay';
 import SpotifyApp from '~/components/SpotifyApp';
 import SpotifyCatalog from '~/components/SpotifyCatalog';
-import Album from '~/components/Album';
+import SpotifyAlbum from '~/components/SpotifyAlbum';
 import Artist from '~/components/Artist';
 import CatalogQuery from '~/queries/CatalogQuery';
 import AlbumQuery from '~/queries/AlbumQuery';
@@ -25,7 +25,7 @@ ReactDOM.render(
 		<Route path="/" component={SpotifyApp}>
 			<IndexRoute component={SpotifyCatalog} queries={CatalogQuery.queries} />
 			<Route path=":locale" component={SpotifyCatalog} queries={CatalogQuery.queries} />
-			<Route path="(:locale/)album/:albumId" component={Album} queries={AlbumQuery.queries} />
+			<Route path="(:locale/)album/:albumId" component={SpotifyAlbum} queries={AlbumQuery.queries} />
 			<Route path="(:locale/)artist/:artistId" component={Artist} queries={ArtistQuery.queries} />
 		</Route>
 	</Router>,

@@ -83,7 +83,7 @@ type Artist implements Node {
   uri: String
 
   # External URLs for the artist.
-  external_urls: [URLMap]
+  external_urls: URLMap
 }
 
 # An album in the catalog

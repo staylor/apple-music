@@ -141,7 +141,7 @@ const ArtistType = new GraphQLObjectType({
 			description: 'The Spotiy URI for the artist.'
 		},
 		external_urls: {
-			type: new GraphQLList( URLMapType ),
+			type: URLMapType,
 			description: 'External URLs for the artist.'
 		}
 	} ),
