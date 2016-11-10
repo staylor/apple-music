@@ -16,8 +16,8 @@ class AppQuery extends Route {
 
 	static prepareParams = () => {
 		return {
-			currentTrackId: cookie.load( 'track' ),
-			currentAlbumId: cookie.load( 'album' )
+			currentTrackId: cookie.load( 'track' ) || 0,
+			currentAlbumId: cookie.load( 'album' ) || 0
 		};
 	};
 }

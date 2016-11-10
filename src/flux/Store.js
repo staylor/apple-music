@@ -51,8 +51,8 @@ const Store = {
 		if ( commit && 'localStorage' in window ) {
 			localStorage.setItem( 'data', JSON.stringify( data ) );
 		}
-		emitter.emit( `change:${key}` );
-		emitter.emit( 'change' );
+		emitter.emit( `change:${key}`, value );
+		emitter.emit( 'change', value );
 	},
 
 	setData( newData, commit = true ) {
@@ -60,7 +60,7 @@ const Store = {
 		if ( commit && 'localStorage' in window ) {
 			localStorage.setItem( 'data', JSON.stringify( newData ) );
 		}
-		emitter.emit( 'change' );
+		emitter.emit( 'change', newData );
 	},
 
 	addListener( eventType, fn ) {
