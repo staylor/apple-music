@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { Link } from 'react-router';
 import {
+	IntlProvider,
+	addLocaleData,
 	FormattedMessage,
 	FormattedNumber,
 	FormattedPlural,
 } from 'react-intl';
 import Store from '~/flux/Store';
-import Intl from '~/components/Intl';
 import Player from '~/components/Player';
 import HomeLink from '~/components/HomeLink';
 import styles from '~/scss/App.scss';
@@ -21,16 +22,51 @@ class App extends Component {
 			currentTrack: props.currentTrack,
 			...Store.getData()
 		};
+
+		Store.addListener( 'change', () => {
+			this.setState( {
+				...Store.getData()
+			} );
+		} );
 	}
 
-	render() {
-		const messages = Store.getMessages(),
-			{ currentAlbum, currentTrack, catalog } = this.state;
+	addLocale( locale ) {
+		const localeData = require( `react-intl/locale-data/${locale}` );
+		addLocaleData( localeData );
+	}
 
+	componentWillMount() {
 		let locale = 'en';
 		if ( this.props.params && this.props.params.locale ) {
 			locale = this.props.params.locale;
 		}
+		Store.set( 'locale', locale );
+		this.addLocale( locale );
+	}
+
+	componentWillReceiveProps( nextProps ) {
+		let locale = Store.getLocale();
+
+		if (
+			nextProps.params &&
+			nextProps.params.locale
+		) {
+
+			if ( nextProps.params.locale !== locale ) {
+				locale = nextProps.params.locale;
+			}
+		} else {
+			locale = 'en';
+		}
+
+		Store.set( 'locale', locale );
+		this.addLocale( locale );
+	}
+
+	render() {
+		const locale = Store.getLocale(),
+			messages = Store.getMessages(),
+			{ currentAlbum, currentTrack, catalog } = this.state;
 
 		let enPath = location.pathname.replace( '/es', '' ),
 			esPath = '/' === enPath ? '/es' : `/es${enPath}`;
@@ -40,7 +76,7 @@ class App extends Component {
 		}
 
 		return (
-			<Intl locale={locale}>
+			<IntlProvider locale={locale} messages={messages}>
 				<div className={styles.wrap}>
 					<div className={styles.header}>
 						<h2>
@@ -71,15 +107,10 @@ class App extends Component {
 					<Player album={currentAlbum} track={currentTrack}/>
 					{this.props.children}
 				</div>
-			</Intl>
+			</IntlProvider>
 		);
 	}
 }
-
-App.defaultProps = {
-	currentAlbum: null,
-	currentTrack: null,
-};
 
 export default Relay.createContainer( App, {
 	fragments: {
