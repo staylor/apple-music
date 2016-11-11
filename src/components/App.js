@@ -112,6 +112,11 @@ class App extends Component {
 	}
 }
 
+App.defaultProps = {
+	currentAlbum: null,
+	currentTrack: null
+};
+
 export default Relay.createContainer( App, {
 	fragments: {
 		currentAlbum: () => Relay.QL`

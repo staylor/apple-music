@@ -4,7 +4,7 @@ class ArtistQuery extends Route {
 	static routeName = 'ArtistQuery';
 
 	static queries = {
-		artist: () => Relay.QL`query { artist(id: $artistId) }`
+		artist: () => Relay.QL`query ArtistQuery { artist(id: $artistId) }`
 	};
 }
 

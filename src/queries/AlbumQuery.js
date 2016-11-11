@@ -4,7 +4,7 @@ class AlbumQuery extends Route {
 	static routeName = 'AlbumQuery';
 
 	static queries = {
-		album: () => Relay.QL`query { album(id: $albumId) }`
+		album: () => Relay.QL`query AlbumQuery { album(id: $albumId) }`
 	};
 }
 

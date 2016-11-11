@@ -5,8 +5,8 @@ class AppQuery extends Route {
 	static routeName = 'AppQuery';
 
 	static queries = {
-		currentAlbum: () => Relay.QL`query { album(id: $currentAlbumId) }`,
-		currentTrack: () => Relay.QL`query { track(id: $currentTrackId) }`
+		currentAlbum: () => Relay.QL`query CurrentAlbumQuery { album(id: $currentAlbumId) }`,
+		currentTrack: () => Relay.QL`query CurrentTrackQuery { track(id: $currentTrackId) }`
 	};
 
 	static paramDefinitions = {
@@ -16,8 +16,8 @@ class AppQuery extends Route {
 
 	static prepareParams = () => {
 		return {
-			currentTrackId: cookie.load( 'track' ),
-			currentAlbumId: cookie.load( 'album' )
+			currentTrackId: cookie.load( 'track' ) || 0,
+			currentAlbumId: cookie.load( 'album' ) || 0
 		};
 	};
 }

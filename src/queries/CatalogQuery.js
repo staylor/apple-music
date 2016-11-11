@@ -4,7 +4,7 @@ class CatalogQuery extends Route {
 	static routeName = 'CatalogQuery';
 
 	static queries = {
-		albums: () => Relay.QL`query { albums }`
+		albums: () => Relay.QL`query CatalogQuery { albums }`
 	};
 }
 
