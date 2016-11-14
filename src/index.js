@@ -1,34 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Store } from 'react-relay';
-import {
-	Router,
-	Route,
-	IndexRoute,
-	browserHistory,
-	applyRouterMiddleware
-} from 'react-router';
-import useRelay from 'react-router-relay';
-import App from '~/components/App';
-import Catalog from '~/components/Catalog';
-import Album from '~/components/Album';
-import Artist from '~/components/Artist';
-import AppQuery from '~/queries/AppQuery';
-import CatalogQuery from '~/queries/CatalogQuery';
-import AlbumQuery from '~/queries/AlbumQuery';
-import ArtistQuery from '~/queries/ArtistQuery';
+import IsomorphicRelay from 'isomorphic-relay';
+import IsomorphicRouter from 'isomorphic-relay-router';
+import { Environment, DefaultNetworkLayer } from 'react-relay';
+import { match, Router, browserHistory } from 'react-router';
+import AppRoutes from '~/routes';
 import '~/scss/index.scss';
 
-ReactDOM.render(
-	<Router history={browserHistory}
-		render={applyRouterMiddleware(useRelay)}
-		environment={Store}>
-		<Route path="/" component={App} queries={AppQuery.queries} prepareParams={AppQuery.prepareParams}>
-			<IndexRoute component={Catalog} queries={CatalogQuery.queries} />
-			<Route path=":locale" component={Catalog} queries={CatalogQuery.queries} />
-			<Route path="(:locale/)album/:albumId" component={Album} queries={AlbumQuery.queries} />
-			<Route path="(:locale/)artist/:artistId" component={Artist} queries={ArtistQuery.queries} />
-		</Route>
-	</Router>,
-	document.getElementById('root')
-);
+const environment = new Environment();
+const networkLayer = new DefaultNetworkLayer( 'http://localhost:4000/graphql' );
+
+environment.injectNetworkLayer( networkLayer );
+
+IsomorphicRelay.injectPreparedData( environment, [] );
+
+const mount = (routes = AppRoutes) => {
+	match({ routes, history: browserHistory }, (error, redirectLocation, renderProps) => {
+		IsomorphicRouter.prepareInitialRender(environment, renderProps).then((props) => {
+			console.log( props );
+			ReactDOM.render(
+				<Router {...props} onUpdate={() => window.scrollTo(0, 0)} />,
+				document.getElementById('root')
+			);
+		});
+	});
+};
+
+mount();

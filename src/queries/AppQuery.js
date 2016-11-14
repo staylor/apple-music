@@ -9,6 +9,15 @@ class AppQuery extends Route {
 		currentTrack: () => Relay.QL`query CurrentTrackQuery { track(id: $currentTrackId) }`
 	};
 
+	static getComponent = ( nextState, cb ) => {
+		System.import( '../components/App' )
+			.then( module => cb( null, module.default ) )
+			.catch( error => {
+				console.error( error ); // eslint-disable-line no-console
+				cb( error, null );
+			} );
+	};
+
 	static paramDefinitions = {
 		currentAlbumId: { required: false },
 		currentTrackId: { required: false }
