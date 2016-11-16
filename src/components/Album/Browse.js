@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import AlbumLink from '~/components/Album/Link';
-import AlbumImage from '~/components/Album/Image';
+import React from 'react';
+import AlbumLink from './Link';
+import AlbumImage from './Image';
 
-class BrowseAlbum extends Component {
-	render() {
-		const album = this.props.album;
+/* eslint-disable react/prop-types */
 
-		return (
-			<li>
-				<AlbumImage album={album} />
-				<AlbumLink album={album} />
-			</li>
-		);
-	}
+function BrowseAlbum(props) {
+  const album = props.album;
+
+  return (
+    <li>
+      <AlbumImage album={album} />
+      <AlbumLink album={album} />
+    </li>
+  );
 }
 
 export default BrowseAlbum;

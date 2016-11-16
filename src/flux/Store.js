@@ -1,162 +1,162 @@
 import cookie from 'react-cookie';
 import { EventEmitter } from 'fbemitter';
-import catalog from '~/data/catalog';
+import catalog from '../data/catalog';
 
-let langs = {};
+const langs = {};
 let data = {
-	locale: 'en',
-	track: cookie.load( 'track' ),
-	album: cookie.load( 'album' ),
-	currentTime: null,
-	catalog: catalog
+  locale: 'en',
+  track: cookie.load('track'),
+  album: cookie.load('album'),
+  currentTime: null,
+  catalog,
 };
 let audio;
-let albumsById = {};
-let artistsById = {};
-let tracksById = {};
+const albumsById = {};
+const artistsById = {};
+const tracksById = {};
 
 const emitter = new EventEmitter();
 
 const Store = {
-	AUDIO_PATH : '/audio/',
+  AUDIO_PATH: '/audio/',
 
-	setAudio() {
-		audio = document.createElement( 'audio' );
-		if ( data.track ) {
-			const track = this.trackById( data.track );
-			audio.src = `${this.AUDIO_PATH}${track.src}`;
-		}
+  setAudio() {
+    if (typeof window === 'undefined') {
+      return;
+    }
 
-		audio.ontimeupdate = function ( event ) {
-			Store.set( 'currentTime', event.timeStamp );
-		};
-	},
+    audio = document.createElement('audio');
+    if (data.track) {
+      const track = this.trackById(data.track);
+      audio.src = `${this.AUDIO_PATH}${track.src}`;
+    }
 
-	getAudio() {
-		if ( audio ) {
-			return audio;
-		}
+    audio.ontimeupdate = (event) => {
+      Store.set('currentTime', event.timeStamp);
+    };
+  },
 
-		this.setAudio();
+  getAudio() {
+    if (audio) {
+      return audio;
+    }
 
-		return audio;
-	},
+    this.setAudio();
 
-	getData() {
-		return data;
-	},
+    return audio;
+  },
 
-	set( key, value, commit = true ) {
-		data[ key ] = value;
-		if ( commit && 'localStorage' in window ) {
-			localStorage.setItem( 'data', JSON.stringify( data ) );
-		}
-		emitter.emit( `change:${key}` );
-		emitter.emit( 'change' );
-	},
+  getData() {
+    return data;
+  },
 
-	setData( newData, commit = true ) {
-		data = newData;
-		if ( commit && 'localStorage' in window ) {
-			localStorage.setItem( 'data', JSON.stringify( newData ) );
-		}
-		emitter.emit( 'change' );
-	},
+  set(key, value) {
+    data[key] = value;
+    emitter.emit(`change:${key}`);
+    emitter.emit('change');
+  },
 
-	addListener( eventType, fn ) {
-		return emitter.addListener( eventType, fn );
-	},
+  setData(newData) {
+    data = newData;
+    emitter.emit('change');
+  },
 
-	change() {
-		emitter.emit( 'change' );
-	},
+  addListener(eventType, fn) {
+    return emitter.addListener(eventType, fn);
+  },
 
-	getLocale() {
-		return data.locale;
-	},
+  change() {
+    emitter.emit('change');
+  },
 
-	getMessages() {
-		const locale = this.getLocale();
+  getLocale() {
+    return data.locale;
+  },
 
-		if ( langs[ locale ] ) {
-			return langs[ locale ];
-		}
+  getMessages() {
+    const locale = this.getLocale();
 
-		langs[ locale ] = require( `../langs/${locale}.js` ).default;
+    if (langs[locale]) {
+      return langs[locale];
+    }
 
-		return langs[ locale ];
-	},
+    langs[locale] = require(`../langs/${locale}.js`).default;
 
-	albumById( albumId ) {
-		albumId = parseInt( albumId, 10 );
-		if ( albumsById[ albumId ] ) {
-			return albumsById[ albumId ];
-		}
+    return langs[locale];
+  },
 
-		if ( ! data.catalog ) {
-			return;
-		}
+  albumById(albumId) {
+    albumId = parseInt(albumId, 10);
+    if (albumsById[albumId]) {
+      return albumsById[albumId];
+    }
 
-		const album = data.catalog.albums.find( album => album.albumId === albumId );
-		albumsById[ albumId ] = album;
-		return album;
-	},
+    if (!data.catalog) {
+      return null;
+    }
 
-	artistById( artistId ) {
-		artistId = parseInt( artistId, 10 );
-		if ( artistsById[ artistId ] ) {
-			return artistsById[ artistId ];
-		}
+    const album = data.catalog.albums.find(currentAlbum => currentAlbum.albumId === albumId);
+    albumsById[albumId] = album;
+    return album;
+  },
 
-		if ( ! data.catalog ) {
-			return;
-		}
+  artistById(artistId) {
+    artistId = parseInt(artistId, 10);
+    if (artistsById[artistId]) {
+      return artistsById[artistId];
+    }
 
-		const artist = data.catalog.artists.find( artist => artist.artistId === artistId );
-		artistsById[ artistId ] = artist;
-		return artist;
-	},
+    if (!data.catalog) {
+      return null;
+    }
 
-	trackById( trackId ) {
-		trackId = parseInt( trackId, 10 );
-		if ( tracksById[ trackId ] ) {
-			return tracksById[ trackId ];
-		}
+    const artist = data.catalog.artists.find(currentArtist => currentArtist.artistId === artistId);
+    artistsById[artistId] = artist;
+    return artist;
+  },
 
-		if ( ! data.catalog ) {
-			return;
-		}
+  trackById(trackId) {
+    trackId = parseInt(trackId, 10);
+    if (tracksById[trackId]) {
+      return tracksById[trackId];
+    }
 
-		const artist = data.catalog.tracks.find( track => track.trackId === trackId );
-		tracksById[ trackId ] = artist;
-		return artist;
-	},
+    if (!data.catalog) {
+      return null;
+    }
 
-	getCurrentAlbum() {
-		const albumId = cookie.load( 'album' );
-		if ( albumId ) {
-			return this.albumById( albumId );
-		}
-	},
+    const artist = data.catalog.tracks.find(track => track.trackId === trackId);
+    tracksById[trackId] = artist;
+    return artist;
+  },
 
-	getCurrentTrack() {
-		const trackId = cookie.load( 'track' );
-		if ( trackId ) {
-			return this.trackById( trackId );
-		}
-	},
+  getCurrentAlbum() {
+    const albumId = cookie.load('album');
+    if (albumId) {
+      return this.albumById(albumId);
+    }
+    return null;
+  },
 
-	getAlbums() {
-		return data.catalog.albums;
-	},
+  getCurrentTrack() {
+    const trackId = cookie.load('track');
+    if (trackId) {
+      return this.trackById(trackId);
+    }
+    return null;
+  },
 
-	getArtists() {
-		return data.catalog.artists;
-	},
+  getAlbums() {
+    return data.catalog.albums;
+  },
 
-	getTracks() {
-		return data.catalog.tracks;
-	}
+  getArtists() {
+    return data.catalog.artists;
+  },
+
+  getTracks() {
+    return data.catalog.tracks;
+  },
 };
 
 export default Store;

@@ -1,0 +1,60 @@
+@import "../../shared-styles/mixins";
+
+.wrap {
+	height: 60px;
+	border: 1px solid #eee;
+	margin: 20px 0;
+
+	@include clearfix;
+}
+
+.control {
+	width: 60px;
+	height: 60px;
+	float: left;
+	margin-right: 10px;
+	cursor: pointer;
+
+	&::before {
+		font-size: 40px;
+		line-height: 60px;
+	}
+}
+
+.metadata {
+	float: left;
+	padding: 10px;
+	width: calc(100% - 100px);
+	margin-right: 30px;
+	font-family: "sf-ui-regular", sans-serif;
+	letter-spacing: 0.5px;
+	color: #000;
+
+	a {
+		color: #000;
+		text-decoration: none;
+	}
+
+}
+
+.details {
+	span {
+		color: #333;
+		opacity: 0.6;
+	}
+}
+
+.track {
+	margin-top: 6px;
+	height: 6px;
+	background: #dedede;
+
+	@include clearfix;
+}
+
+.progress {
+	float: left;
+	width: 0.1%;
+	height: 6px;
+	background: #ff2d55;
+}

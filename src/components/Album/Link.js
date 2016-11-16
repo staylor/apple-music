@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import L10NLink from '~/components/L10NLink';
+import React from 'react';
+import L10NLink from '../L10NLink';
 
-class AlbumLink extends Component {
-	render() {
-		const { albumId, name } = this.props.album;
+/* eslint-disable react/prop-types */
 
-		return <L10NLink to={`/album/${albumId}`}>{name}</L10NLink>;
-	}
+function AlbumLink(props) {
+  const { albumId, name } = props.album;
+
+  return <L10NLink to={`/album/${albumId}`}>{name}</L10NLink>;
 }
 
 export default AlbumLink;
