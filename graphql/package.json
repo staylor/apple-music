@@ -1,0 +1,52 @@
+{
+  "name": "wf-graphql",
+  "private": true,
+  "scripts": {
+    "start": "node ./bundle.js",
+    "dev": "STUB_MODE=request npm run build-watch",
+    "build": "rollup -c",
+    "build-start": "npm run build && npm start",
+    "build-start-debug": "npm run build && node --inspect --debug-brk bundle.js",
+    "build-watch": "node watch.js",
+    "refresh-gcp": "./tasks/export-to-gcp.sh",
+    "export-schema": "rollup -c --i src/schema.js -o dist/schema.js &> /dev/null && node ./tasks/export-schema.js > schema.graphql"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "body-parser": "^1.15.2",
+    "cheerio": "^0.20.0",
+    "cli-color": "^1.1.0",
+    "cookie-parser": "^1.4.1",
+    "dataloader": "^1.2.0",
+    "easy-table": "^1.0.0",
+    "express": "4.13.4",
+    "express-graphql": "^0.5.3",
+    "fbemitter": "^2.1.1",
+    "graphql": "^0.7.2",
+    "graphql-errors": "^2.1.0",
+    "graphql-relay": "^0.4.3",
+    "limiter": "^1.1.0",
+    "lru-cache": "^4.0.1",
+    "node-fetch": "^1.5.1",
+    "react-cookie": "^0.4.8",
+    "redis": "^2.6.0-2",
+    "redis-commands": "^1.2.0",
+    "request-promise": "^3.0.0",
+    "response-time": "^2.3.1",
+    "rollup": "^0.34.1",
+    "sqlite3": "^3.1.4"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-preset-es2015-node-rollup": "^6.1.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "forever": "^0.15.2",
+    "forever-monitor": "^1.7.0",
+    "graphql": "^0.30.0",
+    "moment": "^2.14.1",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-watch": "^2.5.0",
+    "touch": "^1.0.0",
+    "underscore": "^1.8.3"
+  }
+}

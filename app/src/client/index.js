@@ -17,7 +17,7 @@ const networkLayer = new Relay.DefaultNetworkLayer(
 environment.injectNetworkLayer(networkLayer);
 IsomorphicRelay.injectPreparedData(environment, data);
 
-const rootElement = document.getElementById('app');
+const rootElement = document.getElementById('root');
 
 const mount = (routes = AppRoutes) => {
   match({ routes, history: browserHistory }, (error, redirectLocation, renderProps) => {

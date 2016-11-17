@@ -11,11 +11,12 @@ export default template => `
     <title>${template.title}</title>
     <link rel="shortcut icon" href="https://static01.nyt.com/favicon.ico">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
+	  <link rel="stylesheet" href="/css/dashicons.css" />
     <style>${template.css}</style>
   </head>
 
   <body>
-    <main id="app">${template.html}</main>
+    <div id="root">${template.html}</div>
     <script id="preloadedData" type="application/json">
       ${JSON.stringify(template.dehydratedData)}
     </script>
