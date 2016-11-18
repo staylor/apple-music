@@ -1,4 +1,5 @@
 import React from 'react';
+import Relay from 'react-relay';
 import { FormattedMessage } from 'react-intl';
 import Actions from '../../flux/Actions';
 import Store from '../../flux/Store';
@@ -12,7 +13,6 @@ function Player(props) {
   const audio = Store.getAudio();
   // eslint-disable-next-line react/prop-types
   const { album, track } = props;
-
   let artist = null;
   let dashicon = 'play';
   const cssStyles = {
@@ -25,16 +25,18 @@ function Player(props) {
   }
 
   if (track && track.name) {
-    if (audio) {
+    if (audio && audio.duration && audio.currentTime) {
       cssStyles.width = `${Math.floor((100 / audio.duration) * audio.currentTime)}%`;
+      dashicon = audio.paused ? 'play' : 'pause';
     }
-    dashicon = !audio || audio.paused ? 'play' : 'pause';
-    details = (<div className={styles.details}>
-      &#8220;{track.name}&#8221; <span><FormattedMessage id="player.from" /></span>
-      &nbsp;<em><AlbumLink album={album} /></em>
-      &nbsp;<span><FormattedMessage id="player.by" /></span>
-      &nbsp;<ArtistLink artist={artist} />
-    </div>);
+    details = (
+      <div className={styles.details}>
+        &#8220;{track.name}&#8221; <span><FormattedMessage id="player.from" /></span>
+        &nbsp;<em><AlbumLink album={album} /></em>
+        &nbsp;<span><FormattedMessage id="player.by" /></span>
+        &nbsp;<ArtistLink artist={artist} />
+      </div>
+    );
   } else {
     details = <div className={styles.details}><FormattedMessage id="player.nothing" /></div>;
   }
@@ -55,4 +57,25 @@ function Player(props) {
   );
 }
 
-export default Player;
+
+export default Relay.createContainer(Player, {
+  fragments: {
+    album: () => Relay.QL`
+      fragment on Album {
+        ${AlbumLink.getFragment('album')}
+        artist(first: 1) {
+          edges {
+            node {
+              ${ArtistLink.getFragment('artist')}
+            }
+          }
+        }
+      }
+    `,
+    track: () => Relay.QL`
+      fragment on Track {
+        name
+      }
+    `,
+  },
+});

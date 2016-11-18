@@ -1,6 +1,7 @@
 import cookie from 'react-cookie';
 import { EventEmitter } from 'fbemitter';
 import catalog from '../../../graphql/src/data/catalog';
+import { TrackLoader } from '../../../graphql/src/database';
 
 const langs = {};
 let data = {
@@ -17,14 +18,14 @@ const emitter = new EventEmitter();
 const Store = {
   AUDIO_PATH: '/audio/',
 
-  setAudio() {
+  async setAudio(setSrc = true) {
     if (typeof window === 'undefined') {
       return;
     }
 
     audio = document.createElement('audio');
     if (data.track) {
-      const track = this.trackById(data.track);
+      const track = await (TrackLoader.load(data.track));
       audio.src = `${this.AUDIO_PATH}${track.src}`;
     }
 
@@ -33,12 +34,12 @@ const Store = {
     };
   },
 
-  getAudio() {
+  getAudio(setSrc = true) {
     if (audio) {
       return audio;
     }
 
-    this.setAudio();
+    this.setAudio(setSrc);
 
     return audio;
   },
