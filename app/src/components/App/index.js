@@ -11,7 +11,7 @@ import {
 import Store from '../../flux/Store';
 import Player from '../Player';
 import HomeLink from '../HomeLink';
-import styles from './styles.scss';
+import styles from './App.scss';
 
 /* eslint-disable react/prop-types */
 

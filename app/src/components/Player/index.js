@@ -4,7 +4,7 @@ import Actions from '../../flux/Actions';
 import Store from '../../flux/Store';
 import AlbumLink from '../Album/Link';
 import ArtistLink from '../Artist/Link';
-import styles from './styles.scss';
+import styles from './Player.scss';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 

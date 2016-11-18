@@ -2,11 +2,14 @@ import path from 'path';
 import 'source-map-support/register';
 import express from 'express';
 import proxy from 'http-proxy-middleware';
+import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import router from './router';
 
 const port = Number.parseInt(KYT.SERVER_PORT, 10);
 const app = express();
+
+app.use(cookieParser());
 
 // Standard Apache combined log output.
 // https://github.com/expressjs/morgan#combined

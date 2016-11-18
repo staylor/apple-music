@@ -20,7 +20,7 @@ const APP_DIR = path.join(__dirname, '../../../app');
   } else {
     fs.writeFileSync(
       path.join(APP_DIR, 'tools', 'schema.json'),
-      JSON.stringify(result, null, 2)
+      JSON.stringify(result.data, null, 2)
     );
     fs.writeFileSync(
       path.join(__dirname, 'schema.json'),

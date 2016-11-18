@@ -4,6 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 import Relay from 'react-relay';
 import IsomorphicRouter from 'isomorphic-relay-router';
 import { match } from 'react-router';
+import cookie from 'react-cookie';
 import template from './template';
 import routes from '../routes';
 
@@ -56,6 +57,8 @@ export default function router({ gqlUrl }) {
           const title = '';
           const description = '';
           const statusCode = 200;
+
+          cookie.plugToRequest(req, res);
           const html = ReactDOMServer.renderToString(IsomorphicRouter.render(props));
 
           res.status(statusCode).send(template({

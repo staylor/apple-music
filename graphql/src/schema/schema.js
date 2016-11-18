@@ -203,21 +203,21 @@ const Root = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt },
       },
-      resolve: (_, args) => AlbumLoader.load(args.id),
+      resolve: (_, args) => args.id && AlbumLoader.load(args.id),
     },
     artist: {
       type: ArtistType,
       args: {
         id: { type: GraphQLInt },
       },
-      resolve: (_, args) => ArtistLoader.load(args.id),
+      resolve: (_, args) => args.id && ArtistLoader.load(args.id),
     },
     track: {
       type: TrackType,
       args: {
         id: { type: GraphQLInt },
       },
-      resolve: (_, args) => TrackLoader.load(args.id),
+      resolve: (_, args) => args.id && TrackLoader.load(args.id),
     },
     node: nodeField,
   }),

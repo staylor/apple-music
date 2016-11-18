@@ -3,7 +3,7 @@ import Relay from 'react-relay';
 import classNames from 'classnames';
 import Actions from '../../flux/Actions';
 import Store from '../../flux/Store';
-import styles from './styles.scss';
+import styles from './Track.scss';
 
 /* eslint-disable react/prop-types */
 
