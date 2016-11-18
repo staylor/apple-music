@@ -1,6 +1,6 @@
 import cookie from 'react-cookie';
 import { EventEmitter } from 'fbemitter';
-import catalog from '../../../data/catalog';
+import catalog from '../../../graphql/src/data/catalog';
 
 const langs = {};
 let data = {
@@ -11,9 +11,6 @@ let data = {
   catalog,
 };
 let audio;
-const albumsById = {};
-const artistsById = {};
-const tracksById = {};
 
 const emitter = new EventEmitter();
 
@@ -79,83 +76,11 @@ const Store = {
     if (langs[locale]) {
       return langs[locale];
     }
-
+    /* eslint-disable global-require */
+    /* eslint-disable import/no-dynamic-require */
     langs[locale] = require(`../langs/${locale}.js`).default;
 
     return langs[locale];
-  },
-
-  albumById(albumId) {
-    albumId = parseInt(albumId, 10);
-    if (albumsById[albumId]) {
-      return albumsById[albumId];
-    }
-
-    if (!data.catalog) {
-      return null;
-    }
-
-    const album = data.catalog.albums.find(currentAlbum => currentAlbum.albumId === albumId);
-    albumsById[albumId] = album;
-    return album;
-  },
-
-  artistById(artistId) {
-    artistId = parseInt(artistId, 10);
-    if (artistsById[artistId]) {
-      return artistsById[artistId];
-    }
-
-    if (!data.catalog) {
-      return null;
-    }
-
-    const artist = data.catalog.artists.find(currentArtist => currentArtist.artistId === artistId);
-    artistsById[artistId] = artist;
-    return artist;
-  },
-
-  trackById(trackId) {
-    trackId = parseInt(trackId, 10);
-    if (tracksById[trackId]) {
-      return tracksById[trackId];
-    }
-
-    if (!data.catalog) {
-      return null;
-    }
-
-    const artist = data.catalog.tracks.find(track => track.trackId === trackId);
-    tracksById[trackId] = artist;
-    return artist;
-  },
-
-  getCurrentAlbum() {
-    const albumId = cookie.load('album');
-    if (albumId) {
-      return this.albumById(albumId);
-    }
-    return null;
-  },
-
-  getCurrentTrack() {
-    const trackId = cookie.load('track');
-    if (trackId) {
-      return this.trackById(trackId);
-    }
-    return null;
-  },
-
-  getAlbums() {
-    return data.catalog.albums;
-  },
-
-  getArtists() {
-    return data.catalog.artists;
-  },
-
-  getTracks() {
-    return data.catalog.tracks;
   },
 };
 

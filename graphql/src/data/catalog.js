@@ -376,5 +376,4 @@ export const albums = [
   ]
 }];
 
-
 export default { albums, artists, tracks };

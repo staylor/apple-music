@@ -122,8 +122,6 @@ type Root {
   album(id: Int): Album
   artist(id: Int): Artist
   track(id: Int): Track
-  currentAlbum: Album
-  currentTrack: Track
 
   # Fetches an object given its ID
   node(

@@ -15,21 +15,19 @@ import {
   connectionFromArray,
 } from 'graphql-relay';
 
-import Store from './flux/Store';
+import db, { AlbumLoader, ArtistLoader, TrackLoader } from '../database';
 
 /* eslint-disable no-use-before-define */
-
-const store = Store.getData();
 
 const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
     const { type, id } = fromGlobalId(globalId);
     if (type === 'Album') {
-      return Store.albumById(id);
+      return AlbumLoader.load(id);
     } else if (type === 'Artist') {
-      return Store.artistById(id);
+      return ArtistLoader.load(id);
     } else if (type === 'Track') {
-      return Store.trackById(id);
+      return TrackLoader.load(id);
     }
     return null;
   },
@@ -83,7 +81,7 @@ const DiscType = new GraphQLObjectType({
       description: 'A list of tracks.',
       args: connectionArgs,
       resolve: (disc, args) => connectionFromArray(
-        disc.tracks.map(id => Store.trackById(id)),
+        disc.tracks.map(id => TrackLoader.load(id)),
         args
       ),
     },
@@ -108,7 +106,7 @@ const ArtistType = new GraphQLObjectType({
       description: 'Albums by the artist.',
       args: connectionArgs,
       resolve: (artist, args) => connectionFromArray(
-        artist.albums.map(id => Store.albumById(id)),
+        artist.albums.map(id => AlbumLoader.load(id)),
         args
       ),
     },
@@ -134,7 +132,7 @@ const AlbumType = new GraphQLObjectType({
       description: 'The name of the artist who created the album.',
       args: connectionArgs,
       resolve: (album, args) => connectionFromArray(
-        [Store.artistById(album.artist)],
+        [ArtistLoader.load(album.artist)],
         args
       ),
     },
@@ -197,7 +195,7 @@ const Root = new GraphQLObjectType({
     albums: {
       type: CollectionType,
       resolve: () => ({
-        results: store.catalog.albums,
+        results: db.getAlbums(),
       }),
     },
     album: {
@@ -205,29 +203,21 @@ const Root = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt },
       },
-      resolve: (_, args) => Store.albumById(args.id),
+      resolve: (_, args) => AlbumLoader.load(args.id),
     },
     artist: {
       type: ArtistType,
       args: {
         id: { type: GraphQLInt },
       },
-      resolve: (_, args) => Store.artistById(args.id),
+      resolve: (_, args) => ArtistLoader.load(args.id),
     },
     track: {
       type: TrackType,
       args: {
         id: { type: GraphQLInt },
       },
-      resolve: (_, args) => Store.trackById(args.id),
-    },
-    currentAlbum: {
-      type: AlbumType,
-      resolve: () => Store.getCurrentAlbum(),
-    },
-    currentTrack: {
-      type: TrackType,
-      resolve: () => Store.getCurrentTrack(),
+      resolve: (_, args) => TrackLoader.load(args.id),
     },
     node: nodeField,
   }),

@@ -7,12 +7,11 @@ import { browserHistory, match, Router } from 'react-router';
 import Relay from 'react-relay';
 import AppRoutes from '../routes';
 
+// this is from the HTML document served by the server
 const { data } = JSON.parse(document.getElementById('preloadedData').textContent);
 
 const environment = new Relay.Environment();
-const networkLayer = new Relay.DefaultNetworkLayer(
-  '/graphql',
-);
+const networkLayer = new Relay.DefaultNetworkLayer('/graphql');
 
 environment.injectNetworkLayer(networkLayer);
 IsomorphicRelay.injectPreparedData(environment, data);

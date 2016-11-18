@@ -32,6 +32,8 @@ class App extends Component {
   }
 
   static addLocale(locale) {
+    /* eslint-disable global-require */
+    // eslint-disable-next-line import/no-dynamic-require
     const localeData = require(`react-intl/locale-data/${locale}`);
     addLocaleData(localeData);
   }

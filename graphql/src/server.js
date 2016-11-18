@@ -2,8 +2,7 @@ import express from 'express';
 import graphQLHTTP from 'express-graphql';
 import responseTime from 'response-time';
 import queryLogger from './middleware/queryLogger';
-import Schema from './schema';
-import { logError } from './log';
+import Schema from './schema/schema';
 
 /* eslint-disable no-console */
 

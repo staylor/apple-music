@@ -78,7 +78,11 @@ module.exports = {
     }
 
     // Aliases
-    appConfig.resolve.alias = Object.assign({}, appConfig.resolve.alias || {}, aliasesConfig.resolve.alias);
+    appConfig.resolve.alias = Object.assign(
+      {},
+      appConfig.resolve.alias || {},
+      aliasesConfig.resolve.alias
+    );
     return appConfig;
   },
 };

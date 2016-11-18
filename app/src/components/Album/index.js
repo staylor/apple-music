@@ -8,7 +8,7 @@ import ArtistLink from '../Artist/Link';
 import Track from '../Track';
 import Actions from '../../flux/Actions';
 import Store from '../../flux/Store';
-import styles from './styles.scss';
+import styles from './Album.scss';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/prop-types */
