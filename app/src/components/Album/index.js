@@ -99,7 +99,7 @@ class Album extends Component {
           </header>
           {album.discs.map((disc, index) => (
             <ol key={index}>
-              {disc.tracks.edges.map(({ node }, i) => <Track key={i} track={node} album={album} />)}
+              {disc.tracks.edges.map(({ node }) => <Track key={node.id} track={node} album={album} />)}
             </ol>
           ))}
 
@@ -114,18 +114,16 @@ export default Relay.createContainer(Album, {
     album: () => Relay.QL`
       fragment on Album {
         id,
-        albumId,
-        name,
-        image,
+        ${AlbumLink.getFragment('album')}
+        ${AlbumImage.getFragment('album')}
         genre,
         year,
         length,
         artist(first: 1) {
           edges {
             node {
-              id,
-              artistId,
-              name
+              id
+              ${ArtistLink.getFragment('artist')}
             }
           }
         },
@@ -133,6 +131,7 @@ export default Relay.createContainer(Album, {
           tracks(first: 100) {
             edges {
               node {
+                id
                 ${Track.getFragment('track')}
               }
             }

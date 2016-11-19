@@ -20,7 +20,6 @@ if (process.env.NODE_ENV === 'production') {
         .map(a => fs.readFileSync(path.join(__dirname, '../public', clientAssets[a].css), 'utf8'))
         .join('\n');
 
-
   // Inline our manifest bundle mapping for performance reasons
   // (since it'll always be relatively small, better to save the rounddtrip)
   manifest = Object.keys(clientAssets)

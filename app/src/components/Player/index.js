@@ -57,6 +57,10 @@ function Player(props) {
   );
 }
 
+Player.defaultProps = {
+  album: null,
+  track: null,
+};
 
 export default Relay.createContainer(Player, {
   fragments: {

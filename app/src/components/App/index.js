@@ -126,29 +126,13 @@ export default Relay.createContainer(App, {
   fragments: {
     currentAlbum: () => Relay.QL`
       fragment on Album {
-        id,
-        albumId,
-        name,
-        artist(first: 1) {
-          edges {
-            node {
-              id,
-              artistId,
-              name
-            }
-          }
-        }
+        ${Player.getFragment('album')}
       }
     `,
 
     currentTrack: () => Relay.QL`
       fragment on Track {
-        id,
-        trackId,
-        number,
-        name,
-        length,
-        src
+        ${Player.getFragment('track')}
       }
     `,
   },

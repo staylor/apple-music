@@ -1,7 +1,7 @@
 import React from 'react';
 import Relay from 'react-relay';
 import BrowseAlbum from '../Album/Browse';
-import styles from './styles.scss';
+import styles from './Artist.scss';
 
 /* eslint-disable react/prop-types */
 
@@ -30,9 +30,7 @@ export default Relay.createContainer(Artist, {
             cursor
             node {
               id
-              albumId
-              name
-              image
+              ${BrowseAlbum.getFragment('album')}
             }
           }
         },

@@ -1,18 +1,24 @@
 import React from 'react';
+import Relay from 'react-relay';
 import AlbumLink from './Link';
 import AlbumImage from './Image';
 
 /* eslint-disable react/prop-types */
 
-function BrowseAlbum(props) {
-  const album = props.album;
+const BrowseAlbum = props => (
+  <li>
+    <AlbumImage album={props.album} />
+    <AlbumLink album={props.album} />
+  </li>
+);
 
-  return (
-    <li>
-      <AlbumImage album={album} />
-      <AlbumLink album={album} />
-    </li>
-  );
-}
-
-export default BrowseAlbum;
+export default Relay.createContainer(BrowseAlbum, {
+  fragments: {
+    album: () => Relay.QL`
+      fragment on Album {
+        ${AlbumLink.getFragment('album')}
+        ${AlbumImage.getFragment('album')}
+      }
+    `,
+  },
+});
