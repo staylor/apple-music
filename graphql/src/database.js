@@ -9,16 +9,25 @@ const db = {
 
   albumById(albumId) {
     albumId = parseInt(albumId, 10);
+    if (!albumId) {
+      return null;
+    }
     return albums.find(currentAlbum => currentAlbum.albumId === albumId);
   },
 
   artistById(artistId) {
     artistId = parseInt(artistId, 10);
+    if (!artistId) {
+      return null;
+    }
     return artists.find(currentArtist => currentArtist.artistId === artistId);
   },
 
   trackById(trackId) {
     trackId = parseInt(trackId, 10);
+    if (!trackId) {
+      return null;
+    }
     return tracks.find(track => track.trackId === trackId);
   },
 

@@ -3,6 +3,7 @@ import Relay from 'react-relay';
 import classNames from 'classnames';
 import Actions from '../../flux/Actions';
 import Store from '../../flux/Store';
+import AlbumLink from '../Album/Link';
 import styles from './Track.scss';
 
 /* eslint-disable react/prop-types */
@@ -48,6 +49,12 @@ class Track extends Component {
 
 export default Relay.createContainer(Track, {
   fragments: {
+    album: () => Relay.QL`
+      fragment on Album {
+        albumId
+        name
+      }
+    `,
     track: () => Relay.QL`
       fragment on Track {
         id,

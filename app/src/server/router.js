@@ -38,7 +38,9 @@ export default function router({ gqlUrl }) {
   // this configuration will be passed down to the client
   const clientConfig = {};
 
-  const networkLayer = new Relay.DefaultNetworkLayer(gqlUrl);
+  const networkLayer = new Relay.DefaultNetworkLayer(gqlUrl, {
+    credentials: 'same-origin',
+  });
 
   return (req, res, next) =>
     match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {

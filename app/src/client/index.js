@@ -11,7 +11,9 @@ import AppRoutes from '../routes';
 const { data } = JSON.parse(document.getElementById('preloadedData').textContent);
 
 const environment = new Relay.Environment();
-const networkLayer = new Relay.DefaultNetworkLayer('/graphql');
+const networkLayer = new Relay.DefaultNetworkLayer('/graphql', {
+  credentials: 'same-origin',
+});
 
 environment.injectNetworkLayer(networkLayer);
 IsomorphicRelay.injectPreparedData(environment, data);
