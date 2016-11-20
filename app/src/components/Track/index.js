@@ -3,12 +3,31 @@ import Relay from 'react-relay';
 import classNames from 'classnames';
 import Actions from '../../flux/Actions';
 import Store from '../../flux/Store';
-import AlbumLink from '../Album/Link';
 import styles from './Track.scss';
 
 /* eslint-disable react/prop-types */
 
 class Track extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      current: this.isCurrent(),
+    };
+  }
+
+  componentDidMount() {
+    this.subscription = Store.addListener('change', () => {
+      this.setState({
+        current: this.isCurrent(),
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.subscription.remove();
+  }
+
   isCurrent() {
     const store = Store.getData();
     if (store.track) {
@@ -21,11 +40,10 @@ class Track extends Component {
     const audio = Store.getAudio();
     // eslint-disable-next-line react/prop-types
     const { track, album } = this.props;
-    const current = this.isCurrent();
     const className = classNames(styles.item, {
-      [styles.paused]: current && (!audio || audio.paused),
-      [styles.playing]: current && (audio && !audio.paused),
-      [styles.notPlaying]: !current,
+      [styles.paused]: this.state.current && (!audio || audio.paused),
+      [styles.playing]: this.state.current && (audio && !audio.paused),
+      [styles.notPlaying]: !this.state.current,
     });
 
     return (

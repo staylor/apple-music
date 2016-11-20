@@ -114,13 +114,14 @@ export default Relay.createContainer(Album, {
   fragments: {
     album: () => Relay.QL`
       fragment on Album {
-        id,
+        id
+        albumId
+        genre
+        year
+        length
         ${AlbumLink.getFragment('album')}
         ${AlbumImage.getFragment('album')}
         ${Track.getFragment('album')}
-        genre,
-        year,
-        length,
         artist(first: 1) {
           edges {
             node {

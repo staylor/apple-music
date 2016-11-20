@@ -12,19 +12,19 @@ import styles from './Player.scss';
 function Player(props) {
   const audio = Store.getAudio();
   // eslint-disable-next-line react/prop-types
-  const { album, track } = props;
+  const { track } = props;
   let artist = null;
+  let album = null;
   let dashicon = 'play';
   const cssStyles = {
     width: '0%',
   };
   let details;
 
-  if (album) {
-    album.artist.edges.map(({ node }) => (artist = node));
-  }
-
   if (track && track.name) {
+    track.album.edges.map(({ node }) => (album = node));
+    album.artist.edges.map(({ node }) => (artist = node));
+
     if (audio && audio.duration && audio.currentTime) {
       cssStyles.width = `${Math.floor((100 / audio.duration) * audio.currentTime)}%`;
       dashicon = audio.paused ? 'play' : 'pause';
@@ -58,27 +58,28 @@ function Player(props) {
 }
 
 Player.defaultProps = {
-  album: null,
   track: null,
 };
 
 export default Relay.createContainer(Player, {
   fragments: {
-    album: () => Relay.QL`
-      fragment on Album {
-        ${AlbumLink.getFragment('album')}
-        artist(first: 1) {
-          edges {
-            node {
-              ${ArtistLink.getFragment('artist')}
-            }
-          }
-        }
-      }
-    `,
     track: () => Relay.QL`
       fragment on Track {
         name
+        album(first: 1) {
+          edges {
+            node {
+              ${AlbumLink.getFragment('album')}
+              artist(first: 1) {
+                edges {
+                  node {
+                    ${ArtistLink.getFragment('artist')}
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     `,
   },
