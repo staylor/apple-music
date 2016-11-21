@@ -1,6 +1,5 @@
-export const SET_TRACK = 'SET_TRACK';
-export const SET_TIME = 'SET_TIME';
-export const TOGGLE_TRACK = 'TOGGLE_TRACK';
+import { SET_TRACK, SET_TRACK_INFO, TOGGLE_TRACK } from '../actions';
+
 export const PLAYER_IDLE = 0;
 export const PLAYER_ACTIVE = 1;
 
@@ -22,7 +21,7 @@ const trackState = {
 
 export const trackInfo = (state = trackState, action) => {
   switch (action.type) {
-    case SET_TIME:
+    case SET_TRACK_INFO:
       return {
         currentTime: action.time,
         duration: action.duration,

@@ -1,7 +1,7 @@
-const SET_TRACK = 'SET_TRACK';
-const SET_TIME = 'SET_TIME';
-const TOGGLE_TRACK = 'TOGGLE_TRACK';
-const SET_LOCALE = 'SET_LOCALE';
+export const SET_TRACK = 'SET_TRACK';
+export const SET_TRACK_INFO = 'SET_TRACK_INFO';
+export const TOGGLE_TRACK = 'TOGGLE_TRACK';
+export const SET_LOCALE = 'SET_LOCALE';
 
 export const setCurrentTrack = track => ({
   type: SET_TRACK,
@@ -9,7 +9,7 @@ export const setCurrentTrack = track => ({
 });
 
 export const setTrackInfo = (time, duration) => ({
-  type: SET_TIME,
+  type: SET_TRACK_INFO,
   time,
   duration,
 });
