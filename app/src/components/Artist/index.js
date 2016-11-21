@@ -5,18 +5,14 @@ import styles from './Artist.scss';
 
 /* eslint-disable react/prop-types */
 
-const Artist = ({ artist }) => {
-  const albums = artist.albums.edges.map(edge => (edge.node));
-
-  return (
-    <div className={styles.wrap}>
-      <h1>{artist.name}</h1>
-      <ul className={styles.albums}>
-        {albums.map(album => <BrowseAlbum key={album.id} album={album} />)}
-      </ul>
-    </div>
-  );
-};
+const Artist = ({ artist }) => (
+  <div className={styles.wrap}>
+    <h1>{artist.name}</h1>
+    <ul className={styles.albums}>
+      {artist.albums.edges.map(({ node }) => <BrowseAlbum key={node.id} album={node} />)}
+    </ul>
+  </div>
+);
 
 export default Relay.createContainer(Artist, {
   fragments: {

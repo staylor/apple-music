@@ -11,7 +11,6 @@ import AppRoutes from '../routes';
 import appReducers from '../reducers';
 import audio from './audio';
 
-// eslint-disable-next-line no-underscore-dangle
 const preloadedState = JSON.parse(document.getElementById('preloadedState').textContent);
 
 const store = createStore(
