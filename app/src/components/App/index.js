@@ -3,14 +3,13 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import {
   IntlProvider,
-  addLocaleData,
   FormattedMessage,
   FormattedNumber,
   FormattedPlural,
 } from 'react-intl';
 import Player from '../Player';
 import HomeLink from '../HomeLink';
-import { setCurrentTime, setLocale } from '../../actions';
+import { setLocale } from '../../actions';
 import styles from './App.scss';
 
 /* eslint-disable react/prop-types */
@@ -19,23 +18,11 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.audio = null;
-  }
-
-  static addLocale(locale) {
-    /* eslint-disable global-require */
-    // eslint-disable-next-line import/no-dynamic-require
-    const localeData = require(`react-intl/locale-data/${locale}`);
-    addLocaleData(localeData);
-  }
-
-  componentWillMount() {
     let locale = 'en';
-    if (this.props.params && this.props.params.locale) {
-      locale = this.props.params.locale;
+    if (props.params && props.params.locale) {
+      locale = props.params.locale;
     }
-    this.props.onSetLocale(locale);
-    App.addLocale(locale);
+    props.onSetLocale(locale);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,30 +37,10 @@ class App extends Component {
     }
 
     nextProps.onSetLocale(locale);
-    App.addLocale(locale);
   }
 
   render() {
-    const isServerRender = typeof window === 'undefined';
-    let { locale, messages } = this.props;
-    const { params, catalog, currentTrack, onTimeUpdate } = this.props;
-
-    if (isServerRender && params && params.locale && locale !== params.locale) {
-      locale = params.locale;
-      // eslint-disable-next-line
-      messages = require(`../../langs/${locale}.js`).default;
-    }
-
-    if (!this.audio && !isServerRender) {
-      this.audio = document.createElement('audio');
-      this.audio.ontimeupdate = (event) => {
-        onTimeUpdate(event.timeStamp);
-      };
-    }
-
-    if (this.audio && currentTrack && currentTrack.src && !this.audio.src) {
-      this.audio.src = `/audio/${currentTrack.src}`;
-    }
+    const { locale, messages, catalog } = this.props;
 
     let enPath = this.props.location.pathname.replace('/es', '');
     const esPath = enPath === '/' ? '/es' : `/es${enPath}`;
@@ -120,7 +87,7 @@ class App extends Component {
             />
           </p>
 
-          <Player audio={this.audio} />
+          <Player />
           {this.props.children}
         </div>
       </IntlProvider>
@@ -128,21 +95,13 @@ class App extends Component {
   }
 }
 
-App.defaultProps = {
-  track: null,
-};
-
 const mapStateToProps = state => ({
   catalog: state.catalog,
-  currentTrack: state.currentTrack,
   locale: state.locale.code,
   messages: state.locale.messages,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onTimeUpdate: (timeStamp) => {
-    dispatch(setCurrentTime(timeStamp));
-  },
   onSetLocale: (locale) => {
     dispatch(setLocale(locale));
   },

@@ -8,6 +8,7 @@ import AlbumLink from './Link';
 import ArtistLink from '../Artist/Link';
 import Track from '../Track';
 import { toggleCurrentTrack } from '../../actions';
+import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
 import styles from './Album.scss';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -15,15 +16,14 @@ import styles from './Album.scss';
 
 const trackCounts = {};
 
-let Album = ({ album, current, messages, onClick }) => {
-  const audio = null;
+let Album = ({ album, current, messages, playerState, bindClick }) => {
   const playClass = `dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`;
   const pauseClass = `dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`;
 
   let tracks = 0;
   const className = classNames(styles.album, {
-    [styles.paused]: current && (!audio || audio.paused),
-    [styles.playing]: current && (audio && !audio.paused),
+    [styles.paused]: current && playerState === PLAYER_IDLE,
+    [styles.playing]: current && playerState === PLAYER_ACTIVE,
     [styles.notPlaying]: !current,
   });
 
@@ -34,17 +34,19 @@ let Album = ({ album, current, messages, onClick }) => {
     trackCounts[album.id] = tracks;
   }
 
+  const boundClick = bindClick(current);
+
   return (
     <div className={className}>
       <figure className={styles.artwork}>
-        <span className={playClass} onClick={onClick} />
-        <span className={pauseClass} onClick={onClick} />
+        <span className={playClass} onClick={boundClick} />
+        <span className={pauseClass} onClick={boundClick} />
         <AlbumImage album={album} />
         <figcaption
           className={styles.details}
         >
           <FormattedNumber value={tracks} />
-          &nbsp;
+          {' '}
           <FormattedPlural
             value={tracks}
             one={messages['album.song']}
@@ -83,11 +85,16 @@ const mapStateToProps = (state, ownProps) => {
   return {
     current: currentAlbum && currentAlbum.albumId === ownProps.album.albumId,
     messages: state.locale.messages,
+    playerState: state.playerState,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  onClick: () => (ownProps.current && dispatch(toggleCurrentTrack())),
+const mapDispatchToProps = dispatch => ({
+  bindClick: current => () => {
+    if (current) {
+      dispatch(toggleCurrentTrack());
+    }
+  },
 });
 
 Album = connect(

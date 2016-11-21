@@ -8,14 +8,14 @@ export const setCurrentTrack = track => ({
   track,
 });
 
-export const setCurrentTime = time => ({
+export const setTrackInfo = (time, duration) => ({
   type: SET_TIME,
   time,
+  duration,
 });
 
-export const toggleCurrentTrack = audio => ({
+export const toggleCurrentTrack = () => ({
   type: TOGGLE_TRACK,
-  audio,
 });
 
 export const setLocale = locale => ({

@@ -4,27 +4,29 @@ import { FormattedMessage } from 'react-intl';
 import { toggleCurrentTrack } from '../../actions';
 import AlbumLink from '../Album/Link';
 import ArtistLink from '../Artist/Link';
+import { PLAYER_IDLE } from '../../reducers/player';
 import styles from './Player.scss';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/prop-types */
 
-const Player = ({ audio, track, onClick }) => {
-  let artist = null;
-  let album = null;
-  let dashicon = 'play';
+const Player = ({ track, trackInfo, playerState, bindClick }) => {
   const cssStyles = {
     width: '0%',
   };
+
+  let artist = null;
+  let album = null;
+  let dashicon = 'play';
   let details;
 
   if (track && track.name) {
     track.album.edges.map(({ node }) => (album = node));
     album.artist.edges.map(({ node }) => (artist = node));
 
-    if (audio && audio.duration && audio.currentTime) {
-      cssStyles.width = `${Math.floor((100 / audio.duration) * audio.currentTime)}%`;
-      dashicon = audio.paused ? 'play' : 'pause';
+    if (trackInfo.duration && trackInfo.currentTime) {
+      cssStyles.width = `${Math.floor((100 / trackInfo.duration) * trackInfo.currentTime)}%`;
+      dashicon = playerState === PLAYER_IDLE ? 'play' : 'pause';
     }
     details = (
       <div className={styles.details}>
@@ -44,7 +46,7 @@ const Player = ({ audio, track, onClick }) => {
   return (
     <div className={styles.wrap}>
       <div
-        onClick={onClick}
+        onClick={bindClick(track)}
         className={`${styles.control} dashicons dashicons-controls-${dashicon}`}
       />
       <div className={styles.metadata}>
@@ -57,16 +59,18 @@ const Player = ({ audio, track, onClick }) => {
   );
 };
 
-Player.defaultProps = {
-  track: null,
-};
-
 const mapStateToProps = state => ({
   track: state.currentTrack,
+  trackInfo: state.trackInfo,
+  playerState: state.playerState,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClick: audio => dispatch(toggleCurrentTrack(audio)),
+  bindClick: track => () => {
+    if (track) {
+      dispatch(toggleCurrentTrack());
+    }
+  },
 });
 
 export default connect(

@@ -3,15 +3,15 @@ import Relay from 'react-relay';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { toggleCurrentTrack, setCurrentTrack } from '../../actions';
+import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
 import styles from './Track.scss';
 
 /* eslint-disable react/prop-types */
 
-let Track = ({ track, current, onClick }) => {
-  const audio = null;
+let Track = ({ track, current, playerState, bindClick }) => {
   const className = classNames(styles.item, {
-    [styles.paused]: current && (!audio || audio.paused),
-    [styles.playing]: current && (audio && !audio.paused),
+    [styles.paused]: current && playerState === PLAYER_IDLE,
+    [styles.playing]: current && playerState === PLAYER_ACTIVE,
     [styles.notPlaying]: !current,
   });
 
@@ -19,7 +19,7 @@ let Track = ({ track, current, onClick }) => {
     // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <li
       className={className}
-      onClick={onClick}
+      onClick={bindClick(current, playerState)}
     >
       <span className={styles.control}>
         <span className={styles.text}>{track.number}</span>
@@ -34,11 +34,19 @@ let Track = ({ track, current, onClick }) => {
 
 const mapStateToProps = (state, ownProps) => ({
   current: state.currentTrack && state.currentTrack.trackId === ownProps.track.trackId,
+  playerState: state.playerState,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onClick: () => {
-    dispatch(ownProps.current ? toggleCurrentTrack() : setCurrentTrack(ownProps.track));
+  bindClick: (current, playerState) => () => {
+    if (current) {
+      dispatch(toggleCurrentTrack());
+    } else {
+      if (playerState === PLAYER_IDLE) {
+        dispatch(toggleCurrentTrack());
+      }
+      dispatch(setCurrentTrack(ownProps.track));
+    }
   },
 });
 

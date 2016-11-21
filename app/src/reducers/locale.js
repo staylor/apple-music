@@ -1,32 +1,45 @@
+import { addLocaleData } from 'react-intl';
+
 export const SET_LOCALE = 'SET_LOCALE';
 
 /* eslint-disable global-require */
 /* eslint-disable import/no-dynamic-require */
 
-const enMessages = require('../langs/en.js').default;
+const langCache = {};
 
-const langCache = {
-  en: enMessages,
+export const getMessages = (locale) => {
+  if (langCache[locale]) {
+    return langCache[locale];
+  }
+
+  langCache[locale] = require(`../langs/${locale}.js`).default;
+
+  return langCache[locale];
+};
+
+export const getLocaleData = locale => (
+  require(`react-intl/locale-data/${locale}`)
+);
+
+export const setLocaleData = (locale) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  addLocaleData(getLocaleData(locale));
 };
 
 const initialState = {
   code: 'en',
-  messages: langCache.en,
+  messages: getMessages('en'),
 };
 
 export const locale = (state = initialState, action) => {
-  let messages;
-
   switch (action.type) {
     case SET_LOCALE:
-      if (langCache[action.locale]) {
-        messages = langCache[action.locale];
-      } else {
-        messages = langCache[action.locale] = require(`../langs/${action.locale}.js`).default;
-      }
+      setLocaleData(action.locale);
       return {
         code: action.locale,
-        messages,
+        messages: getMessages(action.locale),
       };
     default:
       return state;

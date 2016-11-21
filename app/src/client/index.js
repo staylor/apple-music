@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import AppRoutes from '../routes';
 import appReducers from '../reducers';
+import audio from './audio';
 
 // eslint-disable-next-line no-underscore-dangle
 const preloadedState = JSON.parse(document.getElementById('preloadedState').textContent);
@@ -19,6 +20,9 @@ const store = createStore(
   // eslint-disable-next-line
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
+
+// the audio element lives in the ether, has no allegiance to a component.
+audio(store);
 
 // this is from the HTML document served by the server
 const { data } = JSON.parse(document.getElementById('preloadedData').textContent);
