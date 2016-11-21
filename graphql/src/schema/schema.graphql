@@ -148,6 +148,9 @@ type Track implements Node {
 
   # The relative path to the source audio for the track.
   src: String
+
+  # The album containing the track
+  album(after: String, first: Int, before: String, last: Int): AlbumConnection
 }
 
 # A connection to a list of items.

@@ -68,6 +68,15 @@ const TrackType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'The relative path to the source audio for the track.',
     },
+    album: {
+      type: AlbumConnection,
+      description: 'The album containing the track',
+      args: connectionArgs,
+      resolve: (track, args) => track.album && connectionFromArray(
+        [AlbumLoader.load(track.album)],
+        args
+      ),
+    },
   }),
   interfaces: [nodeInterface],
 });

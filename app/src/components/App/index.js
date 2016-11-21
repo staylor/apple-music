@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Relay from 'react-relay';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 import {
   IntlProvider,
   addLocaleData,
@@ -8,9 +8,9 @@ import {
   FormattedNumber,
   FormattedPlural,
 } from 'react-intl';
-import Store from '../../flux/Store';
 import Player from '../Player';
 import HomeLink from '../HomeLink';
+import { setCurrentTime, setLocale } from '../../actions';
 import styles from './App.scss';
 
 /* eslint-disable react/prop-types */
@@ -19,16 +19,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    const initialState = Object.assign({}, Store.getData(), {
-      currentAlbum: props.currentAlbum,
-      currentTrack: props.currentTrack,
-    });
-
-    this.state = initialState;
-
-    Store.addListener('change', () => {
-      this.setState(Store.getData());
-    });
+    this.audio = null;
   }
 
   static addLocale(locale) {
@@ -43,12 +34,12 @@ class App extends Component {
     if (this.props.params && this.props.params.locale) {
       locale = this.props.params.locale;
     }
-    Store.set('locale', locale);
+    this.props.onSetLocale(locale);
     App.addLocale(locale);
   }
 
   componentWillReceiveProps(nextProps) {
-    let locale = Store.getLocale();
+    let locale = this.props.locale;
 
     if (nextProps.params && nextProps.params.locale) {
       if (nextProps.params.locale !== locale) {
@@ -58,14 +49,31 @@ class App extends Component {
       locale = 'en';
     }
 
-    Store.set('locale', locale);
+    nextProps.onSetLocale(locale);
     App.addLocale(locale);
   }
 
   render() {
-    const locale = Store.getLocale();
-    const messages = Store.getMessages();
-    const { currentAlbum, currentTrack, catalog } = this.state;
+    const isServerRender = typeof window === 'undefined';
+    let { locale, messages } = this.props;
+    const { params, catalog, currentTrack, onTimeUpdate } = this.props;
+
+    if (isServerRender && params && params.locale && locale !== params.locale) {
+      locale = params.locale;
+      // eslint-disable-next-line
+      messages = require(`../../langs/${locale}.js`).default;
+    }
+
+    if (!this.audio && !isServerRender) {
+      this.audio = document.createElement('audio');
+      this.audio.ontimeupdate = (event) => {
+        onTimeUpdate(event.timeStamp);
+      };
+    }
+
+    if (this.audio && currentTrack && currentTrack.src && !this.audio.src) {
+      this.audio.src = `/audio/${currentTrack.src}`;
+    }
 
     let enPath = this.props.location.pathname.replace('/es', '');
     const esPath = enPath === '/' ? '/es' : `/es${enPath}`;
@@ -82,12 +90,14 @@ class App extends Component {
               <HomeLink />
               &nbsp;{locale === 'en' ?
                 <Link className={styles.locale} to={esPath}>ES</Link> :
-                  <Link className={styles.locale} to={enPath}>EN</Link>}
+                <Link className={styles.locale} to={enPath}>EN</Link>}
             </h2>
           </div>
+
           <p className={styles.intro}>
             <FormattedMessage id="app.intro" />
           </p>
+
           <p className={styles.intro}>
             <strong><FormattedMessage id="app.albums" /></strong>:
             &nbsp;<FormattedNumber value={1000000} />
@@ -98,6 +108,7 @@ class App extends Component {
               other={messages['app.albums']}
             />
           </p>
+
           <p className={styles.intro}>
             <strong><FormattedMessage id="app.artists" /></strong>:
             &nbsp;<FormattedNumber value={catalog.artists.length} />
@@ -109,7 +120,7 @@ class App extends Component {
             />
           </p>
 
-          <Player album={currentAlbum} track={currentTrack} />
+          <Player audio={this.audio} />
           {this.props.children}
         </div>
       </IntlProvider>
@@ -118,22 +129,26 @@ class App extends Component {
 }
 
 App.defaultProps = {
-  currentAlbum: null,
-  currentTrack: null,
+  track: null,
 };
 
-export default Relay.createContainer(App, {
-  fragments: {
-    currentAlbum: () => Relay.QL`
-      fragment on Album {
-        ${Player.getFragment('album')}
-      }
-    `,
+const mapStateToProps = state => ({
+  catalog: state.catalog,
+  currentTrack: state.currentTrack,
+  locale: state.locale.code,
+  messages: state.locale.messages,
+});
 
-    currentTrack: () => Relay.QL`
-      fragment on Track {
-        ${Player.getFragment('track')}
-      }
-    `,
+const mapDispatchToProps = dispatch => ({
+  onTimeUpdate: (timeStamp) => {
+    dispatch(setCurrentTime(timeStamp));
+  },
+  onSetLocale: (locale) => {
+    dispatch(setLocale(locale));
   },
 });
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

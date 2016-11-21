@@ -1,14 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Store from '../flux/Store';
+import { connect } from 'react-redux';
 
 /* eslint-disable react/prop-types */
 
-function L10NLink(props) {
-  const locale = Store.getLocale();
+const L10NLink = ({ locale, to, children }) => {
   const path = locale === 'en' ? '' : `/${locale}`;
+  return <Link to={path + to}>{children}</Link>;
+};
 
-  return <Link to={path + props.to}>{props.children}</Link>;
-}
+const mapStateToProps = state => ({
+  locale: state.locale.code,
+});
 
-export default L10NLink;
+export default connect(
+  mapStateToProps
+)(L10NLink);

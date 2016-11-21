@@ -5,7 +5,20 @@ import IsomorphicRelay from 'isomorphic-relay';
 import IsomorphicRouter from 'isomorphic-relay-router';
 import { browserHistory, match, Router } from 'react-router';
 import Relay from 'react-relay';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import AppRoutes from '../routes';
+import appReducers from '../reducers';
+
+// eslint-disable-next-line no-underscore-dangle
+const preloadedState = JSON.parse(document.getElementById('preloadedState').textContent);
+
+const store = createStore(
+  appReducers,
+  preloadedState,
+  // eslint-disable-next-line
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 // this is from the HTML document served by the server
 const { data } = JSON.parse(document.getElementById('preloadedData').textContent);
@@ -24,7 +37,9 @@ const mount = (routes = AppRoutes) => {
   match({ routes, history: browserHistory }, (error, redirectLocation, renderProps) => {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then((props) => {
       ReactDOM.render(
-        <Router {...props} onUpdate={() => window.scrollTo(0, 0)} />,
+        <Provider store={store}>
+          <Router {...props} onUpdate={() => window.scrollTo(0, 0)} />
+        </Provider>,
         rootElement
       );
     });

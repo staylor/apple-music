@@ -1,12 +1,16 @@
 import fs from 'fs';
 import path from 'path';
-import ReactDOMServer from 'react-dom/server';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
 import Relay from 'react-relay';
 import IsomorphicRouter from 'isomorphic-relay-router';
 import { match } from 'react-router';
 import cookie from 'react-cookie';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import template from './template';
 import routes from '../routes';
+import appReducers from '../reducers';
 
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 
@@ -60,7 +64,13 @@ export default function router({ gqlUrl }) {
           const statusCode = 200;
 
           cookie.plugToRequest(req, res);
-          const html = ReactDOMServer.renderToString(IsomorphicRouter.render(props));
+          const store = createStore(appReducers, {});
+          const html = renderToString(
+            <Provider store={store}>
+              {IsomorphicRouter.render(props)}
+            </Provider>
+          );
+          const preloadedState = store.getState();
 
           res.status(statusCode).send(template({
             title,
@@ -69,6 +79,7 @@ export default function router({ gqlUrl }) {
             css,
             entries,
             manifest,
+            preloadedState,
             dehydratedData: {
               data,
               config: clientConfig,

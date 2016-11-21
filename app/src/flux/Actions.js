@@ -22,7 +22,7 @@ const Actions = {
     let willPlay;
     let willPause;
     const store = Store.getData();
-    const audio = Store.getAudio(false);
+    const audio = Store.getAudio();
 
     if (store.track !== props.track) {
       if (audio.src && !audio.paused) {
@@ -47,15 +47,9 @@ const Actions = {
       audio.pause();
     }
 
-    // currentAlbum and currentTrack trigger the view refresh
-    store.album = props.album.albumId;
-    store.currentAlbum = props.album;
-    store.track = props.track.trackId;
-    store.currentTrack = props.track;
-    cookie.save('album', props.album.albumId, { path: '/' });
     cookie.save('track', props.track.trackId, { path: '/' });
-
-    Store.setData(store);
+    Store.set('track', props.track.trackId);
+    Store.set('currentTrack', props.track);
   },
 };
 

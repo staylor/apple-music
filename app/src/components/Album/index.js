@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Relay from 'react-relay';
 import { FormattedNumber, FormattedPlural } from 'react-intl';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 import AlbumImage from './Image';
 import AlbumLink from './Link';
 import ArtistLink from '../Artist/Link';
 import Track from '../Track';
-import Actions from '../../flux/Actions';
-import Store from '../../flux/Store';
+import { toggleCurrentTrack } from '../../actions';
 import styles from './Album.scss';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -15,100 +15,85 @@ import styles from './Album.scss';
 
 const trackCounts = {};
 
-class Album extends Component {
-  constructor(props) {
-    super(props);
+let Album = ({ album, current, messages, onClick }) => {
+  const audio = null;
+  const playClass = `dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`;
+  const pauseClass = `dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`;
 
-    this.state = {
-      current: this.isCurrent(),
-    };
+  let tracks = 0;
+  const className = classNames(styles.album, {
+    [styles.paused]: current && (!audio || audio.paused),
+    [styles.playing]: current && (audio && !audio.paused),
+    [styles.notPlaying]: !current,
+  });
+
+  if (trackCounts[album.id]) {
+    tracks = trackCounts[album.id];
+  } else {
+    album.discs.forEach(disc => (tracks += disc.tracks.edges.length));
+    trackCounts[album.id] = tracks;
   }
 
-  componentDidMount() {
-    this.subscription = Store.addListener('change', () => {
-      this.setState({
-        current: this.isCurrent(),
-      });
-    });
-  }
+  return (
+    <div className={className}>
+      <figure className={styles.artwork}>
+        <span className={playClass} onClick={onClick} />
+        <span className={pauseClass} onClick={onClick} />
+        <AlbumImage album={album} />
+        <figcaption
+          className={styles.details}
+        >
+          <FormattedNumber value={tracks} />
+          &nbsp;
+          <FormattedPlural
+            value={tracks}
+            one={messages['album.song']}
+            other={messages['album.songs']}
+          />
+          , {album.length}
+        </figcaption>
+      </figure>
+      <div className={styles.info}>
+        <header>
+          <h1><AlbumLink album={album} /></h1>
+          <h2>{album.artist.edges.map(({ node }) =>
+            <ArtistLink key={node.id} artist={node} />)}</h2>
 
-  componentWillUnmount() {
-    this.subscription.remove();
-  }
+          <div className={styles.meta}>
+            {album.genre} &bull; {album.year}
+          </div>
+        </header>
+        {album.discs.map((disc, index) => (
+          <ol key={index}>
+            {disc.tracks.edges.map(({ node }) =>
+              <Track key={node.id} track={node} album={album} />)}
+          </ol>
+        ))}
 
-  isCurrent() {
-    let album;
-    const store = Store.getData();
-
-    if (store.album) {
-      album = this.props.album;
-      return album && album.albumId === parseInt(store.album, 10);
-    }
-    return false;
-  }
-
-  render() {
-    const messages = Store.getMessages();
-    const audio = Store.getAudio();
-    const { album } = this.props;
-    const playClass = `dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`;
-    const pauseClass = `dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`;
-
-    let tracks = 0;
-    const className = classNames(styles.album, {
-      [styles.paused]: this.state.current && (!audio || audio.paused),
-      [styles.playing]: this.state.current && (audio && !audio.paused),
-      [styles.notPlaying]: !this.state.current,
-    });
-
-    if (trackCounts[album.id]) {
-      tracks = trackCounts[album.id];
-    } else {
-      album.discs.forEach(disc => (tracks += disc.tracks.edges.length));
-      trackCounts[album.id] = tracks;
-    }
-
-    return (
-      <div className={className}>
-        <figure className={styles.artwork}>
-          <span className={playClass} onClick={Actions.toggleControl} />
-          <span className={pauseClass} onClick={Actions.toggleControl} />
-          <AlbumImage album={album} />
-          <figcaption
-            className={styles.details}
-          >
-            <FormattedNumber value={tracks} />
-            &nbsp;
-            <FormattedPlural
-              value={tracks}
-              one={messages['album.song']}
-              other={messages['album.songs']}
-            />
-            , {album.length}
-          </figcaption>
-        </figure>
-        <div className={styles.info}>
-          <header>
-            <h1><AlbumLink album={album} /></h1>
-            <h2>{album.artist.edges.map(({ node }) =>
-              <ArtistLink key={node.id} artist={node} />)}</h2>
-
-            <div className={styles.meta}>
-              {album.genre} &bull; {album.year}
-            </div>
-          </header>
-          {album.discs.map((disc, index) => (
-            <ol key={index}>
-              {disc.tracks.edges.map(({ node }) =>
-                <Track key={node.id} track={node} album={album} />)}
-            </ol>
-          ))}
-
-        </div>
       </div>
-    );
+    </div>
+  );
+};
+
+const mapStateToProps = (state, ownProps) => {
+  let currentAlbum = null;
+  if (state.currentTrack && state.currentTrack.album) {
+    state.currentTrack.album.edges.map(({ node }) => (currentAlbum = node));
   }
-}
+  return {
+    current: currentAlbum && currentAlbum.albumId === ownProps.album.albumId,
+    messages: state.locale.messages,
+  };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onClick: () => (ownProps.current && dispatch(toggleCurrentTrack())),
+});
+
+Album = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Album);
 
 export default Relay.createContainer(Album, {
   fragments: {
@@ -116,17 +101,17 @@ export default Relay.createContainer(Album, {
       fragment on Album {
         id
         albumId
+        name
         genre
         year
         length
-        ${AlbumLink.getFragment('album')}
-        ${AlbumImage.getFragment('album')}
-        ${Track.getFragment('album')}
+        image
         artist(first: 1) {
           edges {
             node {
               id
-              ${ArtistLink.getFragment('artist')}
+              artistId
+              name
             }
           }
         },

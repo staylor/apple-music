@@ -5,10 +5,10 @@ import AlbumImage from './Image';
 
 /* eslint-disable react/prop-types */
 
-const BrowseAlbum = props => (
+const BrowseAlbum = ({ album }) => (
   <li>
-    <AlbumImage album={props.album} />
-    <AlbumLink album={props.album} />
+    <AlbumImage album={album} />
+    <AlbumLink album={album} />
   </li>
 );
 
@@ -16,8 +16,9 @@ export default Relay.createContainer(BrowseAlbum, {
   fragments: {
     album: () => Relay.QL`
       fragment on Album {
-        ${AlbumLink.getFragment('album')}
-        ${AlbumImage.getFragment('album')}
+        albumId
+        name
+        image
       }
     `,
   },

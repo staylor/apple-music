@@ -5,8 +5,7 @@ import styles from './Artist.scss';
 
 /* eslint-disable react/prop-types */
 
-function Artist(props) {
-  const artist = props.artist;
+const Artist = ({ artist }) => {
   const albums = artist.albums.edges.map(edge => (edge.node));
 
   return (
@@ -17,7 +16,7 @@ function Artist(props) {
       </ul>
     </div>
   );
-}
+};
 
 export default Relay.createContainer(Artist, {
   fragments: {

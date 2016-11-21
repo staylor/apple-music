@@ -1,4 +1,3 @@
-import cookie from 'react-cookie';
 import { EventEmitter } from 'fbemitter';
 import catalog from '../../../graphql/src/data/catalog';
 import { TrackLoader } from '../../../graphql/src/database';
@@ -6,9 +5,8 @@ import { TrackLoader } from '../../../graphql/src/database';
 const langs = {};
 let data = {
   locale: 'en',
-  track: cookie.load('track'),
-  album: cookie.load('album'),
-  currentTime: null,
+  track: null,
+  currentTime: 0,
   catalog,
 };
 let audio;
@@ -18,7 +16,7 @@ const emitter = new EventEmitter();
 const Store = {
   AUDIO_PATH: '/audio/',
 
-  async setAudio(setSrc = true) {
+  async setAudio() {
     if (typeof window === 'undefined') {
       return;
     }
@@ -34,12 +32,12 @@ const Store = {
     };
   },
 
-  getAudio(setSrc = true) {
+  getAudio() {
     if (audio) {
       return audio;
     }
 
-    this.setAudio(setSrc);
+    this.setAudio();
 
     return audio;
   },
@@ -50,13 +48,13 @@ const Store = {
 
   set(key, value) {
     data[key] = value;
-    emitter.emit(`change:${key}`);
-    emitter.emit('change');
+    emitter.emit(`change:${key}`, value);
+    emitter.emit('change', value);
   },
 
   setData(newData) {
     data = newData;
-    emitter.emit('change');
+    emitter.emit('change', newData);
   },
 
   addListener(eventType, fn) {
@@ -64,7 +62,7 @@ const Store = {
   },
 
   change() {
-    emitter.emit('change');
+    emitter.emit('change', data);
   },
 
   getLocale() {

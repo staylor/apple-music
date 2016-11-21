@@ -14,6 +14,9 @@ export default template => `<!DOCTYPE html>
 </head>
 <body>
   <div id="root">${template.html}</div>
+  <script id="preloadedState" type="application/json">
+    ${JSON.stringify(template.preloadedState)}
+  </script>
   <script id="preloadedData" type="application/json">
     ${JSON.stringify(template.dehydratedData)}
   </script>

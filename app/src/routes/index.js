@@ -10,8 +10,6 @@ const routes = (
   <Route
     path="/"
     getComponent={AppQuery.getComponent}
-    getQueries={AppQuery.queries}
-    prepareParams={AppQuery.prepareParams}
   >
     <IndexRoute
       getComponent={CatalogQuery.getComponent}

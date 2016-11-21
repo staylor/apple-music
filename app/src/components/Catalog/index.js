@@ -5,9 +5,9 @@ import styles from './Catalog.scss';
 
 /* eslint-disable react/prop-types */
 
-const Catalog = props => (
+const Catalog = ({ albums }) => (
   <div className={styles.wrap}>
-    {props.albums.results.map(album => <Album key={album.id} album={album} />)}
+    {albums.results.map(album => <Album key={album.id} album={album} />)}
   </div>
 );
 

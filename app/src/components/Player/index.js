@@ -1,18 +1,15 @@
 import React from 'react';
-import Relay from 'react-relay';
+import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import Actions from '../../flux/Actions';
-import Store from '../../flux/Store';
+import { toggleCurrentTrack } from '../../actions';
 import AlbumLink from '../Album/Link';
 import ArtistLink from '../Artist/Link';
 import styles from './Player.scss';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/prop-types */
 
-function Player(props) {
-  const audio = Store.getAudio();
-  // eslint-disable-next-line react/prop-types
-  const { track } = props;
+const Player = ({ audio, track, onClick }) => {
   let artist = null;
   let album = null;
   let dashicon = 'play';
@@ -32,9 +29,12 @@ function Player(props) {
     details = (
       <div className={styles.details}>
         &#8220;{track.name}&#8221; <span><FormattedMessage id="player.from" /></span>
-        &nbsp;<em><AlbumLink album={album} /></em>
-        &nbsp;<span><FormattedMessage id="player.by" /></span>
-        &nbsp;<ArtistLink artist={artist} />
+        {' '}
+        <em><AlbumLink album={album} /></em>
+        {' '}
+        <span><FormattedMessage id="player.by" /></span>
+        {' '}
+        <ArtistLink artist={artist} />
       </div>
     );
   } else {
@@ -44,7 +44,7 @@ function Player(props) {
   return (
     <div className={styles.wrap}>
       <div
-        onClick={Actions.toggleControl}
+        onClick={onClick}
         className={`${styles.control} dashicons dashicons-controls-${dashicon}`}
       />
       <div className={styles.metadata}>
@@ -55,32 +55,21 @@ function Player(props) {
       </div>
     </div>
   );
-}
+};
 
 Player.defaultProps = {
   track: null,
 };
 
-export default Relay.createContainer(Player, {
-  fragments: {
-    track: () => Relay.QL`
-      fragment on Track {
-        name
-        album(first: 1) {
-          edges {
-            node {
-              ${AlbumLink.getFragment('album')}
-              artist(first: 1) {
-                edges {
-                  node {
-                    ${ArtistLink.getFragment('artist')}
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `,
-  },
+const mapStateToProps = state => ({
+  track: state.currentTrack,
 });
+
+const mapDispatchToProps = dispatch => ({
+  onClick: audio => dispatch(toggleCurrentTrack(audio)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Player);
