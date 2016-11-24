@@ -21,13 +21,13 @@ export default Relay.createContainer(BrowseAlbum, {
   fragments: {
     album: () => Relay.QL`
       fragment on BrowseAlbum {
-        albumId
+        id
         name
-        image {
+        images {
           url
         }
         artists {
-          artistId
+          id
           name
         }
       }

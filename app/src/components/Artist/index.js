@@ -15,7 +15,7 @@ export default Relay.createContainer(Artist, {
   fragments: {
     artist: () => Relay.QL`
       fragment on Artist {
-        artistId
+        id
         name
       }
     `,

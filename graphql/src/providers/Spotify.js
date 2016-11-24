@@ -65,6 +65,7 @@ class Spotify {
   }
 
   doFetch(url, args) {
+    const self = this;
     return Spotify.getToken().then((token) => {
       let headers = {
         Accept: 'application/json',
@@ -80,14 +81,15 @@ class Spotify {
         ...args,
       });
 
-      return Reflect.apply(fetch, this, [url, mergedArgs])
+      return Reflect.apply(fetch, self, [url, mergedArgs])
         .then(response => response.json())
         .catch(err => console.log('ERROR', err));
     });
   }
 
-  getNewReleases() {
-    return this.doFetch(newReleasesUrl).then(json => ({
+  getNewReleases(limit = 40) {
+    const qs = querystring.stringify({ limit });
+    return this.doFetch(`${newReleasesUrl}?${qs}`).then(json => ({
       results: json.albums.items,
     }));
   }

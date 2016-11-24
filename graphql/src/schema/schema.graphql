@@ -187,7 +187,7 @@ type BrowseAlbum {
 # A list of results.
 type Collection {
   # Currently, a list of albums.
-  results: [BrowseAlbum]
+  results(sort: String, limit: Int): [BrowseAlbum]
 }
 
 # A list of copyrights.

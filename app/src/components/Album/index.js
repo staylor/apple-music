@@ -14,25 +14,16 @@ import styles from './Album.scss';
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/prop-types */
 
-const trackCounts = {};
-
 let Album = ({ album, current, messages, playerState, bindClick }) => {
   const playClass = `dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`;
   const pauseClass = `dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`;
 
-  let tracks = 0;
+  const tracks = album.tracks.items.length;
   const className = classNames(styles.album, {
     [styles.paused]: current && playerState === PLAYER_IDLE,
     [styles.playing]: current && playerState === PLAYER_ACTIVE,
     [styles.notPlaying]: !current,
   });
-
-  if (trackCounts[album.id]) {
-    tracks = trackCounts[album.id];
-  } else {
-    album.discs.forEach(disc => (tracks += disc.tracks.edges.length));
-    trackCounts[album.id] = tracks;
-  }
 
   const boundClick = bindClick(current);
 
@@ -52,26 +43,20 @@ let Album = ({ album, current, messages, playerState, bindClick }) => {
             one={messages['album.song']}
             other={messages['album.songs']}
           />
-          , {album.length}
+          , {100000}
         </figcaption>
       </figure>
       <div className={styles.info}>
         <header>
           <h1><AlbumLink album={album} /></h1>
-          <h2>{album.artist.edges.map(({ node }) =>
-            <ArtistLink key={node.id} artist={node} />)}</h2>
-
+          <h2>{album.artists.map(artist => <ArtistLink key={artist.id} artist={artist} />)}</h2>
           <div className={styles.meta}>
-            {album.genre} &bull; {album.year}
+            {album.genres.length && album.genres[0]} &bull; {album.release_date}
           </div>
         </header>
-        {album.discs.map((disc, index) => (
-          <ol key={index}>
-            {disc.tracks.edges.map(({ node }) =>
-              <Track key={node.id} track={node} album={album} />)}
-          </ol>
-        ))}
-
+        <ol>
+          {album.tracks.items.map(item => <Track key={item.id} track={item} album={album} />)}
+        </ol>
       </div>
     </div>
   );
@@ -80,10 +65,10 @@ let Album = ({ album, current, messages, playerState, bindClick }) => {
 const mapStateToProps = (state, ownProps) => {
   let currentAlbum = null;
   if (state.currentTrack && state.currentTrack.album) {
-    state.currentTrack.album.edges.map(({ node }) => (currentAlbum = node));
+    currentAlbum = state.currentTrack.album;
   }
   return {
-    current: currentAlbum && currentAlbum.albumId === ownProps.album.albumId,
+    current: currentAlbum && currentAlbum.id === ownProps.album.id,
     messages: state.locale.messages,
     playerState: state.playerState,
   };
@@ -107,12 +92,20 @@ export default Relay.createContainer(Album, {
     album: () => Relay.QL`
       fragment on Album {
         id
-        albumId
         name
-        genre
-        year
-        length
-        image
+        genres
+        release_date
+        images {
+          url
+        }
+        tracks {
+          items {
+            id
+            name
+            duration_ms
+            track_number
+          }
+        }
       }
     `,
   },

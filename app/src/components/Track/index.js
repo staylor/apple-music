@@ -22,18 +22,18 @@ let Track = ({ track, current, playerState, bindClick }) => {
       onClick={bindClick(current, playerState)}
     >
       <span className={styles.control}>
-        <span className={styles.text}>{track.number}</span>
+        <span className={styles.text}>{track.track_number}</span>
         <span className={`dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`} />
         <span className={`dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`} />
       </span>
       <span className={styles.name}>{track.name}</span>
-      <span className={styles.length}>{track.length}</span>
+      <span className={styles.length}>{track.duration_ms}</span>
     </li>
   );
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  current: state.currentTrack && state.currentTrack.trackId === ownProps.track.trackId,
+  current: state.currentTrack && state.currentTrack.id === ownProps.track.id,
   playerState: state.playerState,
 });
 
@@ -60,28 +60,7 @@ export default Relay.createContainer(Track, {
     track: () => Relay.QL`
       fragment on Track {
         id
-        trackId
-        number
         name
-        length
-        src
-        album(first: 1) {
-          edges {
-            node {
-              albumId
-              name
-              image
-              artist(first: 1) {
-                edges {
-                  node {
-                    artistId
-                    name
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     `,
   },
