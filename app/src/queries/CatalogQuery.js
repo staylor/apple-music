@@ -9,7 +9,7 @@ class CatalogQuery extends Route {
 
   static queries() {
     return {
-      albums: () => Relay.QL`query CatalogQuery { albums }`,
+      newReleases: () => Relay.QL`query NewReleasesQuery { newReleases }`,
     };
   }
 }

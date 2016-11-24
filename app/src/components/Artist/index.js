@@ -1,6 +1,5 @@
 import React from 'react';
 import Relay from 'react-relay';
-import BrowseAlbum from '../Album/Browse';
 import styles from './Artist.scss';
 
 /* eslint-disable react/prop-types */
@@ -8,9 +7,7 @@ import styles from './Artist.scss';
 const Artist = ({ artist }) => (
   <div className={styles.wrap}>
     <h1>{artist.name}</h1>
-    <ul className={styles.albums}>
-      {artist.albums.edges.map(({ node }) => <BrowseAlbum key={node.id} album={node} />)}
-    </ul>
+
   </div>
 );
 
@@ -20,15 +17,6 @@ export default Relay.createContainer(Artist, {
       fragment on Artist {
         artistId
         name
-        albums(first: 10) {
-          edges {
-            cursor
-            node {
-              id
-              ${BrowseAlbum.getFragment('album')}
-            }
-          }
-        },
       }
     `,
   },

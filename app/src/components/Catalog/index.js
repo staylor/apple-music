@@ -1,23 +1,25 @@
 import React from 'react';
 import Relay from 'react-relay';
-import Album from '../Album';
+import BrowseAlbum from '../Album/Browse';
 import styles from './Catalog.scss';
 
 /* eslint-disable react/prop-types */
 
-const Catalog = ({ albums }) => (
+const Catalog = ({ newReleases }) => (
   <div className={styles.wrap}>
-    {albums.results.map(album => <Album key={album.id} album={album} />)}
+    <ul className={styles.albums}>
+      {newReleases.results.map(album => <BrowseAlbum key={album.id} album={album} />)}
+    </ul>
   </div>
 );
 
 export default Relay.createContainer(Catalog, {
   fragments: {
-    albums: () => Relay.QL`
+    newReleases: () => Relay.QL`
       fragment on Collection {
         results {
           id
-          ${Album.getFragment('album')}
+          ${BrowseAlbum.getFragment('album')}
         }
       }
     `,

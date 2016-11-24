@@ -5,7 +5,7 @@ import L10NLink from '../L10NLink';
 
 const AlbumImage = ({ album }) => (
   <L10NLink to={`/album/${album.albumId}`}>
-    <img role="presentation" src={`/images/${album.image}`} />
+    <img role="presentation" src={album.image.url} />
   </L10NLink>
 );
 

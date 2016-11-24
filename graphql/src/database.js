@@ -1,56 +1,12 @@
 import Dataloader from 'dataloader';
-import catalog, { albums, artists, tracks } from './data/catalog';
+import Spotify from './providers/Spotify';
 
-const data = {
-  catalog,
-};
-const db = {
-  catalog: data.catalog,
+const api = new Spotify();
 
-  albumById(albumId) {
-    albumId = parseInt(albumId, 10);
-    if (!albumId) {
-      return null;
-    }
-    return albums.find(currentAlbum => currentAlbum.albumId === albumId);
-  },
+const batcher = resolver => ids => ids.map(id => resolver(id));
 
-  artistById(artistId) {
-    artistId = parseInt(artistId, 10);
-    if (!artistId) {
-      return null;
-    }
-    return artists.find(currentArtist => currentArtist.artistId === artistId);
-  },
+export const AlbumLoader = new Dataloader(batcher(api.getAlbum));
+export const ArtistLoader = new Dataloader(batcher(api.getArtist));
+export const TrackLoader = new Dataloader(batcher(api.getTrack));
 
-  trackById(trackId) {
-    trackId = parseInt(trackId, 10);
-    if (!trackId) {
-      return null;
-    }
-    return tracks.find(track => track.trackId === trackId);
-  },
-
-  getAlbums() {
-    return albums;
-  },
-
-  getArtists() {
-    return artists;
-  },
-
-  getTracks() {
-    return tracks;
-  },
-};
-
-const batcher = resolver => (ids => (new Promise((resolve) => {
-  const hydratedData = ids.map(resolver);
-  resolve(hydratedData);
-})));
-
-export const AlbumLoader = new Dataloader(batcher(db.albumById));
-export const ArtistLoader = new Dataloader(batcher(db.artistById));
-export const TrackLoader = new Dataloader(batcher(db.trackById));
-
-export default db;
+export default api;

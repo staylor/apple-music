@@ -8,7 +8,7 @@ type Album implements Node {
   id: ID!
 
   # The id of the album.
-  albumId: Int
+  albumId: String
 
   # The name of the album.
   name: String
@@ -56,13 +56,22 @@ type Artist implements Node {
   id: ID!
 
   # The id of the artist.
-  artistId: Int
+  artistId: String
+
+  # The Spotify web URL for the artist.
+  href: String
 
   # The name of the artist.
   name: String
 
-  # Albums by the artist.
-  albums(after: String, first: Int, before: String, last: Int): AlbumConnection
+  # The type of object.
+  type: String
+
+  # The Spotify URI for the artist.
+  uri: String
+
+  # External URLs for the artist.
+  external_urls: [URLMap]
 }
 
 # A connection to a list of items.
@@ -83,10 +92,46 @@ type ArtistEdge {
   cursor: String!
 }
 
+# An album in the catalog
+type BrowseAlbum implements Node {
+  # The ID of an object
+  id: ID!
+
+  # The id of the album.
+  albumId: String
+
+  # Type of album.
+  album_type: String
+
+  # Artists featured on the album.
+  artists: [Artist]
+
+  # Available markets.
+  available_markets: [String]
+
+  # URLs for the album.
+  external_urls: URLMap
+
+  # The Spotify web URL for the album.
+  href: String
+
+  # Album image.
+  image: Image
+
+  # The name of the album.
+  name: String
+
+  # Type of album.
+  type: String
+
+  # The Spotify URI for the album.
+  uri: String
+}
+
 # A list of results.
 type Collection {
   # Currently, a list of albums.
-  results: [Album]
+  results: [BrowseAlbum]
 }
 
 type Disc {
@@ -94,6 +139,18 @@ type Disc {
 
   # A list of tracks.
   tracks(after: String, first: Int, before: String, last: Int): TrackConnection
+}
+
+# An image.
+type Image {
+  # The height of the image.
+  height: Int
+
+  # The width of the image.
+  width: Int
+
+  # The url of the image.
+  url: String
 }
 
 # An object with an ID
@@ -118,10 +175,10 @@ type PageInfo {
 }
 
 type Root {
-  albums: Collection
-  album(id: Int): Album
-  artist(id: Int): Artist
-  track(id: Int): Track
+  newReleases: Collection
+  album(id: String): Album
+  artist(id: String): Artist
+  track(id: String): Track
 
   # Fetches an object given its ID
   node(
@@ -135,7 +192,7 @@ type Track implements Node {
   id: ID!
 
   # The id of the track.
-  trackId: Int
+  trackId: String
 
   # The play index of the track.
   number: Int
@@ -169,4 +226,10 @@ type TrackEdge {
 
   # A cursor for use in pagination
   cursor: String!
+}
+
+# A  map of external URL.
+type URLMap {
+  # The spotify URL for the object.
+  spotify: String
 }

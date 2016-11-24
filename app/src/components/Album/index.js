@@ -113,25 +113,6 @@ export default Relay.createContainer(Album, {
         year
         length
         image
-        artist(first: 1) {
-          edges {
-            node {
-              id
-              artistId
-              name
-            }
-          }
-        },
-        discs {
-          tracks(first: 100) {
-            edges {
-              node {
-                id
-                ${Track.getFragment('track')}
-              }
-            }
-          }
-        }
       }
     `,
   },
