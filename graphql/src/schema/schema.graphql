@@ -3,7 +3,7 @@ schema {
 }
 
 # An album in the catalog
-type Album {
+type Album implements AlbumInterface {
   # The Spotify ID of the album.
   id: String
 
@@ -53,8 +53,8 @@ type Album {
   tracks: Trackset
 }
 
-# An image.
-type AlbumArtist {
+# An artist on the album.
+type AlbumArtist implements ArtistInterface {
   # The Spotify ID for the artist.
   id: String
 
@@ -74,12 +74,41 @@ type AlbumArtist {
   uri: String
 }
 
+interface AlbumInterface {
+  # The Spotify ID of the album.
+  id: String
+
+  # The Spotify web URL for the album.
+  href: String
+
+  # List of external URLs.
+  external_urls: URLMap
+
+  # The name of the album.
+  name: String
+
+  # The Spotify URI for the album.
+  uri: String
+
+  # Type of album.
+  type: String
+
+  # The genres for the artist.
+  images: [Image]
+
+  # The name of the artists who created the album.
+  artists: [AlbumArtist]
+
+  # List of 2-digit country codes where the album is available.
+  available_markets: [String]
+}
+
 type AlbumTrack {
   # The id of the track.
   trackId: String
 
   # The artists on the track.
-  artists: [AlbumArtist]
+  artists: [ArtistInterface]
 
   # Available markets.
   available_markets: [String]
@@ -119,7 +148,7 @@ type AlbumTrack {
 }
 
 # An artist in the catalog
-type Artist {
+type Artist implements ArtistInterface {
   # The Spotify ID for the artist.
   id: String
 
@@ -151,8 +180,28 @@ type Artist {
   popularity: Int
 }
 
+interface ArtistInterface {
+  # The Spotify ID for the artist.
+  id: String
+
+  # URLs for the artist.
+  external_urls: URLMap
+
+  # The Spotify web URL for the artist.
+  href: String
+
+  # The name of the artist.
+  name: String
+
+  # The type of object (usually: "artist").
+  type: String
+
+  # The Spotify URI for the artist.
+  uri: String
+}
+
 # An album in the catalog
-type BrowseAlbum {
+type BrowseAlbum implements AlbumInterface {
   # The Spotify ID of the album.
   id: String
 
@@ -187,7 +236,7 @@ type BrowseAlbum {
 # A list of results.
 type Collection {
   # Currently, a list of albums.
-  results(sort: String, limit: Int): [BrowseAlbum]
+  results(sort: String, limit: Int): [AlbumInterface]
 }
 
 # A list of copyrights.
@@ -234,11 +283,14 @@ type Root {
 }
 
 type Track {
+  # The album related to the track.
+  album: BrowseAlbum
+
   # The id of the track.
   trackId: String
 
   # The artists on the track.
-  artists: [AlbumArtist]
+  artists: [ArtistInterface]
 
   # Available markets.
   available_markets: [String]
@@ -275,9 +327,6 @@ type Track {
 
   # The Spotify URI of the track.
   uri: String
-
-  # The album related to the track.
-  album: BrowseAlbum
 }
 
 # A set of track data.

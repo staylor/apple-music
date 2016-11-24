@@ -9,11 +9,17 @@ import TracksetType from './Trackset';
 import CopyrightType from '../Copyright';
 import IDMapType from '../IDMap';
 import AlbumFields from './AlbumFields';
+import AlbumInterfaceType from './AlbumInterface';
 
 const AlbumType = new GraphQLObjectType({
   name: 'Album',
   description: 'An album in the catalog',
-  fields: () => Object.assign({}, AlbumFields, {
+  interfaces: [AlbumInterfaceType],
+  isTypeOf(value) {
+    return 'tracks' in value;
+  },
+  fields: () => ({
+    ...AlbumFields,
     copyrights: {
       type: new GraphQLList(CopyrightType),
       description: 'List of copyrights.',

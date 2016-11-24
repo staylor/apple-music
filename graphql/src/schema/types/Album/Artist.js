@@ -3,11 +3,16 @@ import {
 } from 'graphql';
 
 import ArtistFields from '../Artist/ArtistFields';
+import ArtistInterfaceType from '../Artist/ArtistInterface';
 
-const AlbumArtist = new GraphQLObjectType({
+const AlbumArtistType = new GraphQLObjectType({
   name: 'AlbumArtist',
-  description: 'An image.',
-  fields: () => Object.assign({}, ArtistFields),
+  description: 'An artist on the album.',
+  interfaces: [ArtistInterfaceType],
+  isTypeOf: value => !('followers' in value),
+  fields: () => ({
+    ...ArtistFields,
+  }),
 });
 
-export default AlbumArtist;
+export default AlbumArtistType;

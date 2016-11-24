@@ -8,11 +8,15 @@ import {
 import ImageType from '../Image';
 import ArtistFields from './ArtistFields';
 import FollowersType from './Followers';
+import ArtistInterfaceType from './ArtistInterface';
 
 const ArtistType = new GraphQLObjectType({
   name: 'Artist',
+  interfaces: [ArtistInterfaceType],
   description: 'An artist in the catalog',
-  fields: () => Object.assign({}, ArtistFields, {
+  isTypeOf: value => ('followers' in value),
+  fields: () => ({
+    ...ArtistFields,
     followers: {
       type: FollowersType,
       description: 'Follower info for the artist.',

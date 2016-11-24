@@ -6,7 +6,7 @@ import {
 } from 'graphql';
 
 import api from '../../database';
-import BrowseAlbumType from './Album/Browse';
+import AlbumInterfaceType from './Album/AlbumInterface';
 
 const artistNameFilter = (a, b) => {
   const aNode = a.artists[0].name;
@@ -50,7 +50,7 @@ const CollectionType = new GraphQLObjectType({
   description: 'A list of results.',
   fields: {
     results: {
-      type: new GraphQLList(BrowseAlbumType),
+      type: new GraphQLList(AlbumInterfaceType),
       description: 'Currently, a list of albums.',
       args: {
         sort: { type: GraphQLString },

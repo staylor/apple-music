@@ -7,11 +7,15 @@ import TrackFields from './TrackFields';
 
 const TrackType = new GraphQLObjectType({
   name: 'Track',
-  fields: () => Object.assign({}, TrackFields, {
+  isTypeOf(value) {
+    return 'album' in value;
+  },
+  fields: () => ({
     album: {
       type: BrowseAlbumType,
       description: 'The album related to the track.',
     },
+    ...TrackFields,
   }),
 });
 

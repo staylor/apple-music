@@ -6,7 +6,7 @@ import {
 } from 'graphql';
 
 import URLMapType from '../URLMap';
-import AlbumArtistType from '../Album/Artist';
+import ArtistInterfaceType from '../Artist/ArtistInterface';
 
 export default {
   trackId: {
@@ -15,7 +15,7 @@ export default {
     resolve: track => track.id,
   },
   artists: {
-    type: new GraphQLList(AlbumArtistType),
+    type: new GraphQLList(ArtistInterfaceType),
     description: 'The artists on the track.',
   },
   available_markets: {

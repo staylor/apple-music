@@ -6,7 +6,12 @@ import TrackFields from '../Track/TrackFields';
 
 const AlbumTrackType = new GraphQLObjectType({
   name: 'AlbumTrack',
-  fields: () => Object.assign({}, TrackFields),
+  isTypeOf(value) {
+    return !('album' in value);
+  },
+  fields: () => ({
+    ...TrackFields,
+  }),
 });
 
 export default AlbumTrackType;

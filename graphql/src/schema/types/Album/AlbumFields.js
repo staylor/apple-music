@@ -3,7 +3,7 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import AlbumArtistType from './Artist';
+import AlbumArtistType from '../Album/Artist';
 import URLMapType from '../URLMap';
 import ImageType from '../Image';
 

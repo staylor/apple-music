@@ -58,9 +58,11 @@ Track = connect(
 export default Relay.createContainer(Track, {
   fragments: {
     track: () => Relay.QL`
-      fragment on Track {
+      fragment on AlbumTrack {
         id
         name
+        duration_ms
+        track_number
       }
     `,
   },

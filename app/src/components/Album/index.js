@@ -90,20 +90,23 @@ Album = connect(
 export default Relay.createContainer(Album, {
   fragments: {
     album: () => Relay.QL`
-      fragment on Album {
+      fragment on AlbumInterface {
         id
         name
-        genres
-        release_date
-        images {
-          url
+        artists {
+          id
+          ${ArtistLink.getFragment('artist')}
         }
-        tracks {
-          items {
-            id
-            name
-            duration_ms
-            track_number
+        ${AlbumLink.getFragment('album')}
+        ${AlbumImage.getFragment('album')}
+        ... on Album {
+          genres
+          release_date
+          tracks {
+            items {
+              id
+              ${Track.getFragment('track')}
+            }
           }
         }
       }
