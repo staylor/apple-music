@@ -3,7 +3,7 @@ import {
   GraphQLList,
 } from 'graphql';
 
-import BrowseAlbumType from './BrowseAlbum';
+import BrowseAlbumType from './Album/Browse';
 
 const CollectionType = new GraphQLObjectType({
   name: 'Collection',

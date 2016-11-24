@@ -9,7 +9,7 @@ const IDMapType = new GraphQLObjectType({
   fields: () => ({
     upc: {
       type: GraphQLString,
-      description: 'The UPC id fof the object.',
+      description: 'The UPC ID for the object.',
     },
   }),
 });

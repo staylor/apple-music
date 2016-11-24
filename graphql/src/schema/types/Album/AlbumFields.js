@@ -8,10 +8,9 @@ import URLMapType from '../URLMap';
 import ImageType from '../Image';
 
 export default {
-  albumId: {
+  id: {
     type: GraphQLString,
-    description: 'The id of the album.',
-    resolve: album => album.id,
+    description: 'The Spotify ID of the album.',
   },
   href: {
     type: GraphQLString,

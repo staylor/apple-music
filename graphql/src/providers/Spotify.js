@@ -1,13 +1,17 @@
+import querystring from 'querystring';
 import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
 
 const clientId = 'b791653f8886473db15526cc8ea24588';
 const clientSecret = 'fddc22b8fd85445db6477b5fe502ab90';
 const tokenUrl = 'https://accounts.spotify.com/api/token';
-const newReleasesUrl = 'https://api.spotify.com/v1/browse/new-releases';
-const albumUrl = 'https://api.spotify.com/v1/albums/';
-const artistUrl = 'https://api.spotify.com/v1/artists/';
-// artist albums = https://api.spotify.com/v1/artists/${id}/albums
+
+const apiHost = 'https://api.spotify.com/v1';
+const newReleasesUrl = `${apiHost}/browse/new-releases`;
+const albumUrl = `${apiHost}/albums/`;
+const artistUrl = `${apiHost}/artists/`;
+const trackUrl = `${apiHost}/tracks/`;
+const searchUrl = `${apiHost}/search`;
 
 /* eslint-disable no-console */
 
@@ -92,6 +96,14 @@ class Spotify {
     return this.doFetch(`${albumUrl}${id}`);
   }
 
+  getAlbumSearch(term) {
+    const qs = querystring.stringify({
+      type: 'album',
+      q: term,
+    });
+    return this.doFetch(`${searchUrl}?${qs}`);
+  }
+
   getArtist(id) {
     return this.doFetch(`${artistUrl}${id}`);
   }
@@ -108,9 +120,25 @@ class Spotify {
     return this.doFetch(`${artistUrl}${id}/related-artists`);
   }
 
+  getArtistSearch(term) {
+    const qs = querystring.stringify({
+      type: 'artist',
+      q: term,
+    });
+    return this.doFetch(`${searchUrl}?${qs}`);
+  }
+
   // eslint-disable-next-line
   getTrack(id) {
+    return this.doFetch(`${trackUrl}${id}`);
+  }
 
+  getTrackSearch(term) {
+    const qs = querystring.stringify({
+      type: 'track',
+      q: term,
+    });
+    return this.doFetch(`${searchUrl}?${qs}`);
   }
 }
 

@@ -5,11 +5,11 @@ import {
 
 const URLMapType = new GraphQLObjectType({
   name: 'URLMap',
-  description: 'A  map of external URL.',
+  description: 'A  map of external URLs.',
   fields: () => ({
     spotify: {
       type: GraphQLString,
-      description: 'The spotify URL for the object.',
+      description: 'The Spotify URL for the object.',
     },
   }),
 });

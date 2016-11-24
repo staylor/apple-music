@@ -5,27 +5,15 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import {
-  globalIdField,
-  fromGlobalId,
-  nodeDefinitions,
-  connectionDefinitions,
-} from 'graphql-relay';
-
 import TracksetType from './Trackset';
 import CopyrightType from '../Copyright';
 import IDMapType from '../IDMap';
-import { AlbumLoader } from '../../../database';
-
 import AlbumFields from './AlbumFields';
 
 const AlbumType = new GraphQLObjectType({
   name: 'Album',
   description: 'An album in the catalog',
-  fields: () => (Object.assign({}, AlbumFields, {
-    id: globalIdField('Album'),
-    // eslint-disable-next-line no-use-before-define
-    node: nodeField,
+  fields: () => Object.assign({}, AlbumFields, {
     copyrights: {
       type: new GraphQLList(CopyrightType),
       description: 'List of copyrights.',
@@ -54,22 +42,7 @@ const AlbumType = new GraphQLObjectType({
       type: TracksetType,
       description: 'The album track info.',
     },
-  })),
-  // eslint-disable-next-line no-use-before-define
-  interfaces: [nodeInterface],
+  }),
 });
-
-const { nodeInterface, nodeField } = nodeDefinitions(
-  (globalId) => {
-    const { id } = fromGlobalId(globalId);
-    return AlbumLoader.load(id);
-  },
-  () => AlbumType
-);
-
-const defs = connectionDefinitions({ nodeType: AlbumType });
-
-export const AlbumEdge = defs.edgeType;
-export const AlbumConnection = defs.connectionType;
 
 export default AlbumType;

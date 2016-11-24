@@ -3,60 +3,63 @@ schema {
 }
 
 # An album in the catalog
-type Album implements Node {
-  # The ID of an object
-  id: ID!
+type Album {
+  # The Spotify ID of the album.
+  id: String
 
-  # The id of the album.
-  albumId: String
+  # The Spotify web URL for the album.
+  href: String
+
+  # List of external URLs.
+  external_urls: URLMap
 
   # The name of the album.
   name: String
 
-  # The name of the artist who created the album.
-  artist(after: String, first: Int, before: String, last: Int): ArtistConnection
+  # The Spotify URI for the album.
+  uri: String
 
-  # The genre of the album.
-  genre: String
+  # Type of album.
+  type: String
 
-  # The year the album was released.
-  year: Int
+  # The genres for the artist.
+  images: [Image]
 
-  # The formatted length of the album.
-  length: String
+  # The name of the artists who created the album.
+  artists: [AlbumArtist]
 
-  # The relative path of the cover image source.
-  image: String
+  # List of 2-digit country codes where the album is available.
+  available_markets: [String]
 
-  # Discs containing tracks. Most albums contain only one disc.
-  discs: [Disc]
+  # List of copyrights.
+  copyrights: [Copyright]
+
+  # List of external IDs.
+  external_ids: IDMap
+
+  # The genres for the album.
+  genres: [String]
+
+  # The popularity ranking of the album.
+  popularity: Int
+
+  # The date the album was released.
+  release_date: String
+
+  # The precision of the release date.
+  release_date_precision: String
+
+  # The album track info.
+  tracks: Trackset
 }
 
-# A connection to a list of items.
-type AlbumConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
+# An image.
+type AlbumArtist {
+  # The Spotify ID for the artist.
+  id: String
 
-  # A list of edges.
-  edges: [AlbumEdge]
-}
-
-# An edge in a connection.
-type AlbumEdge {
-  # The item at the end of the edge
-  node: Album
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-# An artist in the catalog
-type Artist implements Node {
-  # The ID of an object
-  id: ID!
-
-  # The id of the artist.
-  artistId: String
+  # URLs for the artist.
+  external_urls: URLMap
 
   # The Spotify web URL for the artist.
   href: String
@@ -64,68 +67,121 @@ type Artist implements Node {
   # The name of the artist.
   name: String
 
-  # The type of object.
+  # The type of object (usually: "artist").
+  type: String
+
+  # The Spotify URI for the artist.
+  uri: String
+}
+
+type AlbumTrack {
+  # The id of the track.
+  trackId: String
+
+  # The artists on the track.
+  artists: [AlbumArtist]
+
+  # Available markets.
+  available_markets: [String]
+
+  # The disc index of the track.
+  disc_number: Int
+
+  # The track length is milliseconds.
+  duration_ms: Int
+
+  # Whether the track has explicit lyrics.
+  explicit: Boolean
+
+  # A list of URLs for the track.
+  external_urls: URLMap
+
+  # The Spotify URL of the track.
+  href: String
+
+  # The id of the track.
+  id: String
+
+  # The name of the track.
+  name: String
+
+  # The formatted length of the track.
+  preview_url: String
+
+  # The index of the track.
+  track_number: Int
+
+  # The type of track (usually: "track").
+  type: String
+
+  # The Spotify URI of the track.
+  uri: String
+}
+
+# An artist in the catalog
+type Artist {
+  # The Spotify ID for the artist.
+  id: String
+
+  # URLs for the artist.
+  external_urls: URLMap
+
+  # The Spotify web URL for the artist.
+  href: String
+
+  # The name of the artist.
+  name: String
+
+  # The type of object (usually: "artist").
   type: String
 
   # The Spotify URI for the artist.
   uri: String
 
-  # External URLs for the artist.
-  external_urls: [URLMap]
-}
+  # Follower info for the artist.
+  followers: Followers
 
-# A connection to a list of items.
-type ArtistConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
+  # The genres for the artist.
+  genres: [String]
 
-  # A list of edges.
-  edges: [ArtistEdge]
-}
+  # The genres for the artist.
+  images: [Image]
 
-# An edge in a connection.
-type ArtistEdge {
-  # The item at the end of the edge
-  node: Artist
-
-  # A cursor for use in pagination
-  cursor: String!
+  # The popularity ranking of the artist.
+  popularity: Int
 }
 
 # An album in the catalog
-type BrowseAlbum implements Node {
-  # The ID of an object
-  id: ID!
-
-  # The id of the album.
-  albumId: String
-
-  # Type of album.
-  album_type: String
-
-  # Artists featured on the album.
-  artists: [Artist]
-
-  # Available markets.
-  available_markets: [String]
-
-  # URLs for the album.
-  external_urls: URLMap
+type BrowseAlbum {
+  # The Spotify ID of the album.
+  id: String
 
   # The Spotify web URL for the album.
   href: String
 
-  # Album image.
-  image: Image
+  # List of external URLs.
+  external_urls: URLMap
 
   # The name of the album.
   name: String
 
+  # The Spotify URI for the album.
+  uri: String
+
   # Type of album.
   type: String
 
-  # The Spotify URI for the album.
-  uri: String
+  # The genres for the artist.
+  images: [Image]
+
+  # The name of the artists who created the album.
+  artists: [AlbumArtist]
+
+  # List of 2-digit country codes where the album is available.
+  available_markets: [String]
+
+  # The type of the album (usually: "album")
+  album_type: String
 }
 
 # A list of results.
@@ -134,11 +190,28 @@ type Collection {
   results: [BrowseAlbum]
 }
 
-type Disc {
-  number: Int
+# A list of copyrights.
+type Copyright {
+  # Copyright text.
+  text: String
 
-  # A list of tracks.
-  tracks(after: String, first: Int, before: String, last: Int): TrackConnection
+  # The type of copyright.
+  type: String
+}
+
+# Follower info for the object.
+type Followers {
+  # The follower URL for the object.
+  href: String
+
+  # The follower count for the object.
+  total: Int
+}
+
+# A  map of external IDs.
+type IDMap {
+  # The UPC ID for the object.
+  upc: String
 }
 
 # An image.
@@ -153,83 +226,86 @@ type Image {
   url: String
 }
 
-# An object with an ID
-interface Node {
-  # The id of the object.
-  id: ID!
-}
-
-# Information about pagination in a connection.
-type PageInfo {
-  # When paginating forwards, are there more items?
-  hasNextPage: Boolean!
-
-  # When paginating backwards, are there more items?
-  hasPreviousPage: Boolean!
-
-  # When paginating backwards, the cursor to continue.
-  startCursor: String
-
-  # When paginating forwards, the cursor to continue.
-  endCursor: String
-}
-
 type Root {
   newReleases: Collection
   album(id: String): Album
   artist(id: String): Artist
   track(id: String): Track
-
-  # Fetches an object given its ID
-  node(
-    # The ID of an object
-    id: ID!
-  ): Node
 }
 
-type Track implements Node {
-  # The ID of an object
-  id: ID!
-
+type Track {
   # The id of the track.
   trackId: String
 
-  # The play index of the track.
-  number: Int
+  # The artists on the track.
+  artists: [AlbumArtist]
+
+  # Available markets.
+  available_markets: [String]
+
+  # The disc index of the track.
+  disc_number: Int
+
+  # The track length is milliseconds.
+  duration_ms: Int
+
+  # Whether the track has explicit lyrics.
+  explicit: Boolean
+
+  # A list of URLs for the track.
+  external_urls: URLMap
+
+  # The Spotify URL of the track.
+  href: String
+
+  # The id of the track.
+  id: String
 
   # The name of the track.
   name: String
 
   # The formatted length of the track.
-  length: String
+  preview_url: String
 
-  # The relative path to the source audio for the track.
-  src: String
+  # The index of the track.
+  track_number: Int
 
-  # The album containing the track
-  album(after: String, first: Int, before: String, last: Int): AlbumConnection
+  # The type of track (usually: "track").
+  type: String
+
+  # The Spotify URI of the track.
+  uri: String
+
+  # The album related to the track.
+  album: BrowseAlbum
 }
 
-# A connection to a list of items.
-type TrackConnection {
-  # Information to aid in pagination.
-  pageInfo: PageInfo!
+# A set of track data.
+type Trackset {
+  # URL for track info.
+  href: String
 
-  # A list of edges.
-  edges: [TrackEdge]
+  # A list of track objects.
+  items: [AlbumTrack]
+
+  # Maximum number of results per request.
+  limit: Int
+
+  # Optional: the next set of results.
+  next: String
+
+  # The offset of the results.
+  offset: Int
+
+  # Optional: the previous set of results.
+  previous: String
+
+  # The total number of results.
+  total: Int
 }
 
-# An edge in a connection.
-type TrackEdge {
-  # The item at the end of the edge
-  node: Track
-
-  # A cursor for use in pagination
-  cursor: String!
-}
-
-# A  map of external URL.
+# A  map of external URLs.
 type URLMap {
-  # The spotify URL for the object.
+  # The Spotify URL for the object.
   spotify: String
 }
