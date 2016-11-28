@@ -15,7 +15,7 @@ const ArtistType = new GraphQLObjectType({
   name: 'Artist',
   interfaces: [ArtistInterfaceType],
   description: 'An artist in the catalog',
-  isTypeOf: value => ('followers' in value),
+  isTypeOf: value => 'followers' in value,
   fields: () => ({
     id: globalIdField('Artist'),
     ...ArtistFields,

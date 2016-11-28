@@ -16,13 +16,11 @@ const CollectionType = new GraphQLObjectType({
       type: new GraphQLList(BrowseAlbumType),
       description: 'Currently, a list of albums.',
       args: {
-        sort: { type: GraphQLString },
-        limit: { type: GraphQLInt },
         type: { type: GraphQLString },
       },
       resolve: (_, args) => {
         if (args.type === 'newReleases') {
-          return api.getNewReleases(args.limit).then(({ results }) => results);
+          return api.getNewReleases().then(({ results }) => results);
         } else if (args.type === 'artistAlbums') {
           return api.getArtistAlbums(_.results);
         }

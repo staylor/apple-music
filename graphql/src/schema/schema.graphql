@@ -248,7 +248,7 @@ type BrowseAlbum implements AlbumInterface {
 # A list of results.
 type Collection {
   # Currently, a list of albums.
-  results(sort: String, limit: Int, type: String): [BrowseAlbum]
+  results(type: String): [BrowseAlbum]
 }
 
 # A list of copyrights.
@@ -291,17 +291,14 @@ type Root {
   newReleases: Collection
   album(id: String): Album
   artist(id: String): Artist
+  track(id: String): Track
   artistAlbums(id: String): Collection
   topTracks(id: String): TrackCollection
-  track(id: String): Track
 }
 
 type Track implements TrackInterface {
   # The id of the track.
   id: String
-
-  # The album related to the track.
-  album: BrowseAlbum
 
   # The id of the track.
   track_id: String
@@ -341,6 +338,9 @@ type Track implements TrackInterface {
 
   # The Spotify URI of the track.
   uri: String
+
+  # The album related to the track.
+  album: BrowseAlbum
 }
 
 # A list of results.

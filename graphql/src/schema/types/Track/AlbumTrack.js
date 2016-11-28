@@ -9,9 +9,7 @@ import { TrackInterfaceType, TrackFields } from './TrackInterface';
 const AlbumTrackType = new GraphQLObjectType({
   name: 'AlbumTrack',
   interfaces: [TrackInterfaceType],
-  isTypeOf(value) {
-    return !('album' in value);
-  },
+  isTypeOf: value => !('album' in value),
   fields: () => ({
     id: globalIdField('AlbumTrack'),
     ...TrackFields,

@@ -11,9 +11,7 @@ const BrowseAlbumType = new GraphQLObjectType({
   name: 'BrowseAlbum',
   interfaces: [AlbumInterfaceType],
   description: 'An album in the catalog',
-  isTypeOf(value) {
-    return !('tracks' in value);
-  },
+  isTypeOf: value => !('tracks' in value),
   fields: () => ({
     id: globalIdField('BrowseAlbum'),
     ...AlbumFields,

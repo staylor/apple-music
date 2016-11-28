@@ -86,11 +86,12 @@ class Spotify {
     });
   }
 
-  getNewReleases(limit = 40) {
-    const qs = querystring.stringify({ market: 'us', limit });
-    return this.doFetch(`${newReleasesUrl}?${qs}`).then(json => ({
-      results: json.albums.items,
-    }));
+  getNewReleases() {
+    const qs = querystring.stringify({
+      market: 'US',
+      limit: 50,
+    });
+    return this.doFetch(`${newReleasesUrl}?${qs}`).then(json => json.albums.items);
   }
 
   getAlbum(id) {

@@ -15,13 +15,12 @@ const Catalog = props => (
 
 export default Relay.createContainer(Catalog, {
   initialVariables: {
-    limit: 50,
     type: 'newReleases',
   },
   fragments: {
     newReleases: () => Relay.QL`
       fragment on Collection {
-        results(limit: $limit, type: $type) {
+        results(type: $type) {
           id
           ${BrowseAlbum.getFragment('album')}
         }

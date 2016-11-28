@@ -16,9 +16,7 @@ const AlbumType = new GraphQLObjectType({
   name: 'Album',
   description: 'An album in the catalog',
   interfaces: [AlbumInterfaceType],
-  isTypeOf(value) {
-    return 'tracks' in value;
-  },
+  isTypeOf: value => 'tracks' in value,
   fields: () => ({
     id: globalIdField('Album'),
     ...AlbumFields,

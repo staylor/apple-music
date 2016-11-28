@@ -34,6 +34,13 @@ const Root = new GraphQLObjectType({
       },
       resolve: (_, args) => args.id && api.getArtist(args.id),
     },
+    track: {
+      type: TrackType,
+      args: {
+        id: { type: GraphQLString },
+      },
+      resolve: (_, args) => args.id && api.getTrack(args.id),
+    },
     artistAlbums: {
       type: CollectionType,
       args: {
@@ -51,13 +58,6 @@ const Root = new GraphQLObjectType({
       resolve: (_, args) => ({
         results: args.id,
       }),
-    },
-    track: {
-      type: TrackType,
-      args: {
-        id: { type: GraphQLString },
-      },
-      resolve: (_, args) => args.id && api.getTrack(args.id),
     },
   }),
 });
