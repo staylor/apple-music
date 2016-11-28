@@ -4,14 +4,15 @@ import {
 } from 'graphql';
 
 import { globalIdField } from 'graphql-relay';
-
 import { AlbumFields, AlbumInterfaceType } from './AlbumInterface';
+
+import { BrowseAlbum } from '../Root';
 
 const BrowseAlbumType = new GraphQLObjectType({
   name: 'BrowseAlbum',
   interfaces: [AlbumInterfaceType],
   description: 'An album in the catalog',
-  isTypeOf: value => !('tracks' in value),
+  isTypeOf: value => value instanceof BrowseAlbum,
   fields: () => ({
     id: globalIdField('BrowseAlbum'),
     ...AlbumFields,

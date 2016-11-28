@@ -6,17 +6,17 @@ import {
 } from 'graphql';
 
 import { globalIdField } from 'graphql-relay';
-
 import { AlbumFields, AlbumInterfaceType } from './AlbumInterface';
 import TracksetType from '../Track/Trackset';
 import CopyrightType from '../Copyright';
 import IDMapType from '../IDMap';
+import { Album } from '../Root';
 
 const AlbumType = new GraphQLObjectType({
   name: 'Album',
   description: 'An album in the catalog',
   interfaces: [AlbumInterfaceType],
-  isTypeOf: value => 'tracks' in value,
+  isTypeOf: value => value instanceof Album,
   fields: () => ({
     id: globalIdField('Album'),
     ...AlbumFields,

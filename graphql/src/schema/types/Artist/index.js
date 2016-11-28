@@ -6,16 +6,16 @@ import {
 } from 'graphql';
 
 import { globalIdField } from 'graphql-relay';
-
 import ImageType from '../Image';
 import FollowersType from './Followers';
 import { ArtistInterfaceType, ArtistFields } from './ArtistInterface';
+import { Artist } from '../Root';
 
 const ArtistType = new GraphQLObjectType({
   name: 'Artist',
   interfaces: [ArtistInterfaceType],
   description: 'An artist in the catalog',
-  isTypeOf: value => 'followers' in value,
+  isTypeOf: value => value instanceof Artist,
   fields: () => ({
     id: globalIdField('Artist'),
     ...ArtistFields,

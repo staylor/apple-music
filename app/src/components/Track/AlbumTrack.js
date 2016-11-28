@@ -17,7 +17,7 @@ const convertMsTime = (ms) => {
 /* eslint-disable react/prop-types */
 
 let AlbumTrack = ({ track, current, playerState, bindClick }) => {
-  const className = classNames(styles.track, {
+  const className = classNames(styles.item, {
     [styles.paused]: current && playerState === PLAYER_IDLE,
     [styles.playing]: current && playerState === PLAYER_ACTIVE,
     [styles.notplaying]: !current,

@@ -20,6 +20,7 @@
   li {
     float: left;
     margin-right: 20px;
+    padding: 10px 0;
     width: calc(20% - 20px);
   }
 
@@ -27,7 +28,13 @@
     border-radius: 5px;
     float: left;
     width: 60px;
+    margin: 0 10px 0 0;
   }
+
+  a {
+    color: $black;
+    text-decoration: none;
+  }  
 }
 
 .albums {

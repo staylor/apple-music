@@ -8,12 +8,20 @@ import AlbumType from './Album';
 import TrackType from './Track';
 import CollectionType from './Collection';
 import TrackCollectionType from './Track/Collection';
-
+import { nodeField } from './relayNode';
 import api from '../../database';
+
+export class Album {}
+export class BrowseAlbum {}
+export class Artist {}
+export class AlbumArtist {}
+export class Track {}
+export class AlbumTrack {}
 
 const Root = new GraphQLObjectType({
   name: 'Root',
   fields: () => ({
+    node: nodeField,
     newReleases: {
       type: CollectionType,
       resolve: () => ({

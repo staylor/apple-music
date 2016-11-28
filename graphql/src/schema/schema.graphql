@@ -113,7 +113,7 @@ type AlbumTrack implements TrackInterface {
   # The id of the track.
   id: String
 
-  # The id of the track.
+  # The Spotify ID of the track.
   track_id: String
 
   # The artists on the track.
@@ -247,6 +247,9 @@ type BrowseAlbum implements AlbumInterface {
 
 # A list of results.
 type Collection {
+  # The ID of an object
+  id: ID!
+
   # Currently, a list of albums.
   results(type: String): [BrowseAlbum]
 }
@@ -287,7 +290,18 @@ type Image {
   url: String
 }
 
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
 type Root {
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
   newReleases: Collection
   album(id: String): Album
   artist(id: String): Artist
@@ -300,7 +314,7 @@ type Track implements TrackInterface {
   # The id of the track.
   id: String
 
-  # The id of the track.
+  # The Spotify ID of the track.
   track_id: String
 
   # The artists on the track.
@@ -350,7 +364,7 @@ type TrackCollection {
 }
 
 interface TrackInterface {
-  # The id of the track.
+  # The Spotify ID of the track.
   track_id: String
 
   # The artists on the track.

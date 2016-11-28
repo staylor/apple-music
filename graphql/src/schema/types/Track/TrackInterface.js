@@ -12,7 +12,7 @@ import AlbumArtistType from '../Artist/AlbumArtist';
 export const TrackFields = {
   track_id: {
     type: GraphQLString,
-    description: 'The id of the track.',
+    description: 'The Spotify ID of the track.',
     resolve: track => track.id,
   },
   artists: {

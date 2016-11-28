@@ -2,6 +2,15 @@ import querystring from 'querystring';
 import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
 
+import {
+  Album,
+  BrowseAlbum,
+  Artist,
+  AlbumArtist,
+  Track,
+  AlbumTrack,
+} from '../schema/types/Root';
+
 const clientId = 'b791653f8886473db15526cc8ea24588';
 const clientSecret = 'fddc22b8fd85445db6477b5fe502ab90';
 const tokenUrl = 'https://accounts.spotify.com/api/token';
@@ -91,11 +100,15 @@ class Spotify {
       market: 'US',
       limit: 50,
     });
-    return this.doFetch(`${newReleasesUrl}?${qs}`).then(json => json.albums.items);
+    return this.doFetch(`${newReleasesUrl}?${qs}`)
+      .then(json => json.albums.items)
+      .then(items => items.map(item => Object.create(BrowseAlbum, item)));
   }
 
   getAlbum(id) {
-    return this.doFetch(`${albumUrl}${id}`);
+    return this.doFetch(`${albumUrl}${id}`)
+      .then(album => album.tracks.map(track => Object.create(AlbumTrack, track)))
+      .then(album => Object.create(Album, album));
   }
 
   getAlbumSearch(term) {
@@ -108,17 +121,26 @@ class Spotify {
   }
 
   getArtist(id) {
-    return this.doFetch(`${artistUrl}${id}`);
+    return this.doFetch(`${artistUrl}${id}`)
+      .then(artist => Object.create(Artist, artist));
   }
 
   getArtistAlbums(id) {
     const qs = querystring.stringify({ market: 'US' });
-    return this.doFetch(`${artistUrl}${id}/albums?${qs}`).then(json => json.items);
+    return this.doFetch(`${artistUrl}${id}/albums?${qs}`)
+      .then(json => json.items)
+      .then(items => items.map(item => Object.create(BrowseAlbum, item)));
   }
 
   getArtistTracks(id) {
     const qs = querystring.stringify({ country: 'US' });
-    return this.doFetch(`${artistUrl}${id}/top-tracks?${qs}`).then(json => json.tracks);
+    return this.doFetch(`${artistUrl}${id}/top-tracks?${qs}`)
+      .then(json => json.tracks)
+      .then(tracks => tracks.map(track => (
+        track.artists.map(artist => Object.create(AlbumArtist, artist))
+      )))
+      .then(tracks => tracks.map(track => (track.album = Object.create(BrowseAlbum, track.album))))
+      .then(tracks => tracks.map(track => Object.create(Track, track)));
   }
 
   getArtistRelated(id) {
