@@ -1,74 +1,85 @@
-@import "../../shared-styles/mixins";
+@import '../../shared-styles/mixins';
+
+.track {
+  @include clearfix;
+  border-bottom: 1px solid rgba(8, 40, 51, .2);
+  color: rgba(51, 51, 51, .6);
+  cursor: pointer;
+  font-size: 15px;
+  letter-spacing: -.3px;
+  line-height: 1.5;
+  list-style-type: none;
+  position: relative;
+}
 
 .item {
-	color: rgba(51, 51, 51, 0.6);
-	padding: 10px 5px;
-	position: Relative;
-	font-size: 15px;
-	line-height: 1.5;
-	letter-spacing: -.3px;
-	border-bottom: 1px solid rgba(8, 40, 51, 0.2);
-	cursor: pointer;
-	list-style-type: none;
+  @include clearfix;
+  border-bottom: 1px solid rgba(8, 40, 51, .2);
+  color: rgba(51, 51, 51, .6);
+  cursor: pointer;
+  font-size: 15px;
+  letter-spacing: -.3px;
+  line-height: 1.5;
+  list-style-type: none;
+  padding: 10px 5px;
+  position: relative;
 
-	&:last-of-type {
-		border-bottom: 0;
-	}
+  &:last-of-type {
+    border-bottom: 0;
+  }
 
-	@include clearfix;
-
-	.dashicons-controls-pause,
-	.dashicons-controls-play {
-		margin: 0 4px 0 6px;
-		color: #000;
-	}
+  .dashicons-controls-pause,
+  .dashicons-controls-play {
+    color: $black;
+    margin: 0 4px 0 6px;
+  }
 }
 
 .control {
-	float: left;
-	text-align: right;
-	width: 30px;
-	height: 20px;
-	padding-right: 10px;
+  float: left;
+  height: 20px;
+  padding-right: 10px;
+  text-align: right;
+  width: 30px;
 
-	span {
-		display: none;
-	}
+  span {
+    display: none;
+  }
 }
 
-.notPlaying {
-	cursor: pointer;
+.notplaying {
+  cursor: pointer;
 }
 
-/* not playing, not selected */
-.notPlaying .control .text,
+// not playing, not selected
+.notplaying .control .text,
 /* not playing, hover */
-.notPlaying:hover .control .dashicons-controls-play,
+.notplaying:hover .control .dashicons-controls-play,
 .paused .control .dashicons-controls-play,
 .paused:hover .control .dashicons-controls-play,
 /* playing, hover */
 .playing .control .dashicons-controls-pause,
 .playing:hover .control .dashicons-controls-pause {
-	display: inline-block;
+  display: inline-block;
 }
 
-/* not playing, not selected */
-.notPlaying:hover .text {
-	display: none;
+// not playing, not selected
+.notplaying:hover .text {
+  display: none;
 }
 
 .name {
-	color: #000;
-	font-family: "sf-ui-regular", sans-serif;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-	float: left;
-	width: calc(80% - 35px);
+  color: $black;
+  float: left;
+  font-family: 'sf-ui-regular', sans-serif;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: calc(80% - 35px);
 }
 
 .length {
-	float: right;
-	text-align: right;
-	width: 15%;
+  float: right;
+  text-align: right;
+  width: 15%;
 }

@@ -2,14 +2,20 @@ import React from 'react';
 import Relay from 'react-relay';
 import ArtistLink from './Link';
 import BrowseAlbum from '../Album/Browse';
+import Track from '../Track';
 import styles from './Artist.scss';
 import catalogStyles from '../Catalog/Catalog.scss';
 
 /* eslint-disable react/prop-types */
 
-const Artist = ({ artist, artistAlbums }) => (
+const Artist = ({ artist, artistAlbums, topTracks }) => (
   <div className={styles.wrap}>
     <h1>{artist.name}</h1>
+    <h2>Top Songs</h2>
+    <ul className={catalogStyles.tracks}>
+      {topTracks.results.map(track => <Track key={track.id} track={track} />)}
+    </ul>
+    <h2>Albums</h2>
     <ul className={catalogStyles.albums}>
       {artistAlbums.results.map(album => <BrowseAlbum key={album.id} album={album} />)}
     </ul>
@@ -19,6 +25,7 @@ const Artist = ({ artist, artistAlbums }) => (
 export default Relay.createContainer(Artist, {
   initialVariables: {
     type: 'artistAlbums',
+    trackType: 'topTracks',
   },
   fragments: {
     artist: () => Relay.QL`
@@ -32,6 +39,14 @@ export default Relay.createContainer(Artist, {
         results(type: $type) {
           id
           ${BrowseAlbum.getFragment('album')}
+        }
+      }
+    `,
+    topTracks: () => Relay.QL`
+      fragment on TrackCollection {
+        results(trackType: $trackType) {
+          id
+          ${Track.getFragment('track')}
         }
       }
     `,

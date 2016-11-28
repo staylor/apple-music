@@ -7,6 +7,7 @@ import ArtistType from './Artist';
 import AlbumType from './Album';
 import TrackType from './Track';
 import CollectionType from './Collection';
+import TrackCollectionType from './Track/Collection';
 
 import api from '../../database';
 
@@ -35,6 +36,15 @@ const Root = new GraphQLObjectType({
     },
     artistAlbums: {
       type: CollectionType,
+      args: {
+        id: { type: GraphQLString },
+      },
+      resolve: (_, args) => ({
+        results: args.id,
+      }),
+    },
+    topTracks: {
+      type: TrackCollectionType,
       args: {
         id: { type: GraphQLString },
       },

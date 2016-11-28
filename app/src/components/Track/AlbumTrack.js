@@ -2,16 +2,22 @@ import React from 'react';
 import Relay from 'react-relay';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import AlbumImage from '../Album/Image';
-import ArtistLink from '../Artist/Link';
 import { toggleCurrentTrack, setCurrentTrack } from '../../actions';
 import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
 import styles from './Track.scss';
 
+const convertMsTime = (ms) => {
+  const seconds = ms / 1000;
+  const minutes = seconds / 60;
+  const modSeconds = Math.floor(seconds % 60);
+  const modMinutes = Math.floor(minutes % 60);
+  return `${modMinutes}:${modSeconds > 9 ? modSeconds : `0${modSeconds}`}`;
+};
+
 /* eslint-disable react/prop-types */
 
-let Track = ({ track, current, playerState, bindClick }) => {
-  const className = classNames(styles.item, {
+let AlbumTrack = ({ track, current, playerState, bindClick }) => {
+  const className = classNames(styles.track, {
     [styles.paused]: current && playerState === PLAYER_IDLE,
     [styles.playing]: current && playerState === PLAYER_ACTIVE,
     [styles.notplaying]: !current,
@@ -23,9 +29,13 @@ let Track = ({ track, current, playerState, bindClick }) => {
       className={className}
       onClick={bindClick(current, playerState)}
     >
-      <AlbumImage album={track.album} />
+      <span className={styles.control}>
+        <span className={styles.text}>{track.track_number}</span>
+        <span className={`dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`} />
+        <span className={`dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`} />
+      </span>
       <span className={styles.name}>{track.name}</span>
-      <span><ArtistLink artist={track.artists[0]} /></span>
+      <span className={styles.length}>{convertMsTime(track.duration_ms)}</span>
     </li>
   );
 };
@@ -48,23 +58,19 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
 });
 
-Track = connect(
+AlbumTrack = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Track);
+)(AlbumTrack);
 
-export default Relay.createContainer(Track, {
+export default Relay.createContainer(AlbumTrack, {
   fragments: {
     track: () => Relay.QL`
-      fragment on Track {
+      fragment on AlbumTrack {
         id
         name
-        album {
-          ${AlbumImage.getFragment('album')}
-        }
-        artists {
-          ${ArtistLink.getFragment('artist')}
-        }
+        duration_ms
+        track_number
       }
     `,
   },

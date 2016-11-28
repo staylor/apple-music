@@ -117,7 +117,7 @@ class Spotify {
 
   getArtistTracks(id) {
     const qs = querystring.stringify({ country: 'US' });
-    return this.doFetch(`${artistUrl}${id}/top-tracks?${qs}`);
+    return this.doFetch(`${artistUrl}${id}/top-tracks?${qs}`).then(json => json.tracks);
   }
 
   getArtistRelated(id) {

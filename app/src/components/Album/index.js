@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import AlbumImage from './Image';
 import AlbumLink from './Link';
 import ArtistLink from '../Artist/Link';
-import Track from '../Track';
+import AlbumTrack from '../Track/AlbumTrack';
 import { toggleCurrentTrack } from '../../actions';
 import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
 import styles from './Album.scss';
@@ -29,7 +29,7 @@ let Album = ({ album, current, messages, playerState, bindClick }) => {
   const className = classNames(styles.album, {
     [styles.paused]: current && playerState === PLAYER_IDLE,
     [styles.playing]: current && playerState === PLAYER_ACTIVE,
-    [styles.notPlaying]: !current,
+    [styles.notplaying]: !current,
   });
 
   const boundClick = bindClick(current);
@@ -56,13 +56,15 @@ let Album = ({ album, current, messages, playerState, bindClick }) => {
       <div className={styles.info}>
         <header>
           <h1><AlbumLink album={album} /></h1>
-          <h2>{album.artists.map(artist => <ArtistLink key={artist.artist_id} artist={artist} />)}</h2>
+          <h2>{album.artists.map(artist =>
+            <ArtistLink key={artist.artist_id} artist={artist} />)}</h2>
           <div className={styles.meta}>
             {album.genres.length ? `${album.genres[0]} &bull; ` : ''}{album.release_date}
           </div>
         </header>
         <ol>
-          {album.tracks.items.map(item => <Track key={item.track_id} track={item} album={album} />)}
+          {album.tracks.items.map(item =>
+            <AlbumTrack key={item.track_id} track={item} album={album} />)}
         </ol>
       </div>
     </div>
@@ -113,7 +115,7 @@ export default Relay.createContainer(Album, {
             items {
               track_id
               duration_ms
-              ${Track.getFragment('track')}
+              ${AlbumTrack.getFragment('track')}
             }
           }
         }

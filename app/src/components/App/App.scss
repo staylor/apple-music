@@ -1,28 +1,30 @@
+@import '../../shared-styles/mixins';
+
 * {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-	font-family: "sf-ui-medium", sans-serif;
-	line-height: 1.4;
+  box-sizing: border-box;
+  font-family: 'sf-ui-medium', sans-serif;
+  line-height: 1.4;
+  margin: 0;
+  padding: 0;
 }
 
 .wrap {
-	padding: 20px;
+  padding: 20px;
 }
 
 .header {
-	padding: 20px 0;
+  padding: 20px 0;
 
-	a {
-		color: #000;
-		text-decoration: none;
+  a {
+    color: $black;
+    text-decoration: none;
 
-		&.locale {
-			font-size: 65%;
-		}
-	}
+    &.locale {
+      font-size: 65%;
+    }
+  }
 }
 
 .intro {
-	font-size: 14px;
+  font-size: 14px;
 }

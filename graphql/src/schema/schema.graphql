@@ -292,6 +292,7 @@ type Root {
   album(id: String): Album
   artist(id: String): Artist
   artistAlbums(id: String): Collection
+  topTracks(id: String): TrackCollection
   track(id: String): Track
 }
 
@@ -340,6 +341,12 @@ type Track implements TrackInterface {
 
   # The Spotify URI of the track.
   uri: String
+}
+
+# A list of results.
+type TrackCollection {
+  # Currently, a list of tracks.
+  results(trackType: String): [Track]
 }
 
 interface TrackInterface {

@@ -1,60 +1,57 @@
-@import "../../shared-styles/mixins";
+@import '../../shared-styles/mixins';
 
 .wrap {
-	height: 60px;
-	border: 1px solid #eee;
-	margin: 20px 0;
-
-	@include clearfix;
+  @include clearfix;
+  border: 1px solid #eee;
+  height: 60px;
+  margin: 20px 0;
 }
 
 .control {
-	width: 60px;
-	height: 60px;
-	float: left;
-	margin-right: 10px;
-	cursor: pointer;
+  cursor: pointer;
+  float: left;
+  height: 60px;
+  margin-right: 10px;
+  width: 60px;
 
-	&::before {
-		font-size: 40px;
-		line-height: 60px;
-	}
+  &::before {
+    font-size: 40px;
+    line-height: 60px;
+  }
 }
 
 .metadata {
-	float: left;
-	padding: 10px;
-	width: calc(100% - 100px);
-	margin-right: 30px;
-	font-family: "sf-ui-regular", sans-serif;
-	letter-spacing: 0.5px;
-	color: #000;
+  color: $black;
+  float: left;
+  font-family: 'sf-ui-regular', sans-serif;
+  letter-spacing: .5px;
+  margin-right: 30px;
+  padding: 10px;
+  width: calc(100% - 100px);
 
-	a {
-		color: #000;
-		text-decoration: none;
-	}
-
+  a {
+    color: $black;
+    text-decoration: none;
+  }
 }
 
 .details {
-	span {
-		color: #333;
-		opacity: 0.6;
-	}
+  span {
+    color: $darkgray;
+    opacity: .6;
+  }
 }
 
 .track {
-	margin-top: 6px;
-	height: 6px;
-	background: #dedede;
-
-	@include clearfix;
+  @include clearfix;
+  background: #dedede;
+  height: 6px;
+  margin-top: 6px;
 }
 
 .progress {
-	float: left;
-	width: 0.1%;
-	height: 6px;
-	background: #ff2d55;
+  background: #ff2d55;
+  float: left;
+  height: 6px;
+  width: .1%;
 }
