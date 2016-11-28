@@ -87,7 +87,7 @@ class Spotify {
   }
 
   getNewReleases(limit = 40) {
-    const qs = querystring.stringify({ limit });
+    const qs = querystring.stringify({ market: 'us', limit });
     return this.doFetch(`${newReleasesUrl}?${qs}`).then(json => ({
       results: json.albums.items,
     }));
@@ -101,6 +101,7 @@ class Spotify {
     const qs = querystring.stringify({
       type: 'album',
       q: term,
+      market: 'US',
     });
     return this.doFetch(`${searchUrl}?${qs}`);
   }
@@ -110,11 +111,13 @@ class Spotify {
   }
 
   getArtistAlbums(id) {
-    return this.doFetch(`${artistUrl}${id}/albums`);
+    const qs = querystring.stringify({ market: 'US' });
+    return this.doFetch(`${artistUrl}${id}/albums?${qs}`).then(json => json.items);
   }
 
   getArtistTracks(id) {
-    return this.doFetch(`${artistUrl}${id}/top-tracks`);
+    const qs = querystring.stringify({ country: 'US' });
+    return this.doFetch(`${artistUrl}${id}/top-tracks?${qs}`);
   }
 
   getArtistRelated(id) {
@@ -125,11 +128,11 @@ class Spotify {
     const qs = querystring.stringify({
       type: 'artist',
       q: term,
+      market: 'US',
     });
     return this.doFetch(`${searchUrl}?${qs}`);
   }
 
-  // eslint-disable-next-line
   getTrack(id) {
     return this.doFetch(`${trackUrl}${id}`);
   }
@@ -138,6 +141,7 @@ class Spotify {
     const qs = querystring.stringify({
       type: 'track',
       q: term,
+      market: 'US',
     });
     return this.doFetch(`${searchUrl}?${qs}`);
   }

@@ -6,6 +6,14 @@ import { toggleCurrentTrack, setCurrentTrack } from '../../actions';
 import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
 import styles from './Track.scss';
 
+const convertMsTime = (ms) => {
+  const seconds = ms / 1000;
+  const minutes = seconds / 60;
+  const modSeconds = Math.floor(seconds % 60);
+  const modMinutes = Math.floor(minutes % 60);
+  return `${modMinutes}:${modSeconds > 9 ? modSeconds : `0${modSeconds}`}`;
+};
+
 /* eslint-disable react/prop-types */
 
 let Track = ({ track, current, playerState, bindClick }) => {
@@ -27,7 +35,7 @@ let Track = ({ track, current, playerState, bindClick }) => {
         <span className={`dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`} />
       </span>
       <span className={styles.name}>{track.name}</span>
-      <span className={styles.length}>{track.duration_ms}</span>
+      <span className={styles.length}>{convertMsTime(track.duration_ms)}</span>
     </li>
   );
 };

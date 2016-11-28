@@ -3,6 +3,11 @@
 .wrap {
 	margin: 20px 0;
 	overflow: hidden;
+
+	button {
+		display: inline-block;
+		margin: 0 5px; padding: 5px;
+	}
 }
 
 .albums {

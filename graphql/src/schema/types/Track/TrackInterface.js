@@ -1,21 +1,22 @@
 import {
+  GraphQLInterfaceType,
+  GraphQLString,
   GraphQLInt,
   GraphQLList,
-  GraphQLString,
   GraphQLBoolean,
 } from 'graphql';
 
 import URLMapType from '../URLMap';
-import ArtistInterfaceType from '../Artist/ArtistInterface';
+import AlbumArtistType from '../Artist/AlbumArtist';
 
-export default {
-  trackId: {
+export const TrackFields = {
+  track_id: {
     type: GraphQLString,
     description: 'The id of the track.',
     resolve: track => track.id,
   },
   artists: {
-    type: new GraphQLList(ArtistInterfaceType),
+    type: new GraphQLList(AlbumArtistType),
     description: 'The artists on the track.',
   },
   available_markets: {
@@ -67,3 +68,10 @@ export default {
     description: 'The Spotify URI of the track.',
   },
 };
+
+export const TrackInterfaceType = new GraphQLInterfaceType({
+  name: 'TrackInterface',
+  fields: () => ({
+    ...TrackFields,
+  }),
+});

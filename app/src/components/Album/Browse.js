@@ -24,10 +24,8 @@ export default Relay.createContainer(BrowseAlbum, {
         ${AlbumLink.getFragment('album')}
         ${AlbumImage.getFragment('album')}
         artists {
-          ... on AlbumArtist {
-            id
-            ${ArtistLink.getFragment('artist')}            
-          }
+          id
+          ${ArtistLink.getFragment('artist')}
         }
       }
     `,

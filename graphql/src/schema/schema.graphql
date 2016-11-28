@@ -4,8 +4,11 @@ schema {
 
 # An album in the catalog
 type Album implements AlbumInterface {
+  # The ID of an object
+  id: ID!
+
   # The Spotify ID of the album.
-  id: String
+  album_id: String
 
   # The Spotify web URL for the album.
   href: String
@@ -55,8 +58,11 @@ type Album implements AlbumInterface {
 
 # An artist on the album.
 type AlbumArtist implements ArtistInterface {
-  # The Spotify ID for the artist.
-  id: String
+  # The ID of an object
+  id: ID!
+
+  # The Spotify ID of the artist.
+  artist_id: String
 
   # URLs for the artist.
   external_urls: URLMap
@@ -76,7 +82,7 @@ type AlbumArtist implements ArtistInterface {
 
 interface AlbumInterface {
   # The Spotify ID of the album.
-  id: String
+  album_id: String
 
   # The Spotify web URL for the album.
   href: String
@@ -103,12 +109,15 @@ interface AlbumInterface {
   available_markets: [String]
 }
 
-type AlbumTrack {
+type AlbumTrack implements TrackInterface {
   # The id of the track.
-  trackId: String
+  id: String
+
+  # The id of the track.
+  track_id: String
 
   # The artists on the track.
-  artists: [ArtistInterface]
+  artists: [AlbumArtist]
 
   # Available markets.
   available_markets: [String]
@@ -128,9 +137,6 @@ type AlbumTrack {
   # The Spotify URL of the track.
   href: String
 
-  # The id of the track.
-  id: String
-
   # The name of the track.
   name: String
 
@@ -149,8 +155,11 @@ type AlbumTrack {
 
 # An artist in the catalog
 type Artist implements ArtistInterface {
-  # The Spotify ID for the artist.
-  id: String
+  # The ID of an object
+  id: ID!
+
+  # The Spotify ID of the artist.
+  artist_id: String
 
   # URLs for the artist.
   external_urls: URLMap
@@ -181,8 +190,8 @@ type Artist implements ArtistInterface {
 }
 
 interface ArtistInterface {
-  # The Spotify ID for the artist.
-  id: String
+  # The Spotify ID of the artist.
+  artist_id: String
 
   # URLs for the artist.
   external_urls: URLMap
@@ -202,8 +211,11 @@ interface ArtistInterface {
 
 # An album in the catalog
 type BrowseAlbum implements AlbumInterface {
+  # The ID of an object
+  id: ID!
+
   # The Spotify ID of the album.
-  id: String
+  album_id: String
 
   # The Spotify web URL for the album.
   href: String
@@ -236,7 +248,7 @@ type BrowseAlbum implements AlbumInterface {
 # A list of results.
 type Collection {
   # Currently, a list of albums.
-  results(sort: String, limit: Int): [AlbumInterface]
+  results(sort: String, limit: Int, type: String): [BrowseAlbum]
 }
 
 # A list of copyrights.
@@ -279,18 +291,63 @@ type Root {
   newReleases: Collection
   album(id: String): Album
   artist(id: String): Artist
+  artistAlbums(id: String): Collection
   track(id: String): Track
 }
 
-type Track {
+type Track implements TrackInterface {
+  # The id of the track.
+  id: String
+
   # The album related to the track.
   album: BrowseAlbum
 
   # The id of the track.
-  trackId: String
+  track_id: String
 
   # The artists on the track.
-  artists: [ArtistInterface]
+  artists: [AlbumArtist]
+
+  # Available markets.
+  available_markets: [String]
+
+  # The disc index of the track.
+  disc_number: Int
+
+  # The track length is milliseconds.
+  duration_ms: Int
+
+  # Whether the track has explicit lyrics.
+  explicit: Boolean
+
+  # A list of URLs for the track.
+  external_urls: URLMap
+
+  # The Spotify URL of the track.
+  href: String
+
+  # The name of the track.
+  name: String
+
+  # The formatted length of the track.
+  preview_url: String
+
+  # The index of the track.
+  track_number: Int
+
+  # The type of track (usually: "track").
+  type: String
+
+  # The Spotify URI of the track.
+  uri: String
+}
+
+interface TrackInterface {
+  # The id of the track.
+  track_id: String
+
+  # The artists on the track.
+  artists: [AlbumArtist]
 
   # Available markets.
   available_markets: [String]

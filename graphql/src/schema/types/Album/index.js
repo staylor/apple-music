@@ -1,15 +1,16 @@
 import {
-  GraphQLInt,
-  GraphQLList,
   GraphQLObjectType,
+  GraphQLList,
   GraphQLString,
+  GraphQLInt,
 } from 'graphql';
 
-import TracksetType from './Trackset';
+import { globalIdField } from 'graphql-relay';
+
+import { AlbumFields, AlbumInterfaceType } from './AlbumInterface';
+import TracksetType from '../Track/Trackset';
 import CopyrightType from '../Copyright';
 import IDMapType from '../IDMap';
-import AlbumFields from './AlbumFields';
-import AlbumInterfaceType from './AlbumInterface';
 
 const AlbumType = new GraphQLObjectType({
   name: 'Album',
@@ -19,6 +20,7 @@ const AlbumType = new GraphQLObjectType({
     return 'tracks' in value;
   },
   fields: () => ({
+    id: globalIdField('Album'),
     ...AlbumFields,
     copyrights: {
       type: new GraphQLList(CopyrightType),

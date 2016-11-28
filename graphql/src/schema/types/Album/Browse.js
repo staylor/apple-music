@@ -3,8 +3,9 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import AlbumFields from './AlbumFields';
-import AlbumInterfaceType from './AlbumInterface';
+import { globalIdField } from 'graphql-relay';
+
+import { AlbumFields, AlbumInterfaceType } from './AlbumInterface';
 
 const BrowseAlbumType = new GraphQLObjectType({
   name: 'BrowseAlbum',
@@ -14,6 +15,7 @@ const BrowseAlbumType = new GraphQLObjectType({
     return !('tracks' in value);
   },
   fields: () => ({
+    id: globalIdField('BrowseAlbum'),
     ...AlbumFields,
     album_type: {
       type: GraphQLString,

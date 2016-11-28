@@ -6,7 +6,7 @@ import {
 } from 'graphql';
 
 import api from '../../database';
-import AlbumInterfaceType from './Album/AlbumInterface';
+import BrowseAlbumType from './Album/Browse';
 
 const artistNameFilter = (a, b) => {
   const aNode = a.artists[0].name;
@@ -50,27 +50,32 @@ const CollectionType = new GraphQLObjectType({
   description: 'A list of results.',
   fields: {
     results: {
-      type: new GraphQLList(AlbumInterfaceType),
+      type: new GraphQLList(BrowseAlbumType),
       description: 'Currently, a list of albums.',
       args: {
         sort: { type: GraphQLString },
         limit: { type: GraphQLInt },
+        type: { type: GraphQLString },
       },
-      resolve: (_, args) => new Promise(resolve => (
-        api.getNewReleases(args.limit)
-          .then(({ results }) => {
-            if (args.sort && filters[args.sort]) {
-              const sorted = results.sort(filters[args.sort].filter);
-              if (filters[args.sort].reverse) {
-                sorted.reverse();
+      resolve: (_, args) => {
+        if (args.type === 'newReleases') {
+          return api.getNewReleases(args.limit)
+            .then(({ results }) => {
+              if (args.sort && filters[args.sort]) {
+                const sorted = results.sort(filters[args.sort].filter);
+                if (filters[args.sort].reverse) {
+                  sorted.reverse();
+                }
+                return sorted;
               }
-              resolve(sorted);
-              return sorted;
-            }
-            resolve(results);
-            return results;
-          })
-      )),
+              return results;
+            });
+        } else if (args.type === 'artistAlbums') {
+          return api.getArtistAlbums(_.results);
+        }
+
+        return [];
+      },
     },
   },
 });

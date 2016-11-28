@@ -2,8 +2,9 @@ import {
   GraphQLObjectType,
 } from 'graphql';
 
-import ArtistFields from '../Artist/ArtistFields';
-import ArtistInterfaceType from '../Artist/ArtistInterface';
+import { globalIdField } from 'graphql-relay';
+
+import { ArtistInterfaceType, ArtistFields } from './ArtistInterface';
 
 const AlbumArtistType = new GraphQLObjectType({
   name: 'AlbumArtist',
@@ -11,6 +12,7 @@ const AlbumArtistType = new GraphQLObjectType({
   interfaces: [ArtistInterfaceType],
   isTypeOf: value => !('followers' in value),
   fields: () => ({
+    id: globalIdField('AlbumArtist'),
     ...ArtistFields,
   }),
 });

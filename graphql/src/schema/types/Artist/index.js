@@ -5,10 +5,11 @@ import {
   GraphQLInt,
 } from 'graphql';
 
+import { globalIdField } from 'graphql-relay';
+
 import ImageType from '../Image';
-import ArtistFields from './ArtistFields';
 import FollowersType from './Followers';
-import ArtistInterfaceType from './ArtistInterface';
+import { ArtistInterfaceType, ArtistFields } from './ArtistInterface';
 
 const ArtistType = new GraphQLObjectType({
   name: 'Artist',
@@ -16,6 +17,7 @@ const ArtistType = new GraphQLObjectType({
   description: 'An artist in the catalog',
   isTypeOf: value => ('followers' in value),
   fields: () => ({
+    id: globalIdField('Artist'),
     ...ArtistFields,
     followers: {
       type: FollowersType,

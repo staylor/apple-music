@@ -1,11 +1,11 @@
 import {
   GraphQLObjectType,
-  GraphQLList,
   GraphQLString,
   GraphQLInt,
+  GraphQLList,
 } from 'graphql';
 
-import AlbumTrackType from './Track';
+import AlbumTrackType from './AlbumTrack';
 
 const TracksetType = new GraphQLObjectType({
   name: 'Trackset',

@@ -5,14 +5,14 @@ import L10NLink from '../L10NLink';
 /* eslint-disable react/prop-types */
 
 const AlbumLink = ({ album }) => (
-  <L10NLink to={`/album/${album.id}`}>{album.name}</L10NLink>
+  <L10NLink to={`/album/${album.album_id}`}>{album.name}</L10NLink>
 );
 
 export default Relay.createContainer(AlbumLink, {
   fragments: {
     album: () => Relay.QL`
       fragment on AlbumInterface {
-        id
+        album_id
         name
       }
     `,

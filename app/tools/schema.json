@@ -70,6 +70,29 @@
             "deprecationReason": null
           },
           {
+            "name": "artistAlbums",
+            "description": null,
+            "args": [
+              {
+                "name": "id",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Collection",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "track",
             "description": null,
             "args": [
@@ -126,14 +149,24 @@
                   "ofType": null
                 },
                 "defaultValue": null
+              },
+              {
+                "name": "type",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
               }
             ],
             "type": {
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INTERFACE",
-                "name": "AlbumInterface",
+                "kind": "OBJECT",
+                "name": "BrowseAlbum",
                 "ofType": null
               }
             },
@@ -167,12 +200,177 @@
         "possibleTypes": null
       },
       {
+        "kind": "OBJECT",
+        "name": "BrowseAlbum",
+        "description": "An album in the catalog",
+        "fields": [
+          {
+            "name": "id",
+            "description": "The ID of an object",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "album_id",
+            "description": "The Spotify ID of the album.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "href",
+            "description": "The Spotify web URL for the album.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "external_urls",
+            "description": "List of external URLs.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "URLMap",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "The name of the album.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "uri",
+            "description": "The Spotify URI for the album.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": "Type of album.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "images",
+            "description": "The genres for the artist.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Image",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "artists",
+            "description": "The name of the artists who created the album.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AlbumArtist",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "available_markets",
+            "description": "List of 2-digit country codes where the album is available.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "album_type",
+            "description": "The type of the album (usually: \"album\")",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "AlbumInterface",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "INTERFACE",
         "name": "AlbumInterface",
         "description": null,
         "fields": [
           {
-            "name": "id",
+            "name": "album_id",
             "description": "The Spotify ID of the album.",
             "args": [],
             "type": {
@@ -298,12 +496,12 @@
         "possibleTypes": [
           {
             "kind": "OBJECT",
-            "name": "Album",
+            "name": "BrowseAlbum",
             "ofType": null
           },
           {
             "kind": "OBJECT",
-            "name": "BrowseAlbum",
+            "name": "Album",
             "ofType": null
           }
         ]
@@ -385,7 +583,23 @@
         "fields": [
           {
             "name": "id",
-            "description": "The Spotify ID for the artist.",
+            "description": "The ID of an object",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "artist_id",
+            "description": "The Spotify ID of the artist.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -473,8 +687,8 @@
         "description": null,
         "fields": [
           {
-            "name": "id",
-            "description": "The Spotify ID for the artist.",
+            "name": "artist_id",
+            "description": "The Spotify ID of the artist.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -562,12 +776,38 @@
         ]
       },
       {
+        "kind": "SCALAR",
+        "name": "ID",
+        "description": "The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `\"4\"`) or integer (such as `4`) input value will be accepted as an ID.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "OBJECT",
         "name": "Album",
         "description": "An album in the catalog",
         "fields": [
           {
             "name": "id",
+            "description": "The ID of an object",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "album_id",
             "description": "The Spotify ID of the album.",
             "args": [],
             "type": {
@@ -953,7 +1193,19 @@
         "description": null,
         "fields": [
           {
-            "name": "trackId",
+            "name": "id",
+            "description": "The id of the track.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "track_id",
             "description": "The id of the track.",
             "args": [],
             "type": {
@@ -972,8 +1224,189 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INTERFACE",
-                "name": "ArtistInterface",
+                "kind": "OBJECT",
+                "name": "AlbumArtist",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "available_markets",
+            "description": "Available markets.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "disc_number",
+            "description": "The disc index of the track.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "duration_ms",
+            "description": "The track length is milliseconds.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "explicit",
+            "description": "Whether the track has explicit lyrics.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "external_urls",
+            "description": "A list of URLs for the track.",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "URLMap",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "href",
+            "description": "The Spotify URL of the track.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "The name of the track.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "preview_url",
+            "description": "The formatted length of the track.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "track_number",
+            "description": "The index of the track.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "type",
+            "description": "The type of track (usually: \"track\").",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "uri",
+            "description": "The Spotify URI of the track.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "TrackInterface",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "TrackInterface",
+        "description": null,
+        "fields": [
+          {
+            "name": "track_id",
+            "description": "The id of the track.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "artists",
+            "description": "The artists on the track.",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AlbumArtist",
                 "ofType": null
               }
             },
@@ -1130,9 +1563,20 @@
           }
         ],
         "inputFields": null,
-        "interfaces": [],
+        "interfaces": null,
         "enumValues": null,
-        "possibleTypes": null
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "AlbumTrack",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Track",
+            "ofType": null
+          }
+        ]
       },
       {
         "kind": "SCALAR",
@@ -1151,7 +1595,23 @@
         "fields": [
           {
             "name": "id",
-            "description": "The Spotify ID for the artist.",
+            "description": "The ID of an object",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "artist_id",
+            "description": "The Spotify ID of the artist.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -1330,6 +1790,18 @@
         "description": null,
         "fields": [
           {
+            "name": "id",
+            "description": "The id of the track.",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "album",
             "description": "The album related to the track.",
             "args": [],
@@ -1342,7 +1814,7 @@
             "deprecationReason": null
           },
           {
-            "name": "trackId",
+            "name": "track_id",
             "description": "The id of the track.",
             "args": [],
             "type": {
@@ -1361,8 +1833,8 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INTERFACE",
-                "name": "ArtistInterface",
+                "kind": "OBJECT",
+                "name": "AlbumArtist",
                 "ofType": null
               }
             },
@@ -1446,18 +1918,6 @@
             "deprecationReason": null
           },
           {
-            "name": "id",
-            "description": "The id of the track.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "name",
             "description": "The name of the track.",
             "args": [],
@@ -1519,153 +1979,10 @@
           }
         ],
         "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "BrowseAlbum",
-        "description": "An album in the catalog",
-        "fields": [
-          {
-            "name": "id",
-            "description": "The Spotify ID of the album.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "href",
-            "description": "The Spotify web URL for the album.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "external_urls",
-            "description": "List of external URLs.",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "URLMap",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": "The name of the album.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "uri",
-            "description": "The Spotify URI for the album.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "type",
-            "description": "Type of album.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "images",
-            "description": "The genres for the artist.",
-            "args": [],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Image",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "artists",
-            "description": "The name of the artists who created the album.",
-            "args": [],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "AlbumArtist",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "available_markets",
-            "description": "List of 2-digit country codes where the album is available.",
-            "args": [],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "album_type",
-            "description": "The type of the album (usually: \"album\")",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
         "interfaces": [
           {
             "kind": "INTERFACE",
-            "name": "AlbumInterface",
+            "name": "TrackInterface",
             "ofType": null
           }
         ],

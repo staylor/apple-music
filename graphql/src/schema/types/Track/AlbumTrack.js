@@ -2,14 +2,18 @@ import {
   GraphQLObjectType,
 } from 'graphql';
 
-import TrackFields from '../Track/TrackFields';
+import { globalIdField } from 'graphql-relay';
+
+import { TrackInterfaceType, TrackFields } from './TrackInterface';
 
 const AlbumTrackType = new GraphQLObjectType({
   name: 'AlbumTrack',
+  interfaces: [TrackInterfaceType],
   isTypeOf(value) {
     return !('album' in value);
   },
   fields: () => ({
+    id: globalIdField('AlbumTrack'),
     ...TrackFields,
   }),
 });
