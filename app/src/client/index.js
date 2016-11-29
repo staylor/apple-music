@@ -36,12 +36,21 @@ IsomorphicRelay.injectPreparedData(environment, data);
 
 const rootElement = document.getElementById('root');
 
+let rendered = false;
+
 const mount = (routes = AppRoutes) => {
   match({ routes, history: browserHistory }, (error, redirectLocation, renderProps) => {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then((props) => {
+      const routerProps = Object.assign({}, props);
+      if (rendered) {
+        Reflect.deleteProperty(routerProps, 'routes');
+        Reflect.deleteProperty(routerProps, 'history');
+      } else {
+        rendered = true;
+      }
       ReactDOM.render(
         <Provider store={store}>
-          <Router {...props} onUpdate={() => window.scrollTo(0, 0)} />
+          <Router {...routerProps} onUpdate={() => window.scrollTo(0, 0)} />
         </Provider>,
         rootElement
       );

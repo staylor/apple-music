@@ -3,8 +3,40 @@ import { PLAYER_IDLE, PLAYER_ACTIVE } from '../reducers/player';
 
 let audio = null;
 let track = 0;
+let currentVolume;
+let fadeInInterval;
+let fadeOutInterval;
 
 const isServer = typeof document === 'undefined';
+const interval = 200;
+
+const fadeEdges = () => {
+  window.clearInterval(fadeInInterval);
+  window.clearInterval(fadeOutInterval);
+
+  // we know that this is a deliberate action
+  // fade in the track
+  currentVolume = audio.volume || 0.5;
+  audio.volume = 0;
+
+  fadeInInterval = window.setInterval(() => {
+    if (audio.volume >= 1 || audio.volume >= currentVolume) {
+      window.clearInterval(fadeInInterval);
+      return;
+    }
+    audio.volume = Math.min(1, audio.volume + 0.1);
+  }, interval);
+
+  // set up a 2-second fade out
+  fadeOutInterval = window.setInterval(() => {
+    if ((audio.currentTime >= (audio.duration - 2)) && audio.volume !== 0.0) {
+      audio.volume -= 0.1;
+    }
+    if (audio.volume === 0.0) {
+      window.clearInterval(fadeOutInterval);
+    }
+  }, interval);
+};
 
 const listener = (state) => {
   if (isServer || !state) {
@@ -20,6 +52,7 @@ const listener = (state) => {
       audio.pause();
     } else if (state.playerState === PLAYER_ACTIVE && audio.paused) {
       audio.play();
+      fadeEdges();
     }
     return;
   }
@@ -31,6 +64,7 @@ const listener = (state) => {
     audio.src = state.currentTrack.preview_url;
     audio.load();
     audio.play();
+    fadeEdges();
   } else {
     Reflect.deleteProperty(audio, 'src');
   }
@@ -43,6 +77,7 @@ export default (store = null) => {
   }
   if (!audio) {
     audio = document.createElement('audio');
+    audio.loop = false;
   }
   if (store) {
     audio.ontimeupdate = () => (

@@ -103,12 +103,14 @@ let Album = ({
 };
 
 const mapStateToProps = (state, ownProps) => {
-  let currentAlbum = null;
-  if (state.currentTrack && state.currentTrack.album) {
-    currentAlbum = state.currentTrack.album;
+  let currentAlbum = false;
+  if (state.currentTrack) {
+    currentAlbum = ownProps.album.tracks.items.filter(track => (
+      track.track_id === state.currentTrack.track_id
+    )).length > 0;
   }
   return {
-    current: currentAlbum && currentAlbum.album_id === ownProps.album.album_id,
+    current: currentAlbum,
     locale: state.locale.code,
     messages: state.locale.messages,
     playerState: state.playerState,

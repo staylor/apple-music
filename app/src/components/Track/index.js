@@ -31,7 +31,7 @@ let Track = ({ track, current, playerState, bindClick }) => {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  current: state.currentTrack && state.currentTrack.id === ownProps.track.id,
+  current: state.currentTrack && state.currentTrack.track_id === ownProps.track.track_id,
   playerState: state.playerState,
 });
 
@@ -57,7 +57,7 @@ export default Relay.createContainer(Track, {
   fragments: {
     track: () => Relay.QL`
       fragment on Track {
-        id
+        track_id
         name
         album {
           ${AlbumImage.getFragment('album')}
@@ -65,6 +65,7 @@ export default Relay.createContainer(Track, {
         artists {
           ${ArtistLink.getFragment('artist')}
         }
+        preview_url
       }
     `,
   },

@@ -19,6 +19,7 @@
 
   li {
     float: left;
+    height: 80px;
     margin-right: 20px;
     padding: 10px 0;
     width: calc(20% - 20px);
@@ -27,8 +28,8 @@
   img {
     border-radius: 5px;
     float: left;
-    width: 60px;
     margin: 0 10px 0 0;
+    width: 60px;
   }
 
   a {
@@ -48,11 +49,6 @@
     float: left;
     margin-right: 20px;
     width: calc(20% - 20px);
-  }
-
-  img {
-    border-radius: 5px;
-    width: 100%;
   }
 
   .artwork {
@@ -78,5 +74,11 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+  }
+}
+
+.albums {
+  img {
+    width: 100%;
   }
 }
