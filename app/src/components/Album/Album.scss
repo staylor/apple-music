@@ -2,16 +2,14 @@
 
 .album {
   @include clearfix;
-  border: 1px solid $detail;
   margin: 20px 0;
   overflow: hidden;
-  padding: 20px;
 }
 
 .artwork {
   float: left;
   position: relative;
-  width: 23%;
+  width: 40%;
 
   .dashicons-controls-play,
   .dashicons-controls-pause {
@@ -53,7 +51,7 @@
 
 .info {
   float: right;
-  width: 75%;
+  width: 58%;
 
   h1 {
     font-size: 18px;

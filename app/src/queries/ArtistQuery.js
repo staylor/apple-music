@@ -6,6 +6,7 @@ class ArtistQuery extends Route {
       artist: () => Relay.QL`query ArtistQuery { artist(id: $artistId) }`,
       artistAlbums: () => Relay.QL`query ArtistAlbumsQuery { artistAlbums(id: $artistId) }`,
       topTracks: () => Relay.QL`query TopTracksQuery { topTracks(id: $artistId) }`,
+      relatedArtists: () => Relay.QL`query RelatedArtistQuery { relatedArtists(id: $artistId) }`,
     };
   }
 

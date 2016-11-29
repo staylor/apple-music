@@ -189,6 +189,12 @@ type Artist implements ArtistInterface, Node {
   popularity: Int
 }
 
+# A list of results.
+type ArtistCollection {
+  # Currently, a list of artists.
+  results(artistType: String): [Artist]
+}
+
 interface ArtistInterface {
   # The Spotify ID of the artist.
   artist_id: String
@@ -308,6 +314,7 @@ type Root {
   track(id: String): Track
   artistAlbums(id: String): Collection
   topTracks(id: String): TrackCollection
+  relatedArtists(id: String): ArtistCollection
 }
 
 type Track implements TrackInterface, Node {

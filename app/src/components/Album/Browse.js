@@ -9,7 +9,9 @@ import styles from '../Catalog/Catalog.scss';
 
 const BrowseAlbum = ({ album }) => (
   <li>
-    <AlbumImage album={album} />
+    <div className={styles.artwork}>
+      <AlbumImage album={album} />
+    </div>
     <div className={styles.meta}>
       <AlbumLink album={album} />
       {album.artists.map(artist => <ArtistLink key={artist.id} artist={artist} />)}

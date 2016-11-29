@@ -165,7 +165,9 @@ class Spotify {
   }
 
   getArtistRelated(id) {
-    return this.doFetch(`${artistUrl}${id}/related-artists`);
+    return this.doFetch(`${artistUrl}${id}/related-artists`)
+      .then(json => json.artists)
+      .then(artists => artists.map(artist => setFullArtist(artist)));
   }
 
   getArtistSearch(term) {

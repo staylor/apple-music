@@ -2,13 +2,19 @@ import React from 'react';
 import Relay from 'react-relay';
 import ArtistLink from './Link';
 import BrowseAlbum from '../Album/Browse';
+import RelatedArtist from '../Artist/Related';
 import Track from '../Track';
 import styles from './Artist.scss';
 import catalogStyles from '../Catalog/Catalog.scss';
 
 /* eslint-disable react/prop-types */
 
-const Artist = ({ artist, artistAlbums, topTracks }) => (
+const Artist = ({
+  artist,
+  artistAlbums,
+  topTracks,
+  relatedArtists,
+}) => (
   <div className={styles.wrap}>
     <h1>{artist.name}</h1>
     {artist.images.length &&
@@ -21,12 +27,19 @@ const Artist = ({ artist, artistAlbums, topTracks }) => (
     <ul className={catalogStyles.albums}>
       {artistAlbums.results.map(album => <BrowseAlbum key={album.id} album={album} />)}
     </ul>
+    <h2>Related Artists</h2>
+    <ul className={catalogStyles.artists}>
+      {relatedArtists.results.map(relatedArtist => (
+        <RelatedArtist key={relatedArtist.id} artist={relatedArtist} />
+      ))}
+    </ul>
   </div>
 );
 
 export default Relay.createContainer(Artist, {
   initialVariables: {
     type: 'artistAlbums',
+    artistType: 'related',
     trackType: 'topTracks',
   },
   fragments: {
@@ -54,6 +67,14 @@ export default Relay.createContainer(Artist, {
         results(trackType: $trackType) {
           id
           ${Track.getFragment('track')}
+        }
+      }
+    `,
+    relatedArtists: () => Relay.QL`
+      fragment on ArtistCollection {
+        results(artistType: $artistType) {
+          id
+          ${RelatedArtist.getFragment('artist')}
         }
       }
     `,

@@ -7,6 +7,7 @@ import styles from './Catalog.scss';
 
 const Catalog = props => (
   <div className={styles.wrap}>
+    <h2>New Releases</h2>
     <ul className={styles.albums}>
       {props.newReleases.results.map(album => <BrowseAlbum key={album.id} album={album} />)}
     </ul>

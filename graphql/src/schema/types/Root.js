@@ -8,6 +8,7 @@ import AlbumType from './Album';
 import TrackType from './Track';
 import CollectionType from './Collection';
 import TrackCollectionType from './Track/Collection';
+import ArtistCollectionType from './Artist/Collection';
 import { nodeField } from './relayNode';
 import api from '../../database';
 
@@ -60,6 +61,15 @@ const Root = new GraphQLObjectType({
     },
     topTracks: {
       type: TrackCollectionType,
+      args: {
+        id: { type: GraphQLString },
+      },
+      resolve: (_, args) => ({
+        results: args.id,
+      }),
+    },
+    relatedArtists: {
+      type: ArtistCollectionType,
       args: {
         id: { type: GraphQLString },
       },

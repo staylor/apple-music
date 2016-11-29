@@ -165,6 +165,29 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "relatedArtists",
+              "description": null,
+              "args": [
+                {
+                  "name": "id",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "OBJECT",
+                "name": "ArtistCollection",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -2146,6 +2169,44 @@
                 "ofType": {
                   "kind": "OBJECT",
                   "name": "Track",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "ArtistCollection",
+          "description": "A list of results.",
+          "fields": [
+            {
+              "name": "results",
+              "description": "Currently, a list of artists.",
+              "args": [
+                {
+                  "name": "artistType",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Artist",
                   "ofType": null
                 }
               },
