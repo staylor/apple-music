@@ -87,14 +87,17 @@ class Spotify {
     });
   }
 
-  getNewReleases() {
+  getNewReleases(opts) {
     const qs = querystring.stringify({
       market: 'US',
-      limit: 50,
+      ...opts,
     });
     return this.doFetch(`${newReleasesUrl}?${qs}`)
-      .then(json => json.albums.items)
-      .then(items => items.map(item => coerce.setBrowseAlbum(coerce.walk(item))));
+      .then(json => json.albums)
+      .then((albums) => {
+        albums.items = albums.items.map(item => coerce.setBrowseAlbum(coerce.walk(item)));
+        return albums;
+      });
   }
 
   getAlbum(id) {
