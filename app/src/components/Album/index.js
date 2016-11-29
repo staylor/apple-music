@@ -2,7 +2,6 @@ import React from 'react';
 import Relay from 'react-relay';
 import { FormattedNumber, FormattedPlural } from 'react-intl';
 import { connect } from 'react-redux';
-import prettyMs from 'pretty-ms';
 import classNames from 'classnames';
 import AlbumImage from './Image';
 import AlbumLink from './Link';
@@ -12,19 +11,41 @@ import { toggleCurrentTrack } from '../../actions';
 import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
 import styles from './Album.scss';
 
+const totalTime = (items, messages) => {
+  const totalMs = items.reduce((a, b) => a + b.duration_ms, 0);
+
+  let secs = Math.floor(totalMs / 1000);
+  let mins = Math.floor(secs / 60);
+  secs %= 60;
+  let hours = Math.floor(mins / 60);
+  mins %= 60;
+  hours %= 24;
+
+  const parts = [];
+  if (hours) {
+    parts.push(hours > 1 ? `${hours} ${messages.hours}` : `${hours} ${messages.hour}`);
+  }
+  if (mins) {
+    parts.push(mins > 1 ? `${mins} ${messages.minutes}` : `${mins} ${messages.minute}`);
+  }
+  return parts.join(', ');
+};
+
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react/prop-types */
 
-let Album = ({ album, current, messages, playerState, bindClick }) => {
+let Album = ({
+  album,
+  current,
+  locale,
+  messages,
+  playerState,
+  bindClick,
+}) => {
   const playClass = `dashicons dashicons-controls-play ${styles['dashicons-controls-play']}`;
   const pauseClass = `dashicons dashicons-controls-pause ${styles['dashicons-controls-pause']}`;
 
   const tracks = album.tracks.items.length;
-  const totalMs = album.tracks.items.reduce((a, b) => a + b.duration_ms, 0);
-  const totalTime = prettyMs(totalMs, {
-    verbose: true,
-    secDecimalDigits: 0,
-  });
 
   const className = classNames(styles.album, {
     [styles.paused]: current && playerState === PLAYER_IDLE,
@@ -33,6 +54,13 @@ let Album = ({ album, current, messages, playerState, bindClick }) => {
   });
 
   const boundClick = bindClick(current);
+
+  const dateFormatted = (new Date(album.release_date))
+    .toLocaleString(locale, {
+      month: 'long',
+      year: 'numeric',
+      day: 'numeric',
+    });
 
   return (
     <div className={className}>
@@ -50,7 +78,7 @@ let Album = ({ album, current, messages, playerState, bindClick }) => {
             one={messages['album.song']}
             other={messages['album.songs']}
           />
-          , {totalTime}
+          , {totalTime(album.tracks.items, messages)}
         </figcaption>
       </figure>
       <div className={styles.info}>
@@ -59,13 +87,16 @@ let Album = ({ album, current, messages, playerState, bindClick }) => {
           <h2>{album.artists.map(artist =>
             <ArtistLink key={artist.artist_id} artist={artist} />)}</h2>
           <div className={styles.meta}>
-            {album.genres.length ? `${album.genres[0]} &bull; ` : ''}{album.release_date}
+            {album.genres.length ? `${album.genres[0]} &bull; ` : ''}{dateFormatted}
           </div>
         </header>
         <ol>
           {album.tracks.items.map(item =>
             <AlbumTrack key={item.track_id} track={item} album={album} />)}
         </ol>
+        {album.copyrights.map((copyright, i) => (
+          <p key={`copyright-${i}`}>{copyright.text}</p>
+        ))}
       </div>
     </div>
   );
@@ -78,6 +109,7 @@ const mapStateToProps = (state, ownProps) => {
   }
   return {
     current: currentAlbum && currentAlbum.album_id === ownProps.album.album_id,
+    locale: state.locale.code,
     messages: state.locale.messages,
     playerState: state.playerState,
   };
@@ -110,6 +142,9 @@ export default Relay.createContainer(Album, {
         ${AlbumImage.getFragment('album')}
         ... on Album {
           genres
+          copyrights {
+            text
+          }
           release_date
           tracks {
             items {

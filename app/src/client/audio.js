@@ -11,7 +11,7 @@ const listener = (state) => {
     return;
   }
 
-  if (track === state.currentTrack.trackId) {
+  if (track === state.currentTrack.track_id) {
     if (!audio.src) {
       return;
     }
@@ -27,15 +27,14 @@ const listener = (state) => {
   if (audio.src && !audio.paused) {
     audio.pause();
   }
-  if (state.currentTrack.src) {
-    audio.src = `/audio/${state.currentTrack.src}`;
+  if (state.currentTrack.preview_url) {
+    audio.src = state.currentTrack.preview_url;
     audio.load();
     audio.play();
   } else {
-    // eslint-disable-next-line
-    delete audio.src;
+    Reflect.deleteProperty(audio, 'src');
   }
-  track = state.currentTrack.trackId;
+  track = state.currentTrack.track_id;
 };
 
 export default (store = null) => {

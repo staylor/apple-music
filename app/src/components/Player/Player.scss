@@ -2,9 +2,9 @@
 
 .wrap {
   @include clearfix;
-  border: 1px solid #eee;
+  border: 1px solid $detail;
   height: 60px;
-  margin: 20px 0;
+  margin: 10px 0 20px;
 }
 
 .control {
@@ -44,13 +44,13 @@
 
 .track {
   @include clearfix;
-  background: #dedede;
+  background: $track;
   height: 6px;
   margin-top: 6px;
 }
 
 .progress {
-  background: #ff2d55;
+  background: $red;
   float: left;
   height: 6px;
   width: .1%;

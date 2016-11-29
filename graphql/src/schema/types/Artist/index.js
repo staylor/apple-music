@@ -10,12 +10,15 @@ import ImageType from '../Image';
 import FollowersType from './Followers';
 import { ArtistInterfaceType, ArtistFields } from './ArtistInterface';
 import { Artist } from '../Root';
+import { nodeInterface } from '../relayNode';
 
 const ArtistType = new GraphQLObjectType({
   name: 'Artist',
-  interfaces: [ArtistInterfaceType],
+  interfaces: () => [ArtistInterfaceType, nodeInterface],
   description: 'An artist in the catalog',
-  isTypeOf: value => value instanceof Artist,
+  isTypeOf(value) {
+    return value instanceof Artist;
+  },
   fields: () => ({
     id: globalIdField('Artist'),
     ...ArtistFields,

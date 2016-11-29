@@ -11,12 +11,15 @@ import TracksetType from '../Track/Trackset';
 import CopyrightType from '../Copyright';
 import IDMapType from '../IDMap';
 import { Album } from '../Root';
+import { nodeInterface } from '../relayNode';
 
 const AlbumType = new GraphQLObjectType({
   name: 'Album',
   description: 'An album in the catalog',
-  interfaces: [AlbumInterfaceType],
-  isTypeOf: value => value instanceof Album,
+  interfaces: () => [AlbumInterfaceType, nodeInterface],
+  isTypeOf(value) {
+    return value instanceof Album;
+  },
   fields: () => ({
     id: globalIdField('Album'),
     ...AlbumFields,

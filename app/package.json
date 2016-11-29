@@ -35,7 +35,6 @@
     "isomorphic-relay-router": "^0.8.4",
     "kyt": "^0.3.0",
     "morgan": "^1.7.0",
-    "pretty-ms": "^2.1.0",
     "react": "^15.3.0",
     "react-addons-test-utils": "^15.3.0",
     "react-cookie": "^0.4.8",

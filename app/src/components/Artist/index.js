@@ -11,6 +11,8 @@ import catalogStyles from '../Catalog/Catalog.scss';
 const Artist = ({ artist, artistAlbums, topTracks }) => (
   <div className={styles.wrap}>
     <h1>{artist.name}</h1>
+    {artist.images.length &&
+      <img className={styles.image} role="presentation" src={artist.images[0].url} />}
     <h2>Top Songs</h2>
     <ul className={catalogStyles.tracks}>
       {topTracks.results.map(track => <Track key={track.id} track={track} />)}
@@ -31,6 +33,11 @@ export default Relay.createContainer(Artist, {
     artist: () => Relay.QL`
       fragment on ArtistInterface {
         name
+        ... on Artist {
+          images {
+            url
+          }
+        }
         ${ArtistLink.getFragment('artist')}
       }
     `,

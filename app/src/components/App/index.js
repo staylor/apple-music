@@ -33,11 +33,6 @@ const App = ({
               <Link className={styles.locale} to={enPath}>EN</Link>}
           </h2>
         </div>
-
-        <p className={styles.intro}>
-          <FormattedMessage id="app.intro" />
-        </p>
-
         <Player />
         {children}
       </div>

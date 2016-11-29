@@ -3,7 +3,7 @@ schema {
 }
 
 # An album in the catalog
-type Album implements AlbumInterface {
+type Album implements AlbumInterface, Node {
   # The ID of an object
   id: ID!
 
@@ -57,7 +57,7 @@ type Album implements AlbumInterface {
 }
 
 # An artist on the album.
-type AlbumArtist implements ArtistInterface {
+type AlbumArtist implements ArtistInterface, Node {
   # The ID of an object
   id: ID!
 
@@ -109,9 +109,9 @@ interface AlbumInterface {
   available_markets: [String]
 }
 
-type AlbumTrack implements TrackInterface {
-  # The id of the track.
-  id: String
+type AlbumTrack implements TrackInterface, Node {
+  # The ID of an object
+  id: ID!
 
   # The Spotify ID of the track.
   track_id: String
@@ -154,7 +154,7 @@ type AlbumTrack implements TrackInterface {
 }
 
 # An artist in the catalog
-type Artist implements ArtistInterface {
+type Artist implements ArtistInterface, Node {
   # The ID of an object
   id: ID!
 
@@ -210,7 +210,7 @@ interface ArtistInterface {
 }
 
 # An album in the catalog
-type BrowseAlbum implements AlbumInterface {
+type BrowseAlbum implements AlbumInterface, Node {
   # The ID of an object
   id: ID!
 
@@ -310,9 +310,9 @@ type Root {
   topTracks(id: String): TrackCollection
 }
 
-type Track implements TrackInterface {
-  # The id of the track.
-  id: String
+type Track implements TrackInterface, Node {
+  # The ID of an object
+  id: ID!
 
   # The Spotify ID of the track.
   track_id: String
@@ -387,9 +387,6 @@ interface TrackInterface {
 
   # The Spotify URL of the track.
   href: String
-
-  # The id of the track.
-  id: String
 
   # The name of the track.
   name: String

@@ -206,7 +206,38 @@
         "inputFields": null,
         "interfaces": null,
         "enumValues": null,
-        "possibleTypes": null
+        "possibleTypes": [
+          {
+            "kind": "OBJECT",
+            "name": "BrowseAlbum",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "AlbumArtist",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Album",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "AlbumTrack",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Artist",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "Track",
+            "ofType": null
+          }
+        ]
       },
       {
         "kind": "OBJECT",
@@ -431,6 +462,11 @@
           {
             "kind": "INTERFACE",
             "name": "AlbumInterface",
+            "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
             "ofType": null
           }
         ],
@@ -758,6 +794,11 @@
           {
             "kind": "INTERFACE",
             "name": "ArtistInterface",
+            "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
             "ofType": null
           }
         ],
@@ -1098,6 +1139,11 @@
             "kind": "INTERFACE",
             "name": "AlbumInterface",
             "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
           }
         ],
         "enumValues": null,
@@ -1267,12 +1313,16 @@
         "fields": [
           {
             "name": "id",
-            "description": "The id of the track.",
+            "description": "The ID of an object",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -1448,6 +1498,11 @@
             "kind": "INTERFACE",
             "name": "TrackInterface",
             "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
           }
         ],
         "enumValues": null,
@@ -1553,18 +1608,6 @@
           {
             "name": "href",
             "description": "The Spotify URL of the track.",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": "The id of the track.",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -1817,6 +1860,11 @@
             "kind": "INTERFACE",
             "name": "ArtistInterface",
             "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
+            "ofType": null
           }
         ],
         "enumValues": null,
@@ -1864,12 +1912,16 @@
         "fields": [
           {
             "name": "id",
-            "description": "The id of the track.",
+            "description": "The ID of an object",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -2056,6 +2108,11 @@
           {
             "kind": "INTERFACE",
             "name": "TrackInterface",
+            "ofType": null
+          },
+          {
+            "kind": "INTERFACE",
+            "name": "Node",
             "ofType": null
           }
         ],

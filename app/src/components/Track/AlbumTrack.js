@@ -2,6 +2,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import ArtistLink from '../Artist/Link';
 import { toggleCurrentTrack, setCurrentTrack } from '../../actions';
 import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
 import styles from './Track.scss';
@@ -41,7 +42,7 @@ let AlbumTrack = ({ track, current, playerState, bindClick }) => {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  current: state.currentTrack && state.currentTrack.id === ownProps.track.id,
+  current: state.currentTrack && state.currentTrack.track_id === ownProps.track.track_id,
   playerState: state.playerState,
 });
 
@@ -67,10 +68,14 @@ export default Relay.createContainer(AlbumTrack, {
   fragments: {
     track: () => Relay.QL`
       fragment on AlbumTrack {
-        id
+        track_id
         name
         duration_ms
         track_number
+        preview_url
+        artists {
+          ${ArtistLink.getFragment('artist')}
+        }
       }
     `,
   },

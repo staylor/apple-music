@@ -22,6 +22,32 @@ const artistUrl = `${apiHost}/artists/`;
 const trackUrl = `${apiHost}/tracks/`;
 const searchUrl = `${apiHost}/search`;
 
+const setFullArtist = data => Object.assign(new Artist(), data);
+const setArtist = data => Object.assign(new AlbumArtist(), data);
+const setFullAlbum = data => Object.assign(new Album(), data);
+const setAlbum = data => Object.assign(new BrowseAlbum(), data);
+const setFullTrack = data => Object.assign(new Track(), data);
+const setTrack = data => Object.assign(new AlbumTrack(), data);
+
+const coerceData = (data) => {
+  Object.keys(data).forEach((key) => {
+    switch (key) {
+      case 'album':
+        data[key] = setAlbum(coerceData(data[key]));
+        break;
+      case 'artists':
+        data[key] = data[key].map(artist => setArtist(artist));
+        break;
+      case 'tracks':
+        data[key].items = data[key].items.map(track => setTrack(coerceData(track)));
+        break;
+      default:
+        break;
+    }
+  });
+  return data;
+};
+
 /* eslint-disable no-console */
 
 const tokenKey = 'spotify:token';
@@ -102,13 +128,12 @@ class Spotify {
     });
     return this.doFetch(`${newReleasesUrl}?${qs}`)
       .then(json => json.albums.items)
-      .then(items => items.map(item => Object.create(BrowseAlbum, item)));
+      .then(items => items.map(item => setAlbum(coerceData(item))));
   }
 
   getAlbum(id) {
     return this.doFetch(`${albumUrl}${id}`)
-      .then(album => album.tracks.map(track => Object.create(AlbumTrack, track)))
-      .then(album => Object.create(Album, album));
+      .then(album => setFullAlbum(coerceData(album)));
   }
 
   getAlbumSearch(term) {
@@ -122,25 +147,21 @@ class Spotify {
 
   getArtist(id) {
     return this.doFetch(`${artistUrl}${id}`)
-      .then(artist => Object.create(Artist, artist));
+      .then(artist => setFullArtist(artist));
   }
 
   getArtistAlbums(id) {
     const qs = querystring.stringify({ market: 'US' });
     return this.doFetch(`${artistUrl}${id}/albums?${qs}`)
       .then(json => json.items)
-      .then(items => items.map(item => Object.create(BrowseAlbum, item)));
+      .then(items => items.map(item => setAlbum(coerceData(item))));
   }
 
   getArtistTracks(id) {
     const qs = querystring.stringify({ country: 'US' });
     return this.doFetch(`${artistUrl}${id}/top-tracks?${qs}`)
       .then(json => json.tracks)
-      .then(tracks => tracks.map(track => (
-        track.artists.map(artist => Object.create(AlbumArtist, artist))
-      )))
-      .then(tracks => tracks.map(track => (track.album = Object.create(BrowseAlbum, track.album))))
-      .then(tracks => tracks.map(track => Object.create(Track, track)));
+      .then(tracks => tracks.map(track => setFullTrack(coerceData(track))));
   }
 
   getArtistRelated(id) {

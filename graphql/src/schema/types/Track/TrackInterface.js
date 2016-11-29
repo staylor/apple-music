@@ -43,10 +43,6 @@ export const TrackFields = {
     type: GraphQLString,
     description: 'The Spotify URL of the track.',
   },
-  id: {
-    type: GraphQLString,
-    description: 'The id of the track.',
-  },
   name: {
     type: GraphQLString,
     description: 'The name of the track.',

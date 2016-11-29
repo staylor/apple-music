@@ -1,6 +1,11 @@
 $black: #000;
 $white: #fff;
 $darkgray: #333;
+$red: #ff2d55;
+$detail: #eee;
+$light: rgba(51, 51, 51, .6);
+$lightborder: rgba(8, 40, 51, .2);
+$track: #dedede;
 
 @mixin clearfix() {
   &::after {

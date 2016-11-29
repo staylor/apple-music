@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { toggleCurrentTrack } from '../../actions';
-import AlbumLink from '../Album/Link';
 import ArtistLink from '../Artist/Link';
 import { PLAYER_IDLE } from '../../reducers/player';
 import styles from './Player.scss';
@@ -15,28 +14,21 @@ const Player = ({ track, trackInfo, playerState, bindClick }) => {
     width: '0%',
   };
 
-  let artist = null;
-  let album = null;
   let dashicon = 'play';
   let details;
 
   if (track && track.name) {
-    track.album.edges.map(({ node }) => (album = node));
-    album.artist.edges.map(({ node }) => (artist = node));
-
     if (trackInfo.duration && trackInfo.currentTime) {
       cssStyles.width = `${Math.floor((100 / trackInfo.duration) * trackInfo.currentTime)}%`;
       dashicon = playerState === PLAYER_IDLE ? 'play' : 'pause';
     }
     details = (
       <div className={styles.details}>
-        &#8220;{track.name}&#8221; <span><FormattedMessage id="player.from" /></span>
-        {' '}
-        <em><AlbumLink album={album} /></em>
+        &#8220;{track.name}&#8221;
         {' '}
         <span><FormattedMessage id="player.by" /></span>
         {' '}
-        <ArtistLink artist={artist} />
+        <ArtistLink artist={track.artists[0]} />
       </div>
     );
   } else {
