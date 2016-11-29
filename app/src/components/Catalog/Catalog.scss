@@ -16,13 +16,16 @@
 
   list-style: none;
   margin: 20px 0;
+  width: calc(70% - 20px);
 
   li {
     float: left;
+    font-size: 13px;
     height: 80px;
+    letter-spacing: 0.3px;
     margin-right: 20px;
     padding: 10px 0;
-    width: calc(20% - 20px);
+    width: calc(33% - 20px);
   }
 
   img {
@@ -33,7 +36,7 @@
   }
 
   a {
-    color: $black;
+    color: $light;
     text-decoration: none;
   }
 }
@@ -53,13 +56,13 @@
 
   .artwork {
     border-radius: 5px;
-    height: 250px;
+    height: 230px;
     margin-bottom: 10px;
     overflow: hidden;
   }
 
   a {
-    color: $black;
+    color: $light;
     text-decoration: none;
   }
 
@@ -73,6 +76,10 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+
+      &:first-child {
+        color: $black;
+      }
     }
   }
 }

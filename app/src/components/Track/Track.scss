@@ -2,7 +2,7 @@
 
 .track {
   @include clearfix;
-  border-bottom: 1px solid $lightborder;
+  border-top: 1px solid $detail;
   color: light;
   cursor: pointer;
   font-size: 15px;
