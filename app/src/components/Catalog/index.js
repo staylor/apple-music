@@ -1,5 +1,6 @@
 import React from 'react';
 import Relay from 'react-relay';
+import Loading from '../Loading';
 import BrowseAlbum from '../Album/Browse';
 import styles from './Catalog.scss';
 
@@ -7,6 +8,7 @@ import styles from './Catalog.scss';
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 
 const limit = 50;
+const total = 500;
 
 const CatalogWrap = ({ children }) => (
   <div className={styles.wrap}>
@@ -20,7 +22,13 @@ const idxPrefix = 'idx---';
 const fromBase64 = (encoded: string): string => Buffer.from(encoded, 'base64').toString('utf8');
 const indexFromCursor = (cursor: string): number => parseInt(fromBase64(cursor).replace(idxPrefix, ''), 10);
 const hasPreviousPage = (startCursor: string): boolean => indexFromCursor(startCursor) > 0;
-const hasNextPage = (endCursor: string): boolean => (indexFromCursor(endCursor) + 1) % limit === 0;
+const hasNextPage = (endCursor: string): boolean => {
+  const idx = indexFromCursor(endCursor) + 1;
+  if ((idx + limit) > total) {
+    return false;
+  }
+  return idx % limit === 0;
+}
 
 const Catalog = ({ newReleases, relay }) => {
   const edges = newReleases.results.edges;
@@ -29,14 +37,17 @@ const Catalog = ({ newReleases, relay }) => {
   if (relay.pendingVariables) {
     return (
       <CatalogWrap>
-        <p>Loading...</p>
+        <Loading />
       </CatalogWrap>
     );
   }
 
+  const hasPrevious = pageInfo.startCursor && hasPreviousPage(pageInfo.startCursor);
+  const hasNext = pageInfo.endCursor && hasNextPage(pageInfo.endCursor);
+
   return (
     <CatalogWrap>
-      {hasPreviousPage(pageInfo.startCursor) ?
+      {hasPrevious ?
         <span
           className={styles.prev}
           onClick={() => relay.setVariables({
@@ -48,7 +59,8 @@ const Catalog = ({ newReleases, relay }) => {
         >
           PREVIOUS
         </span> : ''}
-      {hasNextPage(pageInfo.endCursor) ?
+      {hasPrevious && hasNext ? <span> &bull; </span> : ''}
+      {hasNext ?
         <span
           className={styles.next}
           onClick={() => relay.setVariables({
