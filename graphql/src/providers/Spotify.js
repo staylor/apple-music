@@ -9,7 +9,7 @@ import {
   Artist,
   BrowseAlbum,
   Track,
-} from '../schema/types/Root';
+} from '~/models';
 
 const clientId = 'b791653f8886473db15526cc8ea24588';
 const clientSecret = 'fddc22b8fd85445db6477b5fe502ab90';

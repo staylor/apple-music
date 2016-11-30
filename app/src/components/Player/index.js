@@ -54,6 +54,7 @@ const Player = ({ track, trackInfo, playerState, bindClick }) => {
 };
 
 const mapStateToProps = state => ({
+  locale: state.locale,
   track: state.currentTrack,
   trackInfo: state.trackInfo,
   playerState: state.playerState,

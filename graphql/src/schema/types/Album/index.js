@@ -8,11 +8,12 @@ import {
 } from 'graphql';
 
 import { globalIdField } from 'graphql-relay';
+
+import { Album } from '~/models';
 import { AlbumFields, AlbumInterfaceType } from './AlbumInterface';
 import TracksetType from '../Track/Trackset';
 import CopyrightType from '../Copyright';
 import IDMapType from '../IDMap';
-import { Album } from '../Root';
 import { nodeInterface } from '../relayNode';
 
 const AlbumType = new GraphQLObjectType({

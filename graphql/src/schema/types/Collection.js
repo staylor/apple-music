@@ -11,8 +11,8 @@ import {
   connectionArgs,
 } from 'graphql-relay';
 
+import api from '~/database';
 import { nodeInterface } from './relayNode';
-import api from '../../database';
 import BrowseAlbumType from './Album/Browse';
 
 const idxPrefix = 'idx---';
@@ -35,7 +35,7 @@ const CollectionType = new GraphQLObjectType({
   name: 'Collection',
   description: 'A list of results.',
   interfaces: () => [nodeInterface],
-  fields: {
+  fields: () => ({
     id: globalIdField('Collection'),
     results: {
       type: BrowseAlbumConnection,
@@ -56,50 +56,26 @@ const CollectionType = new GraphQLObjectType({
 
         switch (args.type) {
           case 'newReleases':
-            return new Promise(resolve => {
-              api.getNewReleases({ limit, offset }).then((data) => {
-                const startIndex = offset;
-                const endIndex = startIndex + (limit - 1);
-                const hasNextPage = (null !== data.next);
-                const hasPreviousPage = (null !== data.previous);
+            return api.getNewReleases({ limit, offset }).then((data) => {
+              const startIndex = offset;
+              const endIndex = startIndex + (Math.min(limit, data.items.length) - 1);
 
-                resolve({
-                  edges: toEdges(data.items, offset),
-                  pageInfo: {
-                    hasNextPage,
-                    hasPreviousPage,
-                    startCursor: data.total > 0 ? indexToCursor(startIndex) : null,
-                    endCursor: data.total > 0 ? indexToCursor(endIndex) : null,
-                  },
-                });
-              });
-            });
-
-          case 'artistAlbums':
-            return new Promise(resolve => {
-              api.getArtistAlbums(_.results).then((data) => {
-                const startIndex = offset;
-                const endIndex = startIndex + (limit - 1);
-                const hasNextPage = (null !== data.next);
-                const hasPreviousPage = (null !== data.previous);
-
-                resolve({
-                  edges: toEdges(data.items, 0),
-                  pageInfo: {
-                    hasNextPage,
-                    hasPreviousPage,
-                    startCursor: data.total > 0 ? indexToCursor(startIndex) : null,
-                    endCursor: data.total > 0 ? indexToCursor(endIndex) : null,
-                  },
-                });
-              });
+              return {
+                edges: toEdges(data.items, startIndex),
+                pageInfo: {
+                  hasNextPage: (null !== data.next),
+                  hasPreviousPage: (null !== data.previous),
+                  startCursor: data.total > 0 ? indexToCursor(startIndex) : null,
+                  endCursor: data.total > 0 ? indexToCursor(endIndex) : null,
+                },
+              };
             });
           default:
             return [];
         }
       },
     },
-  },
+  }),
 });
 
 export default CollectionType;

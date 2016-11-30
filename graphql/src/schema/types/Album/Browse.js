@@ -6,8 +6,9 @@ import {
 } from 'graphql';
 
 import { globalIdField } from 'graphql-relay';
+
+import { BrowseAlbum } from '~/models';
 import { AlbumFields, AlbumInterfaceType } from './AlbumInterface';
-import { BrowseAlbum } from '../Root';
 import { nodeInterface } from '../relayNode';
 
 const BrowseAlbumType = new GraphQLObjectType({

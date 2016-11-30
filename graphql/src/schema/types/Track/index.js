@@ -5,9 +5,10 @@ import {
 } from 'graphql';
 
 import { globalIdField } from 'graphql-relay';
+
 import BrowseAlbumType from '../Album/Browse';
 import { TrackInterfaceType, TrackFields } from './TrackInterface';
-import { Track } from '../Root';
+import { Track } from '~/models';
 import { nodeInterface } from '../relayNode';
 
 const TrackType = new GraphQLObjectType({

@@ -5,8 +5,9 @@ import {
 } from 'graphql';
 
 import { globalIdField } from 'graphql-relay';
+
+import { AlbumArtist } from '~/models';
 import { ArtistInterfaceType, ArtistFields } from './ArtistInterface';
-import { AlbumArtist } from '../Root';
 import { nodeInterface } from '../relayNode';
 
 const AlbumArtistType = new GraphQLObjectType({

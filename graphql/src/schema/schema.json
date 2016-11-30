@@ -137,7 +137,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "Collection",
+                "name": "AlbumCollection",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -2336,6 +2336,44 @@
               "ofType": null
             }
           ],
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "OBJECT",
+          "name": "AlbumCollection",
+          "description": "A list of results.",
+          "fields": [
+            {
+              "name": "results",
+              "description": "Currently, a list of albums.",
+              "args": [
+                {
+                  "name": "type",
+                  "description": null,
+                  "type": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  },
+                  "defaultValue": null
+                }
+              ],
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "BrowseAlbum",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "inputFields": null,
+          "interfaces": [],
           "enumValues": null,
           "possibleTypes": null
         },

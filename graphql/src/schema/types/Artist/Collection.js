@@ -6,10 +6,10 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import api from '../../../database';
+import api from '~/database';
 import ArtistType from './index';
 
-const AlbumCollectionType = new GraphQLObjectType({
+const ArtistCollectionType = new GraphQLObjectType({
   name: 'ArtistCollection',
   description: 'A list of results.',
   fields: {
@@ -19,14 +19,9 @@ const AlbumCollectionType = new GraphQLObjectType({
       args: {
         artistType: { type: GraphQLString },
       },
-      resolve: (_, args) => {
-        if (args.artistType === 'related') {
-          return api.getArtistRelated(_.results);
-        }
-        return [];
-      },
+      resolve: _ => api.getArtistRelated(_.results),
     },
   },
 });
 
-export default AlbumCollectionType;
+export default ArtistCollectionType;

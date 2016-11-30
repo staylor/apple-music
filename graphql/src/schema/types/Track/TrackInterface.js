@@ -8,7 +8,7 @@ import {
   GraphQLBoolean,
 } from 'graphql';
 
-import { Track } from '../Root';
+import { Track } from '~/models';
 import URLMapType from '../URLMap';
 import AlbumArtistType from '../Artist/AlbumArtist';
 

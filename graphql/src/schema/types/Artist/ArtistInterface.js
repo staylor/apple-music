@@ -5,7 +5,7 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import { Artist } from '../Root';
+import { Artist } from '~/models';
 import URLMapType from '../URLMap';
 
 export const ArtistFields = {

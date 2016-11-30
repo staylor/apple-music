@@ -6,7 +6,7 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import { Album } from '../Root';
+import { Album } from '~/models';
 import AlbumArtistType from '../Artist/AlbumArtist';
 import URLMapType from '../URLMap';
 import ImageType from '../Image';

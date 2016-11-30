@@ -6,6 +6,7 @@ import ArtistLink from './Link';
 import BrowseAlbum from '../Album/Browse';
 import RelatedArtist from '../Artist/Related';
 import Track from '../Track';
+import Loading from '../Loading';
 import styles from './Artist.scss';
 import catalogStyles from '../Catalog/Catalog.scss';
 
@@ -30,7 +31,7 @@ const Artist = ({
     <section>
       <h2>Albums</h2>
       <ul className={catalogStyles.albums}>
-        {artistAlbums.results.edges.map(({ node }) => <BrowseAlbum key={node.album_id} album={node} />)}
+        {artistAlbums.results.map(album => <BrowseAlbum key={album.id} album={album} />)}
       </ul>
     </section>
     <section>
@@ -63,19 +64,10 @@ export default Relay.createContainer(Artist, {
       }
     `,
     artistAlbums: () => Relay.QL`
-      fragment on Collection {
-        results(type: $type, first: 100) {
-          edges {
-            node {
-              album_id
-              ${BrowseAlbum.getFragment('album')}
-            }
-            cursor
-          }
-          pageInfo {
-            startCursor
-            endCursor
-          }
+      fragment on AlbumCollection {
+        results {
+          id
+          ${BrowseAlbum.getFragment('album')}
         }
       }
     `,

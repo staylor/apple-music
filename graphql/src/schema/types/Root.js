@@ -9,23 +9,11 @@ import ArtistType from './Artist';
 import AlbumType from './Album';
 import TrackType from './Track';
 import CollectionType from './Collection';
+import AlbumCollectionType from './Album/Collection';
 import TrackCollectionType from './Track/Collection';
 import ArtistCollectionType from './Artist/Collection';
 import { nodeField } from './relayNode';
-import api from '../../database';
-
-export class Album {
-  id: string;
-}
-export class BrowseAlbum {}
-export class Artist {
-  id: string;
-}
-export class AlbumArtist {}
-export class Track {
-  id: string;
-}
-export class AlbumTrack {}
+import api from '~/database';
 
 const Root = new GraphQLObjectType({
   name: 'Root',
@@ -59,7 +47,7 @@ const Root = new GraphQLObjectType({
       resolve: (_, args) => args.id && api.getTrack(args.id),
     },
     artistAlbums: {
-      type: CollectionType,
+      type: AlbumCollectionType,
       args: {
         id: { type: GraphQLString },
       },

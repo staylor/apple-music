@@ -8,10 +8,11 @@ import {
 } from 'graphql';
 
 import { globalIdField } from 'graphql-relay';
+
+import { Artist } from '~/models';
 import ImageType from '../Image';
 import FollowersType from './Followers';
 import { ArtistInterfaceType, ArtistFields } from './ArtistInterface';
-import { Artist } from '../Root';
 import { nodeInterface } from '../relayNode';
 
 const ArtistType = new GraphQLObjectType({

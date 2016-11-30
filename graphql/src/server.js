@@ -10,7 +10,7 @@ const GRAPHQL_PORT = 8080;
 const app = express();
 
 // uncomment this to output incoming query and request headers
-app.use(queryLogger());
+// app.use(queryLogger());
 
 app.use(responseTime((req, res, time) => {
   console.log(`Response time: ${Math.floor(time)}ms`);

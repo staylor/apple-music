@@ -5,8 +5,9 @@ import {
 } from 'graphql';
 
 import { globalIdField } from 'graphql-relay';
+
+import { AlbumTrack } from '~/models';
 import { TrackInterfaceType, TrackFields } from './TrackInterface';
-import { AlbumTrack } from '../Root';
 import { nodeInterface } from '../relayNode';
 
 const AlbumTrackType = new GraphQLObjectType({

@@ -80,6 +80,12 @@ type AlbumArtist implements ArtistInterface, Node {
   uri: String
 }
 
+# A list of results.
+type AlbumCollection {
+  # Currently, a list of albums.
+  results(type: String): [BrowseAlbum]
+}
+
 interface AlbumInterface {
   # The Spotify ID of the album.
   album_id: String
@@ -345,7 +351,7 @@ type Root {
   album(id: String): Album
   artist(id: String): Artist
   track(id: String): Track
-  artistAlbums(id: String): Collection
+  artistAlbums(id: String): AlbumCollection
   topTracks(id: String): TrackCollection
   relatedArtists(id: String): ArtistCollection
 }

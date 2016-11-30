@@ -6,7 +6,7 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import api from '../../../database';
+import api from '~/database';
 import TrackType from './index';
 
 const TrackCollectionType = new GraphQLObjectType({

@@ -13,14 +13,16 @@ import AlbumTrackType from './Track/AlbumTrack';
 import TrackType from './Track';
 import CollectionType from './Collection';
 
-import api, {
+import api from '~/database';
+
+import {
   Album,
   AlbumArtist,
   AlbumTrack,
   BrowseAlbum,
   Artist,
   Track,
-} from './Root';
+} from '~/models';
 
 const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {

@@ -7,7 +7,7 @@ import {
   AlbumArtist,
   Track,
   AlbumTrack,
-} from '../schema/types/Root';
+} from '~/models';
 
 const coerce = {
   setArtist: (data: Object) => (Object.assign(new Artist(), data)),
