@@ -1,9 +1,12 @@
+// @flow
+
 import {
   GraphQLInterfaceType,
   GraphQLList,
   GraphQLString,
 } from 'graphql';
 
+import { Album } from '../Root';
 import AlbumArtistType from '../Artist/AlbumArtist';
 import URLMapType from '../URLMap';
 import ImageType from '../Image';
@@ -12,7 +15,7 @@ export const AlbumFields = {
   album_id: {
     type: GraphQLString,
     description: 'The Spotify ID of the album.',
-    resolve: album => album.id,
+    resolve: (album: Album) => album.id,
   },
   href: {
     type: GraphQLString,

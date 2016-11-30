@@ -1,3 +1,5 @@
+// @flow
+
 import {
   GraphQLObjectType,
   GraphQLString,
@@ -12,11 +14,17 @@ import ArtistCollectionType from './Artist/Collection';
 import { nodeField } from './relayNode';
 import api from '../../database';
 
-export class Album {}
+export class Album {
+  id: string;
+}
 export class BrowseAlbum {}
-export class Artist {}
+export class Artist {
+  id: string;
+}
 export class AlbumArtist {}
-export class Track {}
+export class Track {
+  id: string;
+}
 export class AlbumTrack {}
 
 const Root = new GraphQLObjectType({

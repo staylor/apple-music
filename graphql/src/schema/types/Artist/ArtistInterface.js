@@ -1,15 +1,18 @@
+// @flow
+
 import {
   GraphQLInterfaceType,
   GraphQLString,
 } from 'graphql';
 
+import { Artist } from '../Root';
 import URLMapType from '../URLMap';
 
 export const ArtistFields = {
   artist_id: {
     type: GraphQLString,
     description: 'The Spotify ID of the artist.',
-    resolve: artist => artist.id,
+    resolve: (artist: Artist) => artist.id,
   },
   external_urls: {
     type: URLMapType,

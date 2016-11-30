@@ -1,3 +1,5 @@
+// @flow
+
 import {
   GraphQLInterfaceType,
   GraphQLString,
@@ -6,6 +8,7 @@ import {
   GraphQLBoolean,
 } from 'graphql';
 
+import { Track } from '../Root';
 import URLMapType from '../URLMap';
 import AlbumArtistType from '../Artist/AlbumArtist';
 
@@ -13,7 +16,7 @@ export const TrackFields = {
   track_id: {
     type: GraphQLString,
     description: 'The Spotify ID of the track.',
-    resolve: track => track.id,
+    resolve: (track: Track): string => track.id,
   },
   artists: {
     type: new GraphQLList(AlbumArtistType),

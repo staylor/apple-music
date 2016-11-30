@@ -1,3 +1,5 @@
+// @flow
+
 import {
   GraphQLObjectType,
   GraphQLString,
@@ -12,7 +14,7 @@ const BrowseAlbumType = new GraphQLObjectType({
   name: 'BrowseAlbum',
   interfaces: () => [AlbumInterfaceType, nodeInterface],
   description: 'An album in the catalog',
-  isTypeOf(value) {
+  isTypeOf(value: Object) {
     return value instanceof BrowseAlbum;
   },
   fields: () => ({

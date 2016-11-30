@@ -1,3 +1,5 @@
+// @flow
+
 import querystring from 'querystring';
 import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
@@ -58,7 +60,7 @@ class Spotify {
     cache = new NodeCache();
   }
 
-  static getToken() {
+  static getToken(): Promise<string> {
     return new Promise((resolve, reject) => (
       cache.get(tokenKey, (err, value) => {
         if (err) {
@@ -99,7 +101,7 @@ class Spotify {
     ));
   }
 
-  doFetch(url, args) {
+  doFetch(url: string, args?: Object): Promise<Object> {
     return Spotify.getToken().then((token) => {
       let headers = {
         Accept: 'application/json',
@@ -121,7 +123,7 @@ class Spotify {
     });
   }
 
-  getNewReleases() {
+  getNewReleases(): Promise<Album[]> {
     const qs = querystring.stringify({
       market: 'US',
       limit: 50,
@@ -131,12 +133,12 @@ class Spotify {
       .then(items => items.map(item => setAlbum(coerceData(item))));
   }
 
-  getAlbum(id) {
+  getAlbum(id: string): Promise<Album> {
     return this.doFetch(`${albumUrl}${id}`)
       .then(album => setFullAlbum(coerceData(album)));
   }
 
-  getAlbumSearch(term) {
+  getAlbumSearch(term: string): Promise<Object> {
     const qs = querystring.stringify({
       type: 'album',
       q: term,
@@ -145,32 +147,32 @@ class Spotify {
     return this.doFetch(`${searchUrl}?${qs}`);
   }
 
-  getArtist(id) {
+  getArtist(id: string): Promise<Artist> {
     return this.doFetch(`${artistUrl}${id}`)
       .then(artist => setFullArtist(artist));
   }
 
-  getArtistAlbums(id) {
+  getArtistAlbums(id: string): Promise<BrowseAlbum[]> {
     const qs = querystring.stringify({ market: 'US' });
     return this.doFetch(`${artistUrl}${id}/albums?${qs}`)
       .then(json => json.items)
       .then(items => items.map(item => setAlbum(coerceData(item))));
   }
 
-  getArtistTracks(id) {
+  getArtistTracks(id: string): Promise<Track[]> {
     const qs = querystring.stringify({ country: 'US' });
     return this.doFetch(`${artistUrl}${id}/top-tracks?${qs}`)
       .then(json => json.tracks)
       .then(tracks => tracks.map(track => setFullTrack(coerceData(track))));
   }
 
-  getArtistRelated(id) {
+  getArtistRelated(id: string): Promise<Artist[]> {
     return this.doFetch(`${artistUrl}${id}/related-artists`)
       .then(json => json.artists)
       .then(artists => artists.map(artist => setFullArtist(artist)));
   }
 
-  getArtistSearch(term) {
+  getArtistSearch(term: string): Promise {
     const qs = querystring.stringify({
       type: 'artist',
       q: term,
@@ -179,11 +181,11 @@ class Spotify {
     return this.doFetch(`${searchUrl}?${qs}`);
   }
 
-  getTrack(id) {
+  getTrack(id: string): Promise {
     return this.doFetch(`${trackUrl}${id}`);
   }
 
-  getTrackSearch(term) {
+  getTrackSearch(term: string): Promise {
     const qs = querystring.stringify({
       type: 'track',
       q: term,
