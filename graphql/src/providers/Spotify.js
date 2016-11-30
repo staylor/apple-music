@@ -3,14 +3,12 @@
 import querystring from 'querystring';
 import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
-
+import coerce from './coerce';
 import {
   Album,
-  BrowseAlbum,
   Artist,
-  AlbumArtist,
+  BrowseAlbum,
   Track,
-  AlbumTrack,
 } from '../schema/types/Root';
 
 const clientId = 'b791653f8886473db15526cc8ea24588';
@@ -23,32 +21,6 @@ const albumUrl = `${apiHost}/albums/`;
 const artistUrl = `${apiHost}/artists/`;
 const trackUrl = `${apiHost}/tracks/`;
 const searchUrl = `${apiHost}/search`;
-
-const setFullArtist = data => Object.assign(new Artist(), data);
-const setArtist = data => Object.assign(new AlbumArtist(), data);
-const setFullAlbum = data => Object.assign(new Album(), data);
-const setAlbum = data => Object.assign(new BrowseAlbum(), data);
-const setFullTrack = data => Object.assign(new Track(), data);
-const setTrack = data => Object.assign(new AlbumTrack(), data);
-
-const coerceData = (data) => {
-  Object.keys(data).forEach((key) => {
-    switch (key) {
-      case 'album':
-        data[key] = setAlbum(coerceData(data[key]));
-        break;
-      case 'artists':
-        data[key] = data[key].map(artist => setArtist(artist));
-        break;
-      case 'tracks':
-        data[key].items = data[key].items.map(track => setTrack(coerceData(track)));
-        break;
-      default:
-        break;
-    }
-  });
-  return data;
-};
 
 /* eslint-disable no-console */
 
@@ -123,19 +95,22 @@ class Spotify {
     });
   }
 
-  getNewReleases(): Promise<Album[]> {
+  getNewReleases(opts): Promise<Album[]> {
     const qs = querystring.stringify({
       market: 'US',
-      limit: 50,
+      ...opts,
     });
     return this.doFetch(`${newReleasesUrl}?${qs}`)
-      .then(json => json.albums.items)
-      .then(items => items.map(item => setAlbum(coerceData(item))));
+      .then(json => json.albums)
+      .then((albums) => {
+        albums.items = albums.items.map(item => coerce.setBrowseAlbum(coerce.walk(item)));
+        return albums;
+      });
   }
 
   getAlbum(id: string): Promise<Album> {
     return this.doFetch(`${albumUrl}${id}`)
-      .then(album => setFullAlbum(coerceData(album)));
+      .then(album => coerce.setAlbum(coerce.walk(album)));
   }
 
   getAlbumSearch(term: string): Promise<Object> {
@@ -149,27 +124,29 @@ class Spotify {
 
   getArtist(id: string): Promise<Artist> {
     return this.doFetch(`${artistUrl}${id}`)
-      .then(artist => setFullArtist(artist));
+      .then(artist => coerce.setArtist(artist));
   }
 
   getArtistAlbums(id: string): Promise<BrowseAlbum[]> {
     const qs = querystring.stringify({ market: 'US' });
     return this.doFetch(`${artistUrl}${id}/albums?${qs}`)
       .then(json => json.items)
-      .then(items => items.map(item => setAlbum(coerceData(item))));
+      .then(items => items.map(item => coerce.setBrowseAlbum(coerce.walk(item))));
   }
 
   getArtistTracks(id: string): Promise<Track[]> {
-    const qs = querystring.stringify({ country: 'US' });
+    const qs = querystring.stringify({
+      country: 'US',
+    });
     return this.doFetch(`${artistUrl}${id}/top-tracks?${qs}`)
       .then(json => json.tracks)
-      .then(tracks => tracks.map(track => setFullTrack(coerceData(track))));
+      .then(tracks => tracks.map(track => coerce.setTrack(coerce.walk(track))));
   }
 
   getArtistRelated(id: string): Promise<Artist[]> {
     return this.doFetch(`${artistUrl}${id}/related-artists`)
       .then(json => json.artists)
-      .then(artists => artists.map(artist => setFullArtist(artist)));
+      .then(artists => artists.map(artist => coerce.setArtist(artist)));
   }
 
   getArtistSearch(term: string): Promise {
@@ -181,7 +158,7 @@ class Spotify {
     return this.doFetch(`${searchUrl}?${qs}`);
   }
 
-  getTrack(id: string): Promise {
+  getTrack(id: string): Promise<Track> {
     return this.doFetch(`${trackUrl}${id}`);
   }
 

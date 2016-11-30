@@ -17,22 +17,28 @@ const Artist = ({
 }) => (
   <div className={styles.wrap}>
     <h1>{artist.name}</h1>
-    {artist.images.length &&
-      <img className={styles.image} role="presentation" src={artist.images[0].url} />}
-    <h2>Top Songs</h2>
-    <ul className={catalogStyles.tracks}>
-      {topTracks.results.map(track => <Track key={track.id} track={track} />)}
-    </ul>
-    <h2>Albums</h2>
-    <ul className={catalogStyles.albums}>
-      {artistAlbums.results.map(album => <BrowseAlbum key={album.id} album={album} />)}
-    </ul>
-    <h2>Related Artists</h2>
-    <ul className={catalogStyles.artists}>
-      {relatedArtists.results.map(relatedArtist => (
-        <RelatedArtist key={relatedArtist.id} artist={relatedArtist} />
-      ))}
-    </ul>
+    {artist.images.length ?
+      <img className={styles.image} role="presentation" src={artist.images[0].url} /> : ''}
+    <section>
+      <h2>Top Songs</h2>
+      <ul className={catalogStyles.tracks}>
+        {topTracks.results.map(track => <Track key={track.id} track={track} />)}
+      </ul>
+    </section>
+    <section>
+      <h2>Albums</h2>
+      <ul className={catalogStyles.albums}>
+        {artistAlbums.results.map(album => <BrowseAlbum key={album.id} album={album} />)}
+      </ul>
+    </section>
+    <section>
+      <h2>Related Artists</h2>
+      <ul className={catalogStyles.artists}>
+        {relatedArtists.results.map(relatedArtist => (
+          <RelatedArtist key={relatedArtist.id} artist={relatedArtist} />
+        ))}
+      </ul>
+    </section>
   </div>
 );
 
