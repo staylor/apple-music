@@ -5,6 +5,7 @@ import { Route, IndexRoute } from 'react-router';
 
 import AppQuery from '~/queries/AppQuery';
 import CatalogQuery from '~/queries/CatalogQuery';
+import SearchQuery from '~/queries/SearchQuery';
 import AlbumQuery from '~/queries/AlbumQuery';
 import ArtistQuery from '~/queries/ArtistQuery';
 
@@ -16,6 +17,11 @@ const routes = (
     <IndexRoute
       getComponent={CatalogQuery.getComponent}
       getQueries={CatalogQuery.queries}
+    />
+    <Route
+      path="(:locale/)search"
+      getComponent={SearchQuery.getComponent}
+      getQueries={SearchQuery.queries}
     />
     <Route
       path=":locale"
@@ -44,6 +50,7 @@ if (module.hot) {
   require('../components/Album');   // eslint-disable-line global-require
   require('../components/Artist');   // eslint-disable-line global-require
   require('../components/Catalog');   // eslint-disable-line global-require
+  require('../components/Search');   // eslint-disable-line global-require
 }
 
 export default routes;

@@ -6,7 +6,6 @@ import ArtistLink from './Link';
 import BrowseAlbum from '../Album/Browse';
 import RelatedArtist from '../Artist/Related';
 import Track from '../Track';
-import Loading from '../Loading';
 import styles from './Artist.scss';
 import catalogStyles from '../Catalog/Catalog.scss';
 
@@ -46,11 +45,6 @@ const Artist = ({
 );
 
 export default Relay.createContainer(Artist, {
-  initialVariables: {
-    type: 'artistAlbums',
-    artistType: 'related',
-    trackType: 'topTracks',
-  },
   fragments: {
     artist: () => Relay.QL`
       fragment on ArtistInterface {
@@ -73,7 +67,7 @@ export default Relay.createContainer(Artist, {
     `,
     topTracks: () => Relay.QL`
       fragment on TrackCollection {
-        results(trackType: $trackType) {
+        results {
           id
           ${Track.getFragment('track')}
         }
@@ -81,7 +75,7 @@ export default Relay.createContainer(Artist, {
     `,
     relatedArtists: () => Relay.QL`
       fragment on ArtistCollection {
-        results(artistType: $artistType) {
+        results {
           id
           ${RelatedArtist.getFragment('artist')}
         }

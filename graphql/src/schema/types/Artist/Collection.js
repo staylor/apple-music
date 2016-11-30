@@ -17,9 +17,18 @@ const ArtistCollectionType = new GraphQLObjectType({
       type: new GraphQLList(ArtistType),
       description: 'Currently, a list of artists.',
       args: {
-        artistType: { type: GraphQLString },
+        type: { type: GraphQLString },
+        q: { type: GraphQLString },
       },
-      resolve: _ => api.getArtistRelated(_.results),
+      resolve: (_, args) => {
+        if (args.type === 'artistSearch') {
+          if (args.q) {
+            return api.getArtistSearch(args.q).then(artists => artists.items);
+          }
+          return [];
+        }
+        return api.getArtistRelated(_.results);
+      },
     },
   },
 });

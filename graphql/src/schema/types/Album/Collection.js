@@ -18,8 +18,17 @@ const AlbumCollectionType = new GraphQLObjectType({
       description: 'Currently, a list of albums.',
       args: {
         type: { type: GraphQLString },
+        q: { type: GraphQLString },
       },
-      resolve: _ => api.getArtistAlbums(_.results).then(albums => albums.items),
+      resolve: (_, args) => {
+        if (args.type === 'albumSearch') {
+          if (args.q) {
+            return api.getAlbumSearch(args.q).then(albums => albums.items);
+          }
+          return [];
+        }
+        return api.getArtistAlbums(_.results).then(albums => albums.items);
+      },
     },
   },
 });

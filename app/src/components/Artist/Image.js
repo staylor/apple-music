@@ -11,9 +11,9 @@ import styles from './Artist.scss';
 const ArtistImage = ({ artist }) => {
   const image = artist.images[0];
   const cssClasses = {
-    [styles.landscape]: image.width > image.height,
-    [styles.portrait]: image.width < image.height,
-    [styles.square]: image.width === image.height,
+    [styles.landscape]: image && image.width > image.height,
+    [styles.portrait]: image && image.width < image.height,
+    [styles.square]: image && image.width === image.height,
   };
 
   return (

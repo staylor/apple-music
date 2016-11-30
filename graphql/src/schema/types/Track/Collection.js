@@ -17,13 +17,17 @@ const TrackCollectionType = new GraphQLObjectType({
       type: new GraphQLList(TrackType),
       description: 'Currently, a list of tracks.',
       args: {
-        trackType: { type: GraphQLString },
+        type: { type: GraphQLString },
+        q: { type: GraphQLString },
       },
       resolve: (_, args) => {
-        if (args.trackType === 'topTracks') {
-          return api.getArtistTracks(_.results);
+        if (args.type === 'trackSearch') {
+          if (args.q) {
+            return api.getTrackSearch(args.q).then(tracks => tracks.items);
+          }
+          return [];
         }
-        return [];
+        return api.getArtistTracks(_.results);
       },
     },
   },

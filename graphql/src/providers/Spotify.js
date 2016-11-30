@@ -118,6 +118,7 @@ class Spotify {
     const qs = querystring.stringify({
       type: 'album',
       q: term,
+      limit: 5,
       market: 'US',
     });
     return this.doFetch(`${searchUrl}?${qs}`)
@@ -161,6 +162,7 @@ class Spotify {
     const qs = querystring.stringify({
       type: 'artist',
       q: term,
+      limit: 5,
       market: 'US',
     });
     return this.doFetch(`${searchUrl}?${qs}`)
@@ -180,6 +182,7 @@ class Spotify {
     const qs = querystring.stringify({
       type: 'track',
       q: term,
+      limit: 10,
       market: 'US',
     });
     return this.doFetch(`${searchUrl}?${qs}`)

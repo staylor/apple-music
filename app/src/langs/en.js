@@ -10,6 +10,7 @@ export default {
   'player.nothing': 'Nothing is playing.',
   'album.song': 'song',
   'album.songs': 'songs',
+  'search.placeholder': 'Search for artists, albums, and tracks',
   hour: 'hour',
   hours: 'hours',
   minute: 'minute',

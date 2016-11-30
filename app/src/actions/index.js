@@ -4,6 +4,7 @@ export const SET_TRACK = 'SET_TRACK';
 export const SET_TRACK_INFO = 'SET_TRACK_INFO';
 export const TOGGLE_TRACK = 'TOGGLE_TRACK';
 export const SET_LOCALE = 'SET_LOCALE';
+export const SET_SEARCH_TERM = 'SET_SEARCH_TERM';
 
 export const setCurrentTrack = (track: Object): Object => ({
   type: SET_TRACK,
@@ -23,4 +24,9 @@ export const toggleCurrentTrack = (): Object => ({
 export const setLocale = (locale: string): Object => ({
   type: SET_LOCALE,
   locale,
+});
+
+export const setSearchTerm = (term: string): Object => ({
+  type: SET_SEARCH_TERM,
+  term,
 });

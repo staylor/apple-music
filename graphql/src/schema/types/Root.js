@@ -32,12 +32,11 @@ const Root = new GraphQLObjectType({
       },
       resolve: (_, args) => args.id && api.getAlbum(args.id),
     },
-    artist: {
-      type: ArtistType,
-      args: {
-        id: { type: GraphQLString },
-      },
-      resolve: (_, args) => args.id && api.getArtist(args.id),
+    albumSearch: {
+      type: AlbumCollectionType,
+      resolve: () => ({
+        results: {},
+      }),
     },
     track: {
       type: TrackType,
@@ -45,6 +44,26 @@ const Root = new GraphQLObjectType({
         id: { type: GraphQLString },
       },
       resolve: (_, args) => args.id && api.getTrack(args.id),
+    },
+    trackSearch: {
+      type: TrackCollectionType,
+      resolve: () => ({
+        results: {},
+      }),
+    },
+    // Artist
+    artist: {
+      type: ArtistType,
+      args: {
+        id: { type: GraphQLString },
+      },
+      resolve: (_, args) => args.id && api.getArtist(args.id),
+    },
+    artistSearch: {
+      type: ArtistCollectionType,
+      resolve: () => ({
+        results: {},
+      }),
     },
     artistAlbums: {
       type: AlbumCollectionType,

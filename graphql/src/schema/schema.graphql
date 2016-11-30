@@ -83,7 +83,7 @@ type AlbumArtist implements ArtistInterface, Node {
 # A list of results.
 type AlbumCollection {
   # Currently, a list of albums.
-  results(type: String): [BrowseAlbum]
+  results(type: String, q: String): [BrowseAlbum]
 }
 
 interface AlbumInterface {
@@ -198,7 +198,7 @@ type Artist implements ArtistInterface, Node {
 # A list of results.
 type ArtistCollection {
   # Currently, a list of artists.
-  results(artistType: String): [Artist]
+  results(type: String, q: String): [Artist]
 }
 
 interface ArtistInterface {
@@ -349,8 +349,11 @@ type Root {
   ): Node
   newReleases: Collection
   album(id: String): Album
-  artist(id: String): Artist
+  albumSearch: AlbumCollection
   track(id: String): Track
+  trackSearch: TrackCollection
+  artist(id: String): Artist
+  artistSearch: ArtistCollection
   artistAlbums(id: String): AlbumCollection
   topTracks(id: String): TrackCollection
   relatedArtists(id: String): ArtistCollection
@@ -406,7 +409,7 @@ type Track implements TrackInterface, Node {
 # A list of results.
 type TrackCollection {
   # Currently, a list of tracks.
-  results(trackType: String): [Track]
+  results(type: String, q: String): [Track]
 }
 
 interface TrackInterface {

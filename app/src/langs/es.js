@@ -10,10 +10,11 @@ export default {
   'player.nothing': 'Nada está jugando.',
   'album.song': 'canción',
   'album.songs': 'canciones',
+  'search.placeholder': 'Búsqueda de artistas, álbumes y pistas',
   hour: 'hora',
   hours: 'horas',
   minute: 'minuto',
   minutes: 'minutos',
   next: 'Siguiente',
-  previous: 'Anterior',  
+  previous: 'Anterior',
 };
