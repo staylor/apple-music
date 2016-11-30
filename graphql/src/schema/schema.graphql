@@ -270,7 +270,7 @@ type BrowseAlbumEdge {
 }
 
 # A list of results.
-type Collection {
+type Collection implements Node {
   # The ID of an object
   id: ID!
 

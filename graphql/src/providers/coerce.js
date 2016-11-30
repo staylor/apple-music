@@ -1,3 +1,5 @@
+// @flow
+
 import {
   Album,
   BrowseAlbum,
@@ -8,13 +10,13 @@ import {
 } from '../schema/types/Root';
 
 const coerce = {
-  setArtist: data => (Object.assign(new Artist(), data)),
-  setAlbumArtist: data => (Object.assign(new AlbumArtist(), data)),
-  setAlbum: data => (Object.assign(new Album(), data)),
-  setBrowseAlbum: data => (Object.assign(new BrowseAlbum(), data)),
-  setTrack: data => (Object.assign(new Track(), data)),
-  setAlbumTrack: data => (Object.assign(new AlbumTrack(), data)),
-  walk: (data) => {
+  setArtist: (data: Object) => (Object.assign(new Artist(), data)),
+  setAlbumArtist: (data: Object) => (Object.assign(new AlbumArtist(), data)),
+  setAlbum: (data: Object) => (Object.assign(new Album(), data)),
+  setBrowseAlbum: (data: Object) => (Object.assign(new BrowseAlbum(), data)),
+  setTrack: (data: Object) => (Object.assign(new Track(), data)),
+  setAlbumTrack: (data: Object) => (Object.assign(new AlbumTrack(), data)),
+  walk: (data: any) => {
     Object.keys(data).forEach((key) => {
       switch (key) {
         case 'album':

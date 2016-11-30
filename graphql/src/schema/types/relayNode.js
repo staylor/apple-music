@@ -11,6 +11,7 @@ import ArtistType from './Artist';
 import AlbumArtistType from './Artist/AlbumArtist';
 import AlbumTrackType from './Track/AlbumTrack';
 import TrackType from './Track';
+import CollectionType from './Collection';
 
 import api, {
   Album,
@@ -38,6 +39,8 @@ const { nodeInterface, nodeField } = nodeDefinitions(
         return api.getTrack(id);
       case 'AlbumTrack':
         return api.getTrack(id);
+      case 'Collection':
+        return { results: {} };
       default:
         return null;
     }
@@ -57,7 +60,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
       case obj instanceof AlbumTrack:
         return AlbumTrackType;
       default:
-        return null;
+        return CollectionType;
     }
   }
 );

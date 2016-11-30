@@ -100,6 +100,7 @@ class Spotify {
       market: 'US',
       ...opts,
     });
+
     return this.doFetch(`${newReleasesUrl}?${qs}`)
       .then(json => json.albums)
       .then((albums) => {

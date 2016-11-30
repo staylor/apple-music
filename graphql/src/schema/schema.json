@@ -233,6 +233,11 @@
           "possibleTypes": [
             {
               "kind": "OBJECT",
+              "name": "Collection",
+              "ofType": null
+            },
+            {
+              "kind": "OBJECT",
               "name": "BrowseAlbum",
               "ofType": null
             },
@@ -349,7 +354,13 @@
             }
           ],
           "inputFields": null,
-          "interfaces": [],
+          "interfaces": [
+            {
+              "kind": "INTERFACE",
+              "name": "Node",
+              "ofType": null
+            }
+          ],
           "enumValues": null,
           "possibleTypes": null
         },

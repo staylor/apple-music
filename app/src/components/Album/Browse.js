@@ -22,7 +22,7 @@ const BrowseAlbum = ({ album }) => (
 export default Relay.createContainer(BrowseAlbum, {
   fragments: {
     album: () => Relay.QL`
-      fragment on AlbumInterface {
+      fragment on BrowseAlbum {
         ${AlbumLink.getFragment('album')}
         ${AlbumImage.getFragment('album')}
         artists {

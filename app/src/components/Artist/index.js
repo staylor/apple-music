@@ -63,7 +63,6 @@ export default Relay.createContainer(Artist, {
     artistAlbums: () => Relay.QL`
       fragment on Collection {
         results(type: $type) {
-          id
           ${BrowseAlbum.getFragment('album')}
         }
       }

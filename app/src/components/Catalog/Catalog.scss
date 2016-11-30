@@ -11,6 +11,10 @@
   }
 }
 
+.prev, .next {
+  cursor: pointer;
+}
+
 .tracks {
   @include clearfix;
 
