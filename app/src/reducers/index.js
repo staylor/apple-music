@@ -1,3 +1,5 @@
+// @flow
+
 import { combineReducers } from 'redux';
 import { currentTrack, trackInfo, toggleTrack } from './player';
 import { locale } from './locale';

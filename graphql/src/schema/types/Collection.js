@@ -45,17 +45,17 @@ const CollectionType = new GraphQLObjectType({
         ...connectionArgs,
       },
       resolve: (_, args) => {
+        const limit: number = args.first || args.last || 50;
+
+        let offset = 0;
+        if (args.after) {
+          offset = indexFromCursor(args.after) + 1;
+        } else if (args.before) {
+          offset = indexFromCursor(args.before) - limit;
+        }
+
         switch (args.type) {
           case 'newReleases':
-            const limit: number = args.first || args.last || 50;
-
-            let offset = 0;
-            if (args.after) {
-              offset = indexFromCursor(args.after) + 1;
-            } else if (args.before) {
-              offset = indexFromCursor(args.before) - limit;
-            }
-
             return new Promise(resolve => {
               api.getNewReleases({ limit, offset }).then((data) => {
                 const startIndex = offset;
@@ -76,7 +76,24 @@ const CollectionType = new GraphQLObjectType({
             });
 
           case 'artistAlbums':
-            return api.getArtistAlbums(_.results);
+            return new Promise(resolve => {
+              api.getArtistAlbums(_.results).then((data) => {
+                const startIndex = offset;
+                const endIndex = startIndex + (limit - 1);
+                const hasNextPage = (null !== data.next);
+                const hasPreviousPage = (null !== data.previous);
+
+                resolve({
+                  edges: toEdges(data.items, 0),
+                  pageInfo: {
+                    hasNextPage,
+                    hasPreviousPage,
+                    startCursor: data.total > 0 ? indexToCursor(startIndex) : null,
+                    endCursor: data.total > 0 ? indexToCursor(endIndex) : null,
+                  },
+                });
+              });
+            });
           default:
             return [];
         }

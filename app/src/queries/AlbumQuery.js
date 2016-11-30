@@ -1,3 +1,5 @@
+// @flow
+
 import Relay, { Route } from 'react-relay';
 
 class AlbumQuery extends Route {

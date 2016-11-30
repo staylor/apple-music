@@ -1,3 +1,5 @@
+// @flow
+
 import Relay, { Route } from 'react-relay';
 
 class CatalogQuery extends Route {

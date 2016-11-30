@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import Relay from 'react-relay';
 import L10NLink from '../L10NLink';

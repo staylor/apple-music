@@ -1,3 +1,5 @@
+// @flow
+
 import { SET_TRACK, SET_TRACK_INFO, TOGGLE_TRACK } from '../actions';
 
 export const PLAYER_IDLE = 0;
@@ -5,7 +7,7 @@ export const PLAYER_ACTIVE = 1;
 
 const initialState = {};
 
-export const currentTrack = (state = initialState, action) => {
+export const currentTrack = (state: Object = initialState, action: Object): Object => {
   switch (action.type) {
     case SET_TRACK:
       return action.track;
@@ -19,7 +21,7 @@ const trackState = {
   duration: 0,
 };
 
-export const trackInfo = (state = trackState, action) => {
+export const trackInfo = (state: Object = trackState, action: Object): Object => {
   switch (action.type) {
     case SET_TRACK_INFO:
       return {
@@ -31,7 +33,7 @@ export const trackInfo = (state = trackState, action) => {
   }
 };
 
-export const toggleTrack = (state = PLAYER_IDLE, action) => {
+export const toggleTrack = (state: number = PLAYER_IDLE, action: Object): number => {
   switch (action.type) {
     case TOGGLE_TRACK:
       if (state === PLAYER_IDLE) {

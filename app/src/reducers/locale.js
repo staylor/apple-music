@@ -7,7 +7,7 @@ export const SET_LOCALE = 'SET_LOCALE';
 
 const langCache = {};
 
-export const getMessages = (locale) => {
+export const getMessages = (locale: string): Object => {
   if (langCache[locale]) {
     return langCache[locale];
   }
@@ -17,11 +17,11 @@ export const getMessages = (locale) => {
   return langCache[locale];
 };
 
-export const getLocaleData = locale => (
+export const getLocaleData = (locale: string) => (
   require(`react-intl/locale-data/${locale}`)
 );
 
-export const setLocaleData = (locale) => {
+export const setLocaleData = (locale: string) => {
   if (typeof window === 'undefined') {
     return;
   }
@@ -33,7 +33,7 @@ const initialState = {
   messages: getMessages('en'),
 };
 
-export const locale = (state = initialState, action) => {
+export const locale = (state: Object = initialState, action: Object) => {
   switch (action.type) {
     case SET_LOCALE:
       setLocaleData(action.locale);

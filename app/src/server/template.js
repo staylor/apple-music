@@ -1,4 +1,6 @@
-export default template => `<!DOCTYPE html>
+// @flow
+
+export default (template: Object): string => `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charSet='utf-8' />

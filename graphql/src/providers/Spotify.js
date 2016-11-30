@@ -136,8 +136,10 @@ class Spotify {
   getArtistAlbums(id: string): Promise<BrowseAlbum[]> {
     const qs = querystring.stringify({ market: 'US' });
     return this.doFetch(`${artistUrl}${id}/albums?${qs}`)
-      .then(json => json.items)
-      .then(items => items.map(item => coerce.setBrowseAlbum(coerce.walk(item))));
+      .then(json => {
+        json.items = json.items.map(item => coerce.setBrowseAlbum(coerce.walk(item)));
+        return json;
+      });
   }
 
   getArtistTracks(id: string): Promise<Track[]> {

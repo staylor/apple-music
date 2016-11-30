@@ -1,3 +1,5 @@
+// @flow
+
 import { Route } from 'react-relay';
 
 class AppQuery extends Route {

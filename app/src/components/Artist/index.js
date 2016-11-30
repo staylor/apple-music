@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import Relay from 'react-relay';
 import ArtistLink from './Link';
@@ -28,7 +30,7 @@ const Artist = ({
     <section>
       <h2>Albums</h2>
       <ul className={catalogStyles.albums}>
-        {artistAlbums.results.map(album => <BrowseAlbum key={album.id} album={album} />)}
+        {artistAlbums.results.edges.map(({ node }) => <BrowseAlbum key={node.album_id} album={node} />)}
       </ul>
     </section>
     <section>
@@ -62,8 +64,18 @@ export default Relay.createContainer(Artist, {
     `,
     artistAlbums: () => Relay.QL`
       fragment on Collection {
-        results(type: $type) {
-          ${BrowseAlbum.getFragment('album')}
+        results(type: $type, first: 100) {
+          edges {
+            node {
+              album_id
+              ${BrowseAlbum.getFragment('album')}
+            }
+            cursor
+          }
+          pageInfo {
+            startCursor
+            endCursor
+          }
         }
       }
     `,

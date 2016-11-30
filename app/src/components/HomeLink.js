@@ -1,3 +1,5 @@
+// @flow
+
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import L10NLink from './L10NLink';
