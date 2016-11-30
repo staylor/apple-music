@@ -1,4 +1,5 @@
-#!/usr/bin/env babel-node
+// @flow
+
 import fs from 'fs';
 import path from 'path';
 import { graphql } from 'graphql';

@@ -15,8 +15,8 @@ import api from '../../database';
 import BrowseAlbumType from './Album/Browse';
 
 const idxPrefix = 'idx---';
-const toBase64 = str => new Buffer(str).toString('base64');
-const fromBase64 = encoded => Buffer.from(encoded, 'base64');
+const toBase64 = (str: string): string => new Buffer(str).toString('base64');
+const fromBase64 = (encoded: string): string => Buffer.from(encoded, 'base64').toString('utf8');
 const indexToCursor = idx => toBase64(`${idxPrefix}${idx}`);
 const indexFromCursor = cursor => fromBase64(cursor).replace(idxPrefix, '');
 const toEdges = data => data.map((item, index) => ({

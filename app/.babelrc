@@ -1,7 +1,6 @@
 {
   "passPerPreset": true,
   "plugins": [
-    "transform-flow-strip-types",
     "transform-runtime",
     [
       "babel-root-import",

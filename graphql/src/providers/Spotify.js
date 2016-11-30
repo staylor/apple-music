@@ -95,7 +95,7 @@ class Spotify {
     });
   }
 
-  getNewReleases(opts): Promise<Album[]> {
+  getNewReleases(opts: Object = {}): Promise<Album[]> {
     const qs = querystring.stringify({
       market: 'US',
       ...opts,
@@ -119,7 +119,12 @@ class Spotify {
       q: term,
       market: 'US',
     });
-    return this.doFetch(`${searchUrl}?${qs}`);
+    return this.doFetch(`${searchUrl}?${qs}`)
+      .then(json => json.albums)
+      .then((albums) => {
+        albums.items = albums.items.map(item => coerce.setBrowseAlbum(coerce.walk(item)));
+        return albums;
+      });
   }
 
   getArtist(id: string): Promise<Artist> {
@@ -149,26 +154,37 @@ class Spotify {
       .then(artists => artists.map(artist => coerce.setArtist(artist)));
   }
 
-  getArtistSearch(term: string): Promise {
+  getArtistSearch(term: string): Promise<Object> {
     const qs = querystring.stringify({
       type: 'artist',
       q: term,
       market: 'US',
     });
-    return this.doFetch(`${searchUrl}?${qs}`);
+    return this.doFetch(`${searchUrl}?${qs}`)
+      .then(json => json.artists)
+      .then((artists) => {
+        artists.items = artists.items.map(item => coerce.setArtist(coerce.walk(item)));
+        return artists;
+      });
   }
 
   getTrack(id: string): Promise<Track> {
-    return this.doFetch(`${trackUrl}${id}`);
+    return this.doFetch(`${trackUrl}${id}`)
+      .then(track => coerce.setTrack(coerce.walk(track)));
   }
 
-  getTrackSearch(term: string): Promise {
+  getTrackSearch(term: string): Promise<Object> {
     const qs = querystring.stringify({
       type: 'track',
       q: term,
       market: 'US',
     });
-    return this.doFetch(`${searchUrl}?${qs}`);
+    return this.doFetch(`${searchUrl}?${qs}`)
+      .then(json => json.tracks)
+      .then((tracks) => {
+        tracks.items = tracks.items.map(item => coerce.setTrack(coerce.walk(item)));
+        return tracks;
+      });
   }
 }
 
