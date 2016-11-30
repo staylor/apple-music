@@ -14,4 +14,6 @@ export default {
   hours: 'hours',
   minute: 'minute',
   minutes: 'minutes',
+  next: 'Next',
+  previous: 'Previous',
 };

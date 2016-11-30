@@ -3,10 +3,10 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import AppQuery from '../queries/AppQuery';
-import CatalogQuery from '../queries/CatalogQuery';
-import AlbumQuery from '../queries/AlbumQuery';
-import ArtistQuery from '../queries/ArtistQuery';
+import AppQuery from '~/queries/AppQuery';
+import CatalogQuery from '~/queries/CatalogQuery';
+import AlbumQuery from '~/queries/AlbumQuery';
+import ArtistQuery from '~/queries/ArtistQuery';
 
 const routes = (
   <Route

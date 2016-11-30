@@ -4,10 +4,10 @@ import React from 'react';
 import Relay from 'react-relay';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { toggleCurrentTrack, setCurrentTrack } from '~/actions';
+import { PLAYER_IDLE, PLAYER_ACTIVE } from '~/reducers/player';
 import AlbumImage from '../Album/Image';
 import ArtistLink from '../Artist/Link';
-import { toggleCurrentTrack, setCurrentTrack } from '../../actions';
-import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
 import styles from './Track.scss';
 
 /* eslint-disable react/prop-types */
@@ -25,7 +25,7 @@ let Track = ({ track, current, playerState, bindClick }) => {
       className={className}
       onClick={bindClick(current, playerState)}
     >
-      <AlbumImage album={track.album} />
+      <AlbumImage album={track.album} size="small" />
       <span className={styles.name}>{track.name}</span>
       <span><ArtistLink artist={track.artists[0]} /></span>
     </li>

@@ -3,9 +3,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { toggleCurrentTrack } from '../../actions';
+import { toggleCurrentTrack } from '~/actions';
+import { PLAYER_IDLE } from '~/reducers/player';
 import ArtistLink from '../Artist/Link';
-import { PLAYER_IDLE } from '../../reducers/player';
 import styles from './Player.scss';
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */

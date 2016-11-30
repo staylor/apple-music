@@ -12,7 +12,7 @@ import styles from '../Catalog/Catalog.scss';
 const BrowseAlbum = ({ album }) => (
   <li>
     <div className={styles.artwork}>
-      <AlbumImage album={album} />
+      <AlbumImage album={album} size="medium" />
     </div>
     <div className={styles.meta}>
       <AlbumLink album={album} />

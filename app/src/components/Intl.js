@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { IntlProvider } from 'react-intl';
-import { setLocale } from '../actions';
+import { setLocale } from '~/actions';
 
 /* eslint-disable react/prop-types */
 

@@ -4,9 +4,9 @@ import React from 'react';
 import Relay from 'react-relay';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { toggleCurrentTrack, setCurrentTrack } from '~/actions';
+import { PLAYER_IDLE, PLAYER_ACTIVE } from '~/reducers/player';
 import ArtistLink from '../Artist/Link';
-import { toggleCurrentTrack, setCurrentTrack } from '../../actions';
-import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
 import styles from './Track.scss';
 
 const convertMsTime = (ms) => {

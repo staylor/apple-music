@@ -9,8 +9,8 @@ import AlbumImage from './Image';
 import AlbumLink from './Link';
 import ArtistLink from '../Artist/Link';
 import AlbumTrack from '../Track/AlbumTrack';
-import { toggleCurrentTrack } from '../../actions';
-import { PLAYER_IDLE, PLAYER_ACTIVE } from '../../reducers/player';
+import { toggleCurrentTrack } from '~/actions';
+import { PLAYER_IDLE, PLAYER_ACTIVE } from '~/reducers/player';
 import styles from './Album.scss';
 
 const totalTime = (items, messages) => {

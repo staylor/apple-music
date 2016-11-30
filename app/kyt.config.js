@@ -43,8 +43,13 @@ module.exports = {
     // add Relay and other plugins
     babelLoader.options.plugins.push(
       path.resolve('./tools/babelRelayPlugin.js'),
+      require.resolve('babel-plugin-transform-flow-strip-types'),
       require.resolve('babel-plugin-transform-class-properties'),
-      require.resolve('babel-plugin-transform-object-rest-spread')
+      require.resolve('babel-plugin-transform-object-rest-spread'),
+      [
+        require.resolve('babel-root-import'),
+        { rootPathSuffix: 'src' }
+      ]
     );
 
     // Production-only babel plugins

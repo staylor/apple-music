@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Relay from 'react-relay';
+import { FormattedMessage } from 'react-intl';
 import Loading from '../Loading';
 import BrowseAlbum from '../Album/Browse';
 import styles from './Catalog.scss';
@@ -59,7 +60,7 @@ const Catalog = ({ newReleases, relay }) => {
             first: null,
           })}
         >
-          PREVIOUS
+          <FormattedMessage id="previous" />
         </span> : ''}
       {hasPrevious && hasNext ? <span> &bull; </span> : ''}
       {hasNext ?
@@ -72,7 +73,7 @@ const Catalog = ({ newReleases, relay }) => {
             last: null,
           })}
         >
-          NEXT
+          <FormattedMessage id="next" />
         </span> : ''}
       <ul className={styles.albums}>
         {edges.map(({ node, cursor }) => <BrowseAlbum key={cursor} album={node} />)}
