@@ -1,3 +1,4 @@
+// @flow
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -34,8 +35,7 @@ const networkLayer = new Relay.DefaultNetworkLayer('/graphql', {
 environment.injectNetworkLayer(networkLayer);
 IsomorphicRelay.injectPreparedData(environment, data);
 
-const rootElement = document.getElementById('root');
-
+let rootElement;
 let rendered = false;
 
 const mount = (routes = AppRoutes) => {
@@ -58,7 +58,10 @@ const mount = (routes = AppRoutes) => {
   });
 };
 
-mount();
+window.onload = () => {
+  rootElement = document.getElementById('root');
+  mount();
+}
 
 if (module.hot) {
   // Rerender after any changes to the following.

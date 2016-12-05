@@ -13,17 +13,16 @@ export default (template: Object): string => `<!DOCTYPE html>
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="/css/dashicons.css" />
   <style>${template.css}</style>
-</head>
-<body>
-  <div id="root">${template.html}</div>
   <script id="preloadedState" type="application/json">
     ${JSON.stringify(template.preloadedState)}
   </script>
   <script id="preloadedData" type="application/json">
     ${JSON.stringify(template.dehydratedData)}
   </script>
-  <script>${template.manifest}</script>
-  ${template.entries.map(e => `<script defer src="${e}"></script>`).join('\n')}
+  ${template.entries.map(e => `<script src="${e}"></script>`).join('\n')}  
+</head>
+<body>
+  <div id="root">${template.html}</div>
 </body>
 </html>
 `;

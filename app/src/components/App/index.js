@@ -22,7 +22,7 @@ const App = ({
 }) => {
   let enPath = location.pathname.replace('/es', '');
   let eventTimeout;
-  const eventInterval = 300;
+  const eventInterval = 600;
   const esPath = enPath === '/' ? '/es' : `/es${enPath}`;
 
   if (!enPath) {
@@ -41,7 +41,6 @@ const App = ({
           </h2>
           <form
             action={getL10NPath(locale, '/search')}
-            onSubmit={e => e.preventDefault()}
           >
             <input
               type="search"
