@@ -6,6 +6,7 @@ import IsomorphicRelay from 'isomorphic-relay';
 import IsomorphicRouter from 'isomorphic-relay-router';
 import { browserHistory, match, Router } from 'react-router';
 import Relay from 'react-relay';
+import { RelayNetworkLayer, urlMiddleware } from 'react-relay-network-layer';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import AppRoutes from '../routes';
@@ -28,9 +29,12 @@ audio(store);
 const { data } = JSON.parse(document.getElementById('preloadedData').textContent);
 
 const environment = new Relay.Environment();
-const networkLayer = new Relay.DefaultNetworkLayer('/graphql', {
-  credentials: 'same-origin',
-});
+const networkLayer = new RelayNetworkLayer([
+  urlMiddleware({
+    url: '/graphql',
+    batchUrl: '/graphql/batch',
+  }),
+], { disableBatchQuery: false });
 
 environment.injectNetworkLayer(networkLayer);
 IsomorphicRelay.injectPreparedData(environment, data);

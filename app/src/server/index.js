@@ -1,3 +1,4 @@
+import 'isomorphic-fetch';
 import path from 'path';
 import 'source-map-support/register';
 import express from 'express';
@@ -20,8 +21,8 @@ const gqlHost =
   process.env.GQL_HOST ||
   'http://localhost:8080';
 
-// the pathname is dervied from samizdat
 const gqlPath = '/graphql';
+const gqlBatchPath = '/graphql/batch';
 
 const staticPath = process.env.NODE_ENV === 'production' ?
   path.join(__dirname, '../public') :
@@ -30,7 +31,6 @@ const staticPath = process.env.NODE_ENV === 'production' ?
 // serve static assets
 app.use(express.static(staticPath));
 
-// proxy to the graphql server
 app.use(gqlPath, proxy({
   target: gqlHost,
   changeOrigin: true,
@@ -42,7 +42,10 @@ app.get('/.healthcheck', (req, res) => {
 });
 
 // react-router is handling all the routing
-app.get('*', router({ gqlUrl: gqlHost + gqlPath }));
+app.get('*', router({
+  gqlUrl: gqlHost + gqlPath,
+  gqlBatchPath: gqlHost + gqlBatchPath,
+}));
 
 // Error handling
 app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars

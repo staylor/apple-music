@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import Relay from 'react-relay';
+import { RelayNetworkLayer, urlMiddleware } from 'react-relay-network-layer';
 import IsomorphicRouter from 'isomorphic-relay-router';
 import { match } from 'react-router';
 import cookie from 'react-cookie';
@@ -38,13 +38,15 @@ const entries = Object.keys(clientAssets)
         .filter(a => a === '0_vendor' || a === 'main')
         .map(a => clientAssets[a].js);
 
-export default function router({ gqlUrl }) {
+export default function router({ gqlUrl, gqlBatchUrl }) {
   // this configuration will be passed down to the client
   const clientConfig = {};
-
-  const networkLayer = new Relay.DefaultNetworkLayer(gqlUrl, {
-    credentials: 'same-origin',
-  });
+  const networkLayer = new RelayNetworkLayer([
+    urlMiddleware({
+      url: gqlUrl,
+      batchUrl: gqlBatchUrl,
+    }),
+  ], { disableBatchQuery: false });
 
   return (req, res, next) =>
     match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
