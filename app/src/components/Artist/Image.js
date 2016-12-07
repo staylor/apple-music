@@ -3,7 +3,7 @@
 import React from 'react';
 import Relay from 'react-relay';
 import classNames from 'classnames';
-import L10NLink from '../L10NLink';
+import L10NLink from '~/containers/L10NLink';
 import styles from './Artist.scss';
 
 /* eslint-disable react/prop-types */

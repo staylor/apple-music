@@ -1,9 +1,7 @@
 // @flow
 
 import React from 'react';
-import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { toggleCurrentTrack } from '~/actions';
 import { PLAYER_IDLE } from '~/reducers/player';
 import ArtistLink from '../Artist/Link';
 import styles from './Player.scss';
@@ -53,22 +51,4 @@ const Player = ({ track, trackInfo, playerState, bindClick }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  locale: state.locale,
-  track: state.currentTrack,
-  trackInfo: state.trackInfo,
-  playerState: state.playerState,
-});
-
-const mapDispatchToProps = dispatch => ({
-  bindClick: track => () => {
-    if (track) {
-      dispatch(toggleCurrentTrack());
-    }
-  },
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Player);
+export default Player;

@@ -2,10 +2,8 @@
 
 import React from 'react';
 import { Link } from 'react-router';
-import { connect } from 'react-redux';
-import { setSearchTerm } from '~/actions';
-import Intl from '../Intl';
-import Player from '../Player';
+import Intl from '~/containers/Intl';
+import Player from '~/containers/Player';
 import HomeLink from '../HomeLink';
 import { getL10NPath } from '../L10NLink';
 import styles from './App.scss';
@@ -63,18 +61,4 @@ const App = ({
   );
 };
 
-const mapStateToProps = state => ({
-  locale: state.locale.code,
-  messages: state.locale.messages,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onSearchChange: (term) => {
-    dispatch(setSearchTerm(term));
-  },
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default App;
