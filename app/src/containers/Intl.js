@@ -1,13 +1,13 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 import { setLocale } from '~/actions';
 
 /* eslint-disable react/prop-types */
 
-class Intl extends Component {
+class Intl extends PureComponent {
   constructor(props) {
     super(props);
 

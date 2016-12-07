@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Relay from 'react-relay';
 import { connect } from 'react-redux';
 import RelatedArtist from '../Artist/Related';
@@ -12,7 +12,7 @@ import catalogStyles from '../Catalog/Catalog.scss';
 
 /* eslint-disable react/prop-types */
 
-class Search extends Component {
+class Search extends PureComponent {
   state: Object;
   constructor(props) {
     super(props);
