@@ -13,7 +13,7 @@ import AlbumTrackType from './Track/AlbumTrack';
 import TrackType from './Track';
 import CollectionType from './Collection';
 
-import api from '~/database';
+import { AlbumLoader, ArtistLoader, TrackLoader } from '~/database';
 
 import {
   Album,
@@ -30,17 +30,17 @@ const { nodeInterface, nodeField } = nodeDefinitions(
 
     switch (type) {
       case 'Album':
-        return api.getAlbum(id);
+        return AlbumLoader.load(id);
       case 'BrowseAlbum':
-        return api.getAlbum(id);
+        return AlbumLoader.load(id);
       case 'Artist':
-        return api.getArtist(id);
+        return ArtistLoader.load(id);
       case 'AlbumArtist':
-        return api.getArtist(id);
+        return ArtistLoader.load(id);
       case 'Track':
-        return api.getTrack(id);
+        return TrackLoader.load(id);
       case 'AlbumTrack':
-        return api.getTrack(id);
+        return TrackLoader.load(id);
       case 'Collection':
         return { results: {} };
       default:

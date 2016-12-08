@@ -44,7 +44,7 @@ app.get('/.healthcheck', (req, res) => {
 // react-router is handling all the routing
 app.get('*', router({
   gqlUrl: gqlHost + gqlPath,
-  gqlBatchPath: gqlHost + gqlBatchPath,
+  gqlBatchUrl: gqlHost + gqlBatchPath,
 }));
 
 // Error handling

@@ -13,7 +13,7 @@ import AlbumCollectionType from './Album/Collection';
 import TrackCollectionType from './Track/Collection';
 import ArtistCollectionType from './Artist/Collection';
 import { nodeField } from './relayNode';
-import api from '~/database';
+import { AlbumLoader, ArtistLoader, TrackLoader } from '~/database';
 
 const Root = new GraphQLObjectType({
   name: 'Root',
@@ -30,7 +30,7 @@ const Root = new GraphQLObjectType({
       args: {
         id: { type: GraphQLString },
       },
-      resolve: (_, args) => args.id && api.getAlbum(args.id),
+      resolve: (_, args) => args.id && AlbumLoader.load(args.id),
     },
     albumSearch: {
       type: AlbumCollectionType,
@@ -43,7 +43,7 @@ const Root = new GraphQLObjectType({
       args: {
         id: { type: GraphQLString },
       },
-      resolve: (_, args) => args.id && api.getTrack(args.id),
+      resolve: (_, args) => args.id && TrackLoader.load(args.id),
     },
     trackSearch: {
       type: TrackCollectionType,
@@ -57,7 +57,7 @@ const Root = new GraphQLObjectType({
       args: {
         id: { type: GraphQLString },
       },
-      resolve: (_, args) => args.id && api.getArtist(args.id),
+      resolve: (_, args) => args.id && ArtistLoader.load(args.id),
     },
     artistSearch: {
       type: ArtistCollectionType,
