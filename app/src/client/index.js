@@ -65,7 +65,7 @@ const mount = (routes = AppRoutes) => {
 window.onload = () => {
   rootElement = document.getElementById('root');
   mount();
-}
+};
 
 if (module.hot) {
   // Rerender after any changes to the following.

@@ -7,6 +7,7 @@ import RelatedArtist from '../Artist/Related';
 import BrowseAlbum from '../Album/Browse';
 import Track from '../Track';
 import { getL10NPath } from '../L10NLink';
+import { setSearchTerm } from '../../actions';
 import styles from '../Artist/Artist.scss';
 import catalogStyles from '../Catalog/Catalog.scss';
 
@@ -23,19 +24,20 @@ class Search extends PureComponent {
   }
 
   componentDidMount() {
-    this.props.relay.setVariables({
-      q: this.props.term || '',
-    });
+    const { term, location: { query: { q } } } = this.props;
+    const searchTerm = term || q || '';
+    if (searchTerm) {
+      this.props.onSearchChange(searchTerm);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!nextProps.term || nextProps.term === this.state.lastTerm) {
+    const nextTerm = nextProps.location.query.q || nextProps.term;
+    if (!nextTerm || nextTerm === this.state.lastTerm) {
       return;
     }
-    this.setState({ lastTerm: nextProps.term });
-    this.props.relay.setVariables({
-      q: nextProps.term,
-    });
+    this.setState({ lastTerm: nextTerm });
+    this.props.onSearchChange(nextTerm);
   }
 
   render() {
@@ -81,8 +83,18 @@ const mapStateToProps = state => ({
   term: state.search,
 });
 
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  onSearchChange: (term) => {
+    dispatch(setSearchTerm(term));
+    ownProps.relay.setVariables({
+      q: term,
+    });
+  },
+});
+
 const ConnectedSearch = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Search);
 
 export default Relay.createContainer(ConnectedSearch, {

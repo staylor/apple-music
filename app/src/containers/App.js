@@ -1,8 +1,8 @@
 // @flow
 
 import { connect } from 'react-redux';
-import { setSearchTerm } from '~/actions';
-import App from '~/components/App';
+import { setSearchTerm } from '../actions';
+import App from '../components/App';
 
 const mapStateToProps = state => ({
   locale: state.locale.code,

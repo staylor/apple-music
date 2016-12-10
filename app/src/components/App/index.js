@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
 import Intl from '~/containers/Intl';
 import Player from '~/containers/Player';
 import HomeLink from '../HomeLink';
@@ -15,6 +15,7 @@ const App = ({
   locale,
   messages,
   params,
+  router,
   onSearchChange,
   children,
 }) => {
@@ -49,6 +50,12 @@ const App = ({
                 window.clearTimeout(eventTimeout);
                 eventTimeout = window.setTimeout(() => {
                   onSearchChange(eventTarget.value);
+                  router.push({
+                    pathname: '/search',
+                    query: {
+                      q: eventTarget.value,
+                    },
+                  });
                 }, eventInterval);
               }}
             />
@@ -61,4 +68,4 @@ const App = ({
   );
 };
 
-export default App;
+export default withRouter(App);

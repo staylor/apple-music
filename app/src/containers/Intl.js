@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { IntlProvider } from 'react-intl';
-import { setLocale } from '~/actions';
+import { setLocale } from '../actions';
 
 /* eslint-disable react/prop-types */
 
@@ -18,18 +18,18 @@ class Intl extends PureComponent {
     props.onSetLocale(locale);
   }
 
-  componentWillReceiveProps(nextProps) {
-    let locale = this.props.locale;
+  componentWillReceiveProps({ onSetLocale, params: { locale } }) {
+    let currentLocale = this.props.locale;
 
-    if (nextProps.params && nextProps.params.locale) {
-      if (nextProps.params.locale !== locale) {
-        locale = nextProps.params.locale;
+    if (locale) {
+      if (locale !== currentLocale) {
+        currentLocale = locale;
       }
     } else {
-      locale = 'en';
+      currentLocale = 'en';
     }
 
-    nextProps.onSetLocale(locale);
+    onSetLocale(currentLocale);
   }
 
   render() {
