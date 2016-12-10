@@ -1,19 +1,17 @@
-// @flow
-
 import React from 'react';
 import Relay from 'react-relay';
 import { Route, IndexRoute } from 'react-router';
 
-/* eslint-disable global-require */
-
-const load = loader => (nextState, cb) => require.ensure([], () => cb(null, loader().default));
+const load = loader => (nextState, cb) => loader()
+  .then(module => cb(null, module.default))
+  .catch((e) => { throw e; });
 
 const manifest = {
-  app: () => require('../containers/App'),
-  catalog: () => require('../components/Catalog'),
-  search: () => require('../components/Search'),
-  album: () => require('../components/Album'),
-  artist: () => require('../components/Artist'),
+  app: () => System.import('../containers/App'),
+  catalog: () => System.import('../components/Catalog'),
+  search: () => System.import('../components/Search'),
+  album: () => System.import('../components/Album'),
+  artist: () => System.import('../components/Artist'),
 };
 
 const catalogProps = {
