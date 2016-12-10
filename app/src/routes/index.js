@@ -1,56 +1,78 @@
 // @flow
 
 import React from 'react';
+import Relay from 'react-relay';
 import { Route, IndexRoute } from 'react-router';
 
-import AppQuery from '~/queries/AppQuery';
-import CatalogQuery from '~/queries/CatalogQuery';
-import SearchQuery from '~/queries/SearchQuery';
-import AlbumQuery from '~/queries/AlbumQuery';
-import ArtistQuery from '~/queries/ArtistQuery';
+/* eslint-disable global-require */
+
+const load = loader => (nextState, cb) => require.ensure([], () => cb(null, loader().default));
+
+const manifest = {
+  app: () => require('../containers/App'),
+  catalog: () => require('../components/Catalog'),
+  search: () => require('../components/Search'),
+  album: () => require('../components/Album'),
+  artist: () => require('../components/Artist'),
+};
+
+const catalogProps = {
+  getComponent: load(manifest.catalog),
+  getQueries: () => ({
+    newReleases: () => Relay.QL`query NewReleasesQuery { newReleases }`,
+  }),
+};
 
 const routes = (
   <Route
     path="/"
-    getComponent={AppQuery.getComponent}
+    getComponent={load(manifest.app)}
   >
-    <IndexRoute
-      getComponent={CatalogQuery.getComponent}
-      getQueries={CatalogQuery.queries}
-    />
+    <IndexRoute {...catalogProps} />
     <Route
       path="(:locale/)search"
-      getComponent={SearchQuery.getComponent}
-      getQueries={SearchQuery.queries}
+      getComponent={load(manifest.search)}
+      getQueries={() => ({
+        artistSearch: () => Relay.QL`query SearchArtistQuery { artistSearch }`,
+        albumSearch: () => Relay.QL`query SearchAlbumQuery { albumSearch }`,
+        trackSearch: () => Relay.QL`query SearchTrackQuery { trackSearch }`,
+      })}
     />
-    <Route
-      path=":locale"
-      getComponent={CatalogQuery.getComponent}
-      getQueries={CatalogQuery.queries}
-    />
+    <Route path=":locale" {...catalogProps} />
     <Route
       path="(:locale/)album/:albumId"
-      getComponent={AlbumQuery.getComponent}
-      getQueries={AlbumQuery.queries}
+      getComponent={load(manifest.album)}
+      getQueries={() => ({
+        album: () => Relay.QL`query AlbumQuery { album(id: $albumId) }`,
+      })}
     />
     <Route
       path="(:locale/)artist/:artistId"
-      getComponent={ArtistQuery.getComponent}
-      getQueries={ArtistQuery.queries}
+      getComponent={load(manifest.artist)}
+      getQueries={() => ({
+        artist: () => Relay.QL`query ArtistQuery { artist(id: $artistId) }`,
+        artistAlbums: () => Relay.QL`query ArtistAlbumsQuery { artistAlbums(id: $artistId) }`,
+        topTracks: () => Relay.QL`query TopTracksQuery { topTracks(id: $artistId) }`,
+        relatedArtists: () => Relay.QL`query RelatedArtistQuery { relatedArtists(id: $artistId) }`,
+      })}
     />
   </Route>
 );
-
 
 // Unfortunately, HMR breaks when we dynamically resolve
 // routes so we need to require them here as a workaround.
 // https://github.com/gaearon/react-hot-loader/issues/288
 if (module.hot) {
-  require('../components/App');    // eslint-disable-line global-require
-  require('../components/Album');   // eslint-disable-line global-require
-  require('../components/Artist');   // eslint-disable-line global-require
-  require('../components/Catalog');   // eslint-disable-line global-require
-  require('../components/Search');   // eslint-disable-line global-require
+  const walk = (data) => {
+    Object.keys(data).forEach((key) => {
+      if (typeof key === 'function') {
+        manifest[key]();
+      } else {
+        walk(manifest[key]);
+      }
+    });
+  };
+  walk(manifest);
 }
 
 export default routes;
