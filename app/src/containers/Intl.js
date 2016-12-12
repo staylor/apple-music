@@ -18,17 +18,17 @@ class Intl extends PureComponent {
     props.onSetLocale(locale);
   }
 
-  componentWillReceiveProps({ onSetLocale, params: { locale } }) {
+  componentWillReceiveProps({ onSetLocale, params }) {
     let currentLocale = this.props.locale;
 
-    if (locale) {
-      if (locale !== currentLocale) {
-        currentLocale = locale;
+    if (params.locale) {
+      if (params.locale !== currentLocale) {
+        currentLocale = params.locale;
       }
     } else {
       currentLocale = 'en';
     }
-
+    console.log('SETTING TO: ', currentLocale);
     onSetLocale(currentLocale);
   }
 

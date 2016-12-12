@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Relay from 'react-relay';
+import { FormattedMessage } from 'react-intl';
 import ArtistLink from './Link';
 import BrowseAlbum from '../Album/Browse';
 import RelatedArtist from '../Artist/Related';
@@ -22,19 +23,25 @@ const Artist = ({
     {artist.images.length ?
       <img className={styles.image} role="presentation" src={artist.images[0].url} /> : ''}
     <section>
-      <h2>Top Songs</h2>
+      <h2>
+        <FormattedMessage id="artist.top_songs" />
+      </h2>
       <ul className={catalogStyles.tracks}>
         {topTracks.results.map(track => <Track key={track.id} track={track} />)}
       </ul>
     </section>
     <section>
-      <h2>Albums</h2>
+      <h2>
+        <FormattedMessage id="artist.albums" />
+      </h2>
       <ul className={catalogStyles.albums}>
         {artistAlbums.results.map(album => <BrowseAlbum key={album.id} album={album} />)}
       </ul>
     </section>
     <section>
-      <h2>Related Artists</h2>
+      <h2>
+        <FormattedMessage id="artist.related_artists" />
+      </h2>
       <ul className={catalogStyles.artists}>
         {relatedArtists.results.map(relatedArtist => (
           <RelatedArtist key={relatedArtist.id} artist={relatedArtist} />

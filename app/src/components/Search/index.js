@@ -1,8 +1,9 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Relay from 'react-relay';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import RelatedArtist from '../Artist/Related';
 import BrowseAlbum from '../Album/Browse';
 import Track from '../Track';
@@ -13,7 +14,7 @@ import catalogStyles from '../Catalog/Catalog.scss';
 
 /* eslint-disable react/prop-types */
 
-class Search extends PureComponent {
+class Search extends Component {
   state: Object;
   constructor(props) {
     super(props);
@@ -24,15 +25,24 @@ class Search extends PureComponent {
   }
 
   componentDidMount() {
-    const { term, location: { query: { q } } } = this.props;
-    const searchTerm = term || q || '';
+    const { location: { query } } = this.props;
+    let searchTerm = '';
+    if (!searchTerm && query && query.q) {
+      searchTerm = query.q
+    }
+
     if (searchTerm) {
       this.props.onSearchChange(searchTerm);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const nextTerm = nextProps.location.query.q || nextProps.term;
+    const { location: { query } } = nextProps;
+    let nextTerm = '';
+    if (query && query.q) {
+      nextTerm = query.q;
+    }
+
     if (!nextTerm || nextTerm === this.state.lastTerm) {
       return;
     }
@@ -41,37 +51,62 @@ class Search extends PureComponent {
   }
 
   render() {
-    const { artistSearch, albumSearch, trackSearch, term } = this.props;
+    const {
+      artistSearch,
+      albumSearch,
+      trackSearch,
+      term,
+    } = this.props;
 
     return (
-      <div className={styles.wrap}>
-        <h1>Search Results {term ? ` for "${term}"` : ''}</h1>
+      <div className={catalogStyles.wrap}>
+        <h1>
+          <FormattedMessage id="search.results" values={{ term }} />
+        </h1>
         <section>
-          <h2>Tracks</h2>
+          <h2>
+            <FormattedMessage id="search.tracks" />
+          </h2>
           {trackSearch.results.length ? (
             <ul className={catalogStyles.tracks}>
               {trackSearch.results.map(track =>
                 <Track key={track.id} track={track} />)}
             </ul>
-          ) : <p>No tracks found.</p>}
+          ) : (
+            <p>
+              <FormattedMessage id="search.no_tracks_found" />
+            </p>
+          )}
         </section>
         <section>
-          <h2>Artists</h2>
+          <h2>
+            <FormattedMessage id="search.artists" />
+          </h2>
           {artistSearch.results.length ? (
             <ul className={catalogStyles.artists}>
               {artistSearch.results.map(artist =>
                 <RelatedArtist key={artist.id} artist={artist} />)}
             </ul>
-          ) : <p>No artists found.</p>}
+          ) : (
+            <p>
+              <FormattedMessage id="search.no_artists_found" />
+            </p>
+          )}
         </section>
         <section>
-          <h2>Albums</h2>
+          <h2>
+            <FormattedMessage id="search.albums" />
+          </h2>
           {albumSearch.results.length ? (
             <ul className={catalogStyles.albums}>
               {albumSearch.results.map(album =>
                 <BrowseAlbum key={album.id} album={album} />)}
             </ul>
-          ) : <p>No albums found.</p>}
+          ) : (
+            <p>
+              <FormattedMessage id="search.no_albums_found" />
+            </p>
+          )}
         </section>
       </div>
     );
@@ -79,7 +114,6 @@ class Search extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-  locale: state.locale.code,
   term: state.search,
 });
 

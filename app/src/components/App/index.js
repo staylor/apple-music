@@ -51,7 +51,7 @@ const App = ({
                 eventTimeout = window.setTimeout(() => {
                   onSearchChange(eventTarget.value);
                   router.push({
-                    pathname: '/search',
+                    pathname: getL10NPath(locale, '/search'),
                     query: {
                       q: eventTarget.value,
                     },
