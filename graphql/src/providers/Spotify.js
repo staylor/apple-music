@@ -9,10 +9,10 @@ import {
   Artist,
   BrowseAlbum,
   Track,
-} from '~/models';
+} from '../models';
 
-const clientId = 'b791653f8886473db15526cc8ea24588';
-const clientSecret = 'fddc22b8fd85445db6477b5fe502ab90';
+export const clientId = 'b791653f8886473db15526cc8ea24588';
+export const clientSecret = 'fddc22b8fd85445db6477b5fe502ab90';
 const tokenUrl = 'https://accounts.spotify.com/api/token';
 
 const apiHost = 'https://api.spotify.com/v1';
@@ -25,13 +25,9 @@ const searchUrl = `${apiHost}/search`;
 /* eslint-disable no-console */
 
 const tokenKey = 'spotify:token';
-let cache;
+const cache = new NodeCache();
 
 class Spotify {
-  constructor() {
-    cache = new NodeCache();
-  }
-
   static getToken(): Promise<string> {
     return new Promise((resolve, reject) => (
       cache.get(tokenKey, (err, value) => {

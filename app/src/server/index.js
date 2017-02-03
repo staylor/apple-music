@@ -5,10 +5,14 @@ import express from 'express';
 import proxy from 'http-proxy-middleware';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
+import querystring from 'querystring';
+import NodeCache from 'node-cache';
 import router from './router';
+import { clientId, clientSecret } from '../../../graphql/src/providers/Spotify';
 
 const port = Number.parseInt(KYT.SERVER_PORT, 10);
 const app = express();
+const cache = new NodeCache();
 
 app.use(cookieParser());
 
@@ -36,9 +40,30 @@ app.use(gqlPath, proxy({
   changeOrigin: true,
 }));
 
-// health check for kubernetes
-app.get('/.healthcheck', (req, res) => {
-  res.sendStatus(200);
+app.get('/spotify-callback', (req, res) => {
+  const tokenKey = 'spotify:token';
+  const auth = new Buffer(`${clientId}:${clientSecret}`).toString('base64');
+  const data = querystring.stringify({
+    grant_type: 'authorization_code',
+    code: req.query.code,
+    redirect_uri: 'http://localhost:3000/spotify-callback',
+  });
+
+  fetch('https://accounts.spotify.com/api/token', {
+    headers: {
+      Authorization: `Basic ${auth}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    method: 'POST',
+    body: data,
+  }).then(response => response.json()).then((json) => {
+    cache.set(
+      tokenKey,
+      json.access_token,
+      json.expires_in
+    );
+    res.redirect('/');
+  });
 });
 
 // react-router is handling all the routing
