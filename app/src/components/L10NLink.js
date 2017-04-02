@@ -1,16 +1,21 @@
 // @flow
 
 import React from 'react';
-import { Link } from 'react-router';
+import Link from 'react-router/lib/Link';
+import { connect } from 'react-redux';
 
-/* eslint-disable react/prop-types */
+export const getL10NPath = (locale: string, path: string) => (
+  locale === 'en' ? path : `/${locale}${path}`
+);
 
-export const getL10NPath = (locale, path) => {
-  return locale === 'en' ? path : `/${locale}${path}`;
-}
+const L10NLink = (props: Object) => (
+  <Link to={getL10NPath(props.locale, props.to)}>{props.children}</Link>
+);
 
-const L10NLink = ({ locale, to, children }) => {
-  return <Link to={getL10NPath(locale, to)}>{children}</Link>;
-};
+const mapStateToProps = state => ({
+  locale: state.locale.code,
+});
 
-export default L10NLink;
+export default connect(
+  mapStateToProps
+)(L10NLink);

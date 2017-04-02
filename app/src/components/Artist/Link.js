@@ -1,16 +1,11 @@
-// @flow
-
-import React from 'react';
-import Relay from 'react-relay';
-import L10NLink from '~/containers/L10NLink';
+import React, { PureComponent } from 'react';
+import Relay, { withRelay } from 'decorators/withRelay';
+import L10NLink from 'components/L10NLink';
 
 /* eslint-disable react/prop-types */
+/* eslint-disable react/prefer-stateless-function */
 
-const ArtistLink = ({ artist }) => (
-  <L10NLink to={`/artist/${artist.artist_id}`}>{artist.name}</L10NLink>
-);
-
-export default Relay.createContainer(ArtistLink, {
+@withRelay({
   fragments: {
     artist: () => Relay.QL`
       fragment on ArtistInterface {
@@ -19,4 +14,12 @@ export default Relay.createContainer(ArtistLink, {
       }
     `,
   },
-});
+})
+export default class ArtistImage extends PureComponent {
+  render() {
+    const { artist } = this.props;
+    return (
+      <L10NLink to={`/artist/${artist.artist_id}`}>{artist.name}</L10NLink>
+    );
+  }
+}

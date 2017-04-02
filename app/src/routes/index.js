@@ -1,17 +1,18 @@
 import React from 'react';
 import Relay from 'react-relay';
-import { Route, IndexRoute } from 'react-router';
+import Route from 'react-router/lib/Route';
+import IndexRoute from 'react-router/lib/IndexRoute';
+import App from 'components/App';
 
 const load = loader => (nextState, cb) => loader()
   .then(module => cb(null, module.default))
   .catch((e) => { throw e; });
 
 const manifest = {
-  app: () => System.import('../containers/App'),
-  catalog: () => System.import('../components/Catalog'),
-  search: () => System.import('../components/Search'),
-  album: () => System.import('../components/Album'),
-  artist: () => System.import('../components/Artist'),
+  catalog: () => import('./Catalog'),
+  search: () => import('./Search'),
+  album: () => import('./Album'),
+  artist: () => import('./Artist'),
 };
 
 const catalogProps = {
@@ -22,18 +23,19 @@ const catalogProps = {
 };
 
 const routes = (
-  <Route
-    path="/"
-    getComponent={load(manifest.app)}
-  >
+  <Route path="/" component={App}>
     <IndexRoute {...catalogProps} />
     <Route
       path="(:locale/)search"
       getComponent={load(manifest.search)}
       getQueries={() => ({
-        artistSearch: () => Relay.QL`query SearchArtistQuery { artistSearch }`,
-        albumSearch: () => Relay.QL`query SearchAlbumQuery { albumSearch }`,
-        trackSearch: () => Relay.QL`query SearchTrackQuery { trackSearch }`,
+        artistSearch: () => Relay.QL`query SearchArtistQuery($q: String!) { artistSearch }`,
+        albumSearch: () => Relay.QL`query SearchAlbumQuery($q: String!) { albumSearch }`,
+        trackSearch: () => Relay.QL`query SearchTrackQuery($q: String!) { trackSearch }`,
+      })}
+      prepareParams={(params, { location }) => ({
+        ...params,
+        q: location.query.q || '',
       })}
     />
     <Route path=":locale" {...catalogProps} />

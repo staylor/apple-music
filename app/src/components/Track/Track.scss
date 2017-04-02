@@ -68,14 +68,23 @@
   display: none;
 }
 
-.name {
+@mixin text() {
   color: $black;
   float: left;
   font-family: 'sf-ui-regular', sans-serif;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.name {
+  @include text;
   width: calc(80% - 35px);
+}
+
+.searchName {
+  @include text;
+  width: calc(80% - 15px);
 }
 
 .length {

@@ -1,15 +1,21 @@
 {
   "passPerPreset": true,
   "plugins": [
+    "./tools/babelRelayPlugin.js",
+    "transform-decorators-legacy",
     "transform-flow-strip-types",
     "transform-class-properties",
     "transform-runtime",
-    [
-      "babel-root-import",
-      {
-        "rootPathSuffix": "src"
+    ["module-resolver", {
+      "root": ["./src"],
+      "alias": {
+        "actions": "./src/actions",
+        "components": "./src/components",
+        "containers": "./src/containers",
+        "reducers": "./src/reducers",
+        "routes": "./src/routes"
       }
-    ]
+    }]
   ],
   "presets": [
     "react",

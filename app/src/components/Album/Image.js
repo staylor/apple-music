@@ -1,33 +1,11 @@
-// @flow
-
-import React from 'react';
-import Relay from 'react-relay';
-import L10NLink from '~/containers/L10NLink';
+import React, { PureComponent } from 'react';
+import Relay, { withRelay } from 'decorators/withRelay';
+import L10NLink from 'components/L10NLink';
 
 /* eslint-disable react/prop-types */
+/* eslint-disable react/prefer-stateless-function */
 
-const AlbumImage = ({ album, size = 'large' }) => {
-  let url;
-  switch (size) {
-    case 'medium':
-      url = album.images[1].url;
-      break;
-    case 'small':
-      url = album.images[2].url;
-      break;
-    default:
-      url = album.images[0].url;
-      break;
-  }
-
-  return (
-    <L10NLink to={`/album/${album.album_id}`}>
-      <img role="presentation" src={url} />
-    </L10NLink>
-  );
-};
-
-export default Relay.createContainer(AlbumImage, {
+@withRelay({
   fragments: {
     album: () => Relay.QL`
       fragment on AlbumInterface {
@@ -38,4 +16,28 @@ export default Relay.createContainer(AlbumImage, {
       }
     `,
   },
-});
+})
+export default class BrowseAlbum extends PureComponent {
+  render() {
+    const { album, size = 'large' } = this.props;
+
+    let url;
+    switch (size) {
+      case 'medium':
+        url = album.images[1].url;
+        break;
+      case 'small':
+        url = album.images[2].url;
+        break;
+      default:
+        url = album.images[0].url;
+        break;
+    }
+
+    return (
+      <L10NLink to={`/album/${album.album_id}`}>
+        <img alt="" role="presentation" src={url} />
+      </L10NLink>
+    );
+  }
+}

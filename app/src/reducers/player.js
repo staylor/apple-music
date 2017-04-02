@@ -1,6 +1,6 @@
 // @flow
 
-import { SET_TRACK, SET_TRACK_INFO, TOGGLE_TRACK } from '~/actions';
+import { SET_TRACK, SET_TRACK_INFO, TOGGLE_TRACK } from 'actions';
 
 export const PLAYER_IDLE = 0;
 export const PLAYER_ACTIVE = 1;

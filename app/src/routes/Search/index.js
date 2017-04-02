@@ -1,39 +1,65 @@
-// @flow
-
 import React, { Component } from 'react';
-import Relay from 'react-relay';
-import { connect } from 'react-redux';
+import Relay, { withRelay } from 'decorators/withRelay';
+import withRedux from 'decorators/withRedux';
 import { FormattedMessage } from 'react-intl';
-import RelatedArtist from '../Artist/Related';
-import BrowseAlbum from '../Album/Browse';
-import Track from '../Track';
-import { getL10NPath } from '../L10NLink';
-import { setSearchTerm } from '../../actions';
-import styles from '../Artist/Artist.scss';
+import RelatedArtist from 'components/Artist/Related';
+import BrowseAlbum from 'components/Album/Browse';
+import Track from 'components/Track';
+import { setSearchTerm } from 'actions';
 import catalogStyles from '../Catalog/Catalog.scss';
 
 /* eslint-disable react/prop-types */
 
-class Search extends Component {
+const mapStateToProps = state => ({
+  term: state.search,
+});
+
+const mapDispatchToProps = dispatch => ({
+  onSearchChange: (term) => {
+    dispatch(setSearchTerm(term));
+  },
+});
+
+@withRelay({
+  initialVariables: {
+    q: '',
+  },
+  fragments: {
+    artistSearch: () => Relay.QL`
+      fragment on ArtistCollection {
+        results(type: "artistSearch", q: $q) {
+          id
+          ${RelatedArtist.getFragment('artist')}
+        }
+      }
+    `,
+    albumSearch: () => Relay.QL`
+      fragment on AlbumCollection {
+        results(type: "albumSearch", q: $q) {
+          id
+          ${BrowseAlbum.getFragment('album')}
+        }
+      }
+    `,
+    trackSearch: () => Relay.QL`
+      fragment on TrackCollection {
+        results(type: "trackSearch", q: $q) {
+          id
+          ${Track.getFragment('track')}
+        }
+      }
+    `,
+  },
+})
+@withRedux(mapStateToProps, mapDispatchToProps)
+export default class Search extends Component {
   state: Object;
   constructor(props) {
     super(props);
 
     this.state = {
-      lastTerm: '',
+      lastTerm: props.location.query.q || '',
     };
-  }
-
-  componentDidMount() {
-    const { location: { query } } = this.props;
-    let searchTerm = '';
-    if (!searchTerm && query && query.q) {
-      searchTerm = query.q
-    }
-
-    if (searchTerm) {
-      this.props.onSearchChange(searchTerm);
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -48,6 +74,9 @@ class Search extends Component {
     }
     this.setState({ lastTerm: nextTerm });
     this.props.onSearchChange(nextTerm);
+    this.props.relay.setVariables({
+      q: nextTerm,
+    });
   }
 
   render() {
@@ -112,53 +141,3 @@ class Search extends Component {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  term: state.search,
-});
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  onSearchChange: (term) => {
-    dispatch(setSearchTerm(term));
-    ownProps.relay.setVariables({
-      q: term,
-    });
-  },
-});
-
-const ConnectedSearch = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Search);
-
-export default Relay.createContainer(ConnectedSearch, {
-  initialVariables: {
-    q: '',
-  },
-  fragments: {
-    artistSearch: () => Relay.QL`
-      fragment on ArtistCollection {
-        results(type: "artistSearch", q: $q) {
-          id
-          ${RelatedArtist.getFragment('artist')}
-        }
-      }
-    `,
-    albumSearch: () => Relay.QL`
-      fragment on AlbumCollection {
-        results(type: "albumSearch", q: $q) {
-          id
-          ${BrowseAlbum.getFragment('album')}
-        }
-      }
-    `,
-    trackSearch: () => Relay.QL`
-      fragment on TrackCollection {
-        results(type: "trackSearch", q: $q) {
-          id
-          ${Track.getFragment('track')}
-        }
-      }
-    `,
-  },
-});

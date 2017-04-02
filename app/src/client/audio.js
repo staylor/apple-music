@@ -1,5 +1,5 @@
-import { setTrackInfo } from '~/actions';
-import { PLAYER_IDLE, PLAYER_ACTIVE } from '~/reducers/player';
+import { setTrackInfo } from 'actions';
+import { PLAYER_IDLE, PLAYER_ACTIVE } from 'reducers/player';
 
 let audio = null;
 let track = 0;

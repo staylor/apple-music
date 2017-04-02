@@ -1,16 +1,11 @@
-// @flow
-
-import React from 'react';
-import Relay from 'react-relay';
-import L10NLink from '~/containers/L10NLink';
+import React, { PureComponent } from 'react';
+import Relay, { withRelay } from 'decorators/withRelay';
+import L10NLink from 'components/L10NLink';
 
 /* eslint-disable react/prop-types */
+/* eslint-disable react/prefer-stateless-function */
 
-const AlbumLink = ({ album }) => (
-  <L10NLink to={`/album/${album.album_id}`}>{album.name}</L10NLink>
-);
-
-export default Relay.createContainer(AlbumLink, {
+@withRelay({
   fragments: {
     album: () => Relay.QL`
       fragment on AlbumInterface {
@@ -19,4 +14,13 @@ export default Relay.createContainer(AlbumLink, {
       }
     `,
   },
-});
+})
+export default class AlbumLink extends PureComponent {
+  render() {
+    const { album } = this.props;
+
+    return (
+      <L10NLink to={`/album/${album.album_id}`}>{album.name}</L10NLink>
+    );
+  }
+}

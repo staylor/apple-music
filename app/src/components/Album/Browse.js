@@ -1,27 +1,14 @@
-// @flow
-
-import React from 'react';
-import Relay from 'react-relay';
-import ArtistLink from '../Artist/Link';
-import AlbumLink from '../Album/Link';
-import AlbumImage from './Image';
-import styles from '../Catalog/Catalog.scss';
+import React, { PureComponent } from 'react';
+import Relay, { withRelay } from 'decorators/withRelay';
+import ArtistLink from 'components/Artist/Link';
+import AlbumLink from 'components/Album/Link';
+import AlbumImage from 'components/Album/Image';
+import styles from 'routes/Catalog/Catalog.scss';
 
 /* eslint-disable react/prop-types */
+/* eslint-disable react/prefer-stateless-function */
 
-const BrowseAlbum = ({ album }) => (
-  <li>
-    <div className={styles.artwork}>
-      <AlbumImage album={album} size="medium" />
-    </div>
-    <div className={styles.meta}>
-      <AlbumLink album={album} />
-      {album.artists.map(artist => <ArtistLink key={artist.id} artist={artist} />)}
-    </div>
-  </li>
-);
-
-export default Relay.createContainer(BrowseAlbum, {
+@withRelay({
   fragments: {
     album: () => Relay.QL`
       fragment on BrowseAlbum {
@@ -34,4 +21,21 @@ export default Relay.createContainer(BrowseAlbum, {
       }
     `,
   },
-});
+})
+export default class BrowseAlbum extends PureComponent {
+  render() {
+    const { album } = this.props;
+
+    return (
+      <li>
+        <div className={styles.artwork}>
+          <AlbumImage album={album} size="medium" />
+        </div>
+        <div className={styles.meta}>
+          <AlbumLink album={album} />
+          {album.artists.map(artist => <ArtistLink key={artist.id} artist={artist} />)}
+        </div>
+      </li>
+    );
+  }
+}

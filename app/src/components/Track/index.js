@@ -1,36 +1,15 @@
-// @flow
-
-import React from 'react';
-import Relay from 'react-relay';
-import { connect } from 'react-redux';
+import React, { PureComponent } from 'react';
+import Relay, { withRelay } from 'decorators/withRelay';
+import withRedux from 'decorators/withRedux';
 import classNames from 'classnames';
-import { toggleCurrentTrack, setCurrentTrack } from '~/actions';
-import { PLAYER_IDLE, PLAYER_ACTIVE } from '~/reducers/player';
+import { toggleCurrentTrack, setCurrentTrack } from 'actions';
+import { PLAYER_IDLE, PLAYER_ACTIVE } from 'reducers/player';
 import AlbumImage from '../Album/Image';
 import ArtistLink from '../Artist/Link';
 import styles from './Track.scss';
 
 /* eslint-disable react/prop-types */
-
-let Track = ({ track, current, playerState, bindClick }) => {
-  const className = classNames(styles.track, {
-    [styles.paused]: current && playerState === PLAYER_IDLE,
-    [styles.playing]: current && playerState === PLAYER_ACTIVE,
-    [styles.notplaying]: !current,
-  });
-
-  return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <li
-      className={className}
-      onClick={bindClick(current, playerState)}
-    >
-      <AlbumImage album={track.album} size="small" />
-      <span className={styles.name}>{track.name}</span>
-      <span><ArtistLink artist={track.artists[0]} /></span>
-    </li>
-  );
-};
+/* eslint-disable react/prefer-stateless-function */
 
 const mapStateToProps = (state, ownProps) => ({
   current: state.currentTrack && state.currentTrack.track_id === ownProps.track.track_id,
@@ -50,12 +29,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
 });
 
-Track = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Track);
-
-export default Relay.createContainer(Track, {
+@withRelay({
   fragments: {
     track: () => Relay.QL`
       fragment on Track {
@@ -71,4 +45,33 @@ export default Relay.createContainer(Track, {
       }
     `,
   },
-});
+})
+@withRedux(mapStateToProps, mapDispatchToProps)
+export default class Track extends PureComponent {
+  render() {
+    const {
+      track,
+      current,
+      playerState,
+      bindClick,
+    } = this.props;
+
+    const className = classNames(styles.track, {
+      [styles.paused]: current && playerState === PLAYER_IDLE,
+      [styles.playing]: current && playerState === PLAYER_ACTIVE,
+      [styles.notplaying]: !current,
+    });
+
+    return (
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <li
+        className={className}
+        onClick={bindClick(current, playerState)}
+      >
+        <AlbumImage album={track.album} size="small" />
+        <span className={styles.searchName}>{track.name}</span>
+        <ArtistLink artist={track.artists[0]} />
+      </li>
+    );
+  }
+}

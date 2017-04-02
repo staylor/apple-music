@@ -1,6 +1,6 @@
 // @flow
 
-import { SET_SEARCH_TERM } from '~/actions';
+import { SET_SEARCH_TERM } from 'actions';
 
 export const search = (state: string = '', action: Object) => {
   switch (action.type) {
