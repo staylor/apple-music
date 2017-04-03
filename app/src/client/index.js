@@ -4,9 +4,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import IsomorphicRelay from 'isomorphic-relay';
 import IsomorphicRouter from 'isomorphic-relay-router';
+import { AppContainer } from 'react-hot-loader';
 import { browserHistory, match, Router } from 'react-router';
 import Relay from 'react-relay';
-import { RelayNetworkLayer, urlMiddleware } from 'react-relay-network-layer';
+import { RelayNetworkLayer, urlMiddleware, batchMiddleware } from 'react-relay-network-layer';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import AppRoutes from '../routes';
@@ -26,46 +27,38 @@ const store = createStore(
 audio(store);
 
 // this is from the HTML document served by the server
-const { data } = JSON.parse(document.getElementById('preloadedData').textContent);
+const data = JSON.parse(document.getElementById('preloadedData').textContent);
 
 const environment = new Relay.Environment();
 const networkLayer = new RelayNetworkLayer([
-  urlMiddleware({
-    url: '/graphql',
-    batchUrl: '/graphql/batch',
+  batchMiddleware({
+    batchUrl: () => '/graphql/batch',
   }),
-], { disableBatchQuery: false });
+  urlMiddleware({
+    url: () => '/graphql',
+  }),
+]);
 
 environment.injectNetworkLayer(networkLayer);
 IsomorphicRelay.injectPreparedData(environment, data);
-
-let rootElement;
-let rendered = false;
 
 const mount = (routes = AppRoutes) => {
   match({ routes, history: browserHistory }, (error, redirectLocation, renderProps) => {
     IsomorphicRouter.prepareInitialRender(environment, renderProps).then((props) => {
       const routerProps = Object.assign({}, props);
-      if (rendered) {
-        Reflect.deleteProperty(routerProps, 'routes');
-        Reflect.deleteProperty(routerProps, 'history');
-      } else {
-        rendered = true;
-      }
       ReactDOM.render(
-        <Provider store={store}>
-          <Router {...routerProps} onUpdate={() => window.scrollTo(0, 0)} />
-        </Provider>,
-        rootElement
+        <AppContainer>
+          <Provider store={store}>
+            <Router {...routerProps} onUpdate={() => window.scrollTo(0, 0)} />
+          </Provider>
+        </AppContainer>,
+        document.getElementById('root')
       );
     });
   });
 };
 
-window.onload = () => {
-  rootElement = document.getElementById('root');
-  mount();
-};
+window.onload = () => mount();
 
 if (module.hot) {
   // Rerender after any changes to the following.

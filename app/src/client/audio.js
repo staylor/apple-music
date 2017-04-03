@@ -71,7 +71,7 @@ const listener = (state) => {
   track = state.currentTrack.track_id;
 };
 
-export default (store = null) => {
+export default (store: Object = null) => {
   if (isServer) {
     return audio;
   }

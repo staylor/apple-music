@@ -11,6 +11,7 @@ import router from './router';
 import { clientId, clientSecret } from '../../../graphql/src/providers/Spotify';
 
 const port = Number.parseInt(KYT.SERVER_PORT, 10);
+const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const app = express();
 const cache = new NodeCache();
 
@@ -70,6 +71,8 @@ app.get('/spotify-callback', (req, res) => {
 app.get('*', router({
   gqlUrl: gqlHost + gqlPath,
   gqlBatchUrl: gqlHost + gqlBatchPath,
+  jsBundle: clientAssets.main.js,
+  cssBundle: clientAssets.main.css,
 }));
 
 // Error handling

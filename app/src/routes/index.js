@@ -59,20 +59,4 @@ const routes = (
   </Route>
 );
 
-// Unfortunately, HMR breaks when we dynamically resolve
-// routes so we need to require them here as a workaround.
-// https://github.com/gaearon/react-hot-loader/issues/288
-if (module.hot) {
-  const walk = (data) => {
-    Object.keys(data).forEach((key) => {
-      if (typeof key === 'function') {
-        manifest[key]();
-      } else {
-        walk(manifest[key]);
-      }
-    });
-  };
-  walk(manifest);
-}
-
 export default routes;
